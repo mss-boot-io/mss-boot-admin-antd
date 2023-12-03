@@ -24,12 +24,17 @@ import { flushSync } from 'react-dom';
 import { getGithubGetLoginUrl } from '@/services/admin/generator';
 
 function randToken(): string {
-  const buffer = new Uint8Array(32);
+  const buffer = new Uint8Array(28);
   window.crypto.getRandomValues(buffer);
   return btoa(String.fromCharCode.apply(null, buffer));
 }
 
-const ActionIcons = () => {
+export type ActionIconsFormProps = {
+  fetchUserInfo: () => void;
+}
+
+const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
+  
   const langClassName = useEmotionCss(({ token }) => {
     return {
       marginLeft: '8px',
@@ -47,8 +52,40 @@ const ActionIcons = () => {
   return (
     <>
       <GithubOutlined key="GithubOutlined" className={langClassName} onClick={async () => {
-        const loginURL = await getGithubGetLoginUrl({ state: randToken() })
-        console.log(loginURL)
+        localStorage.removeItem('login.type');
+        localStorage.removeItem('github.token');
+        localStorage.removeItem('token');
+        localStorage.removeItem('github.state');
+        const state = 'ghs_' + randToken();
+        localStorage.setItem('github.state', state);
+        const loginURL = await getGithubGetLoginUrl({ state: state})
+        console.log(loginURL);
+        const w = window.open('about:blank');
+        w.location.href = loginURL; 
+        const intervalId = setInterval(() => {
+          console.log('interval');
+          const loginType = localStorage.getItem('login.type');
+          const token = localStorage.getItem('token');
+          console.log(token, loginType);
+          if (token && loginType === 'github') {
+            clearInterval(intervalId);
+            try {
+              props.fetchUserInfo();
+
+            } catch (e) {
+              message.error('登录失败，请重试！');
+              return
+            } finally {
+              console.log('login ok');
+              //登录成功跳转
+              const urlParams = new URL(window.location.href).searchParams;
+              console.log(urlParams.get('redirect'));
+              setTimeout(() => {
+                history.push(urlParams.get('redirect') || '/');
+              }, 1000);
+            }
+          }
+        }, 1000);
       }} />
     </>
   );
@@ -186,7 +223,7 @@ const Login: React.FC = () => {
               id="pages.login.loginWith"
               defaultMessage="其他登录方式"
             />,
-            <ActionIcons key="icons" />,
+            <ActionIcons fetchUserInfo={fetchUserInfo} key="icons" />,
           ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);

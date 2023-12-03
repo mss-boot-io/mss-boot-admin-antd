@@ -1,4 +1,5 @@
 import { getGithubCallback } from '@/services/admin/generator';
+import { login } from '@/services/ant-design-pro/api';
 import { useSearchParams } from '@umijs/max';
 import { Spin, message } from 'antd';
 import React, { useEffect } from 'react';
@@ -8,6 +9,7 @@ const Github: React.FC = () => {
     const [load, setLoad] = React.useState(true);
     const code = searchParams.get('code');
     const state = searchParams.get('state');
+
     useEffect(() => {
         if (state) {
             if (!localStorage.getItem('github.state') || localStorage.getItem('github.state') !== state) {
@@ -17,17 +19,34 @@ const Github: React.FC = () => {
             const req = {
                 code: code!,
                 state: state,
-            };
-            //get token
+            }; 
+            console.log(req);
 
-            getGithubCallback(req).then((res: API.GithubToken ) => {
+            getGithubCallback(req).then((res: API.GithubToken) => {
                 if (res && res.accessToken) {
                     localStorage.setItem('github.token', res.accessToken);
                     setLoad(false);
-                    // localStorage.setItem('github.state', '');
-                    message.success('授权成功');
-                    //todo: 跳转到state中获取的页面
-                    window.close();
+                    message.success('获取成功');
+
+                    //get token
+                    console.log(state);
+                    if (state.startsWith('ghs_')) {
+                        login({ password: res.accessToken, type: 'github' }).then((msg) => {
+                            if (msg.code === 200 && msg.token) {
+                                message.success('登录成功');
+                                //set token to localstorage
+                                localStorage.setItem("token", msg.token)
+                                localStorage.setItem("login.type", "github")
+                                // const urlParams = new URL(window.location.href).searchParams;
+                                // history.push(urlParams.get('redirect') || '/');
+                                // return;
+                            }
+                        });
+                    }
+
+                    setTimeout(() => {
+                        window.close();
+                    }, 1000);
                 }
             });
         }
