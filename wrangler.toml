@@ -10,5 +10,5 @@ bucket = "./dist"
 entry-point = "workers-site"
 
 [env.prod]
-name = "mss-boot-admin-antd"
-route = "admin-antd.mss-boot-io.top/*"
+name = "mss-boot-admin"
+route = "admin.mss-boot-io.top/*"
