@@ -1,0 +1,14 @@
+type = "webpack"
+route = ""
+workers_dev = true
+zone_id = "83499b45e20e8e3c34b2c0b6507c2f66"
+name = ""
+account_id = "126f4a0c75180e9493cb3716f5178574"
+
+[site]
+bucket = "./dist"
+entry-point = "workers-site"
+
+[env.prod]
+name = "mss-boot-admin-antd"
+route = "admin-antd.mss-boot-io.top/*"
