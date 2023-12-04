@@ -25,7 +25,10 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    */
   const loginOut = async () => {
     // delete localStorage.token;
+    localStorage.removeItem('login.type');
+    localStorage.removeItem('github.token');
     localStorage.removeItem('token');
+    localStorage.removeItem('github.state');
     // await outLogin();
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
