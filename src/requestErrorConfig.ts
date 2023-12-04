@@ -95,12 +95,12 @@ export const errorConfig: RequestConfig = {
           Authorization: `Bearer ${token}`,
         };
         return {
-          url,
+          url: `${API_URL}${url}`,
           options: { ...options, headers },
         };
       }
       return {
-        url,
+        url: `${API_URL}${url}`,
         options,
       };
     },

@@ -28,6 +28,8 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          REACT_APP_API_HOST: https://admin-api.mss-boot-io.top
 
       - name: Install Dependencies for Workers Site
         working-directory: ./workers-site
