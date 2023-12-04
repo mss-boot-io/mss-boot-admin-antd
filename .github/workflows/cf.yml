@@ -2,9 +2,8 @@ name: Deploy To Cloudflare
 
 on:
   push:
-    branches:
-      - main
-      - feat/workflow
+    tags:
+      - 'v*'
 
 jobs:
   build:
