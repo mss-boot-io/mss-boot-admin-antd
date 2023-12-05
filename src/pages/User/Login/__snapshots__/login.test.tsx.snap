@@ -193,7 +193,7 @@ exports[`Login Page should login success 1`] = `
                     width="auto"
                   />
                   <h1>
-                    Ant Design Pro
+                    mss-boot-io
                   </h1>
                 </a>
               </div>
@@ -338,12 +338,12 @@ exports[`Login Page should login success 1`] = `
                             <div
                               style="font-size: 20px; color: rgba(0, 0, 0, 0.88);"
                             >
-                              欢迎使用 Ant Design Pro
+                              欢迎使用 mss-boot-io
                             </div>
                             <p
                               style="font-size: 14px; color: rgba(0, 0, 0, 0.65); line-height: 22px; margin-top: 16px; margin-bottom: 32px; width: 65%;"
                             >
-                              Ant Design Pro 是一个整合了 umi，Ant Design 和 ProComponents 的脚手架方案。致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。
+                              mss-boot-io 是一个整合了 umi，Ant Design 和 ProComponents 的脚手架方案。致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。
                             </p>
                             <div
                               style="display: flex; flex-wrap: wrap; gap: 16px;"
@@ -498,9 +498,9 @@ exports[`Login Page should login success 1`] = `
                   href="https://pro.ant.design"
                   rel="noreferrer"
                   target="_blank"
-                  title="Ant Design Pro"
+                  title="mss-boot-io"
                 >
-                  Ant Design Pro
+                  mss-boot-io
                 </a>
                 <a
                   class="ant-pro-global-footer-list-link "
@@ -1042,9 +1042,9 @@ exports[`Login Page should show login form 1`] = `
             href="https://pro.ant.design"
             rel="noreferrer"
             target="_blank"
-            title="Ant Design Pro"
+            title="mss-boot-io"
           >
-            Ant Design Pro
+            mss-boot-io
           </a>
           <a
             class="ant-pro-global-footer-list-link "
