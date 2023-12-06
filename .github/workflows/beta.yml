@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - main
-      - beta
 
 jobs:
   cicd:
-    uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@beta
+    uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@main
     with:
       env: beta
     secrets: 

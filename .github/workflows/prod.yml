@@ -8,7 +8,7 @@ on:
 
 jobs:
   cicd:
-    uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@beta
+    uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@main
     with:
       env: prod
     secrets: 
