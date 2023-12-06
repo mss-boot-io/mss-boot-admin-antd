@@ -9,6 +9,10 @@ account_id = "126f4a0c75180e9493cb3716f5178574"
 bucket = "./dist"
 entry-point = "workers-site"
 
+[env.alpha]
+name = "mss-boot-admin-alpha"
+route = "admin-alpha.mss-boot-io.top/*"
+
 [env.beta]
 name = "mss-boot-admin-beta"
 route = "admin-beta.mss-boot-io.top/*"
