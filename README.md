@@ -1,17 +1,25 @@
 # mss-boot-admin-antd
 mss-boot-admin前端项目，基于antdpro开发
 
+## feature
+- [x] 通过模板生成代码
+- [x] github oauth2登录
+- [ ] 定时任务管理
+- [ ] 角色管理
+- [ ] 角色授权
+- [ ] 用户管理
+- [ ] 菜单管理
 
 ### Start project
 
 ```bash
-npm start
+npm start:alpha
 ```
 
 ### Build project
 
 ```bash
-npm run build
+npm run build:alpha
 ```
 
 ### Check code style
