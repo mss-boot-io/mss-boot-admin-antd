@@ -6,7 +6,7 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
     "build": "max build",
-    "build:beta": "cross-env REACT_APP_ENV=beta UMI_ENV=beta max build",
+    "build:dev": "cross-env REACT_APP_ENV=dev UMI_ENV=dev max build",
     "build:prod": "cross-env REACT_APP_ENV=prod UMI_ENV=prod max build",
     "deploy": "npm run build && npm run gh-pages",
     "dev": "npm run start:dev",
