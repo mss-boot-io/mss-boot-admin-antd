@@ -1,4 +1,4 @@
-name: (dev)Deploy To Cloudflare
+name: (alpha)Deploy To Cloudflare
 
 on:
   pull_request:
