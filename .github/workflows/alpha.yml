@@ -9,6 +9,6 @@ jobs:
   cicd:
     uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@main
     with:
-      env: dev
+      env: alpha
     secrets: 
       CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}

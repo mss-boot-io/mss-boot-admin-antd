@@ -10,8 +10,8 @@ bucket = "./dist"
 entry-point = "workers-site"
 
 [env.alpha]
-name = "mss-boot-admin-dev"
-route = "admin-dev.mss-boot-io.top/*"
+name = "mss-boot-admin-alpha"
+route = "admin-alpha.mss-boot-io.top/*"
 
 [env.beta]
 name = "mss-boot-admin-beta"
