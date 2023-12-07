@@ -21,7 +21,7 @@ jobs:
   cicd:
     uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@main
     with:
-      env: alpha
+      env: github-pages
     secrets: 
       CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
     # Single deploy job since we're just deploying
