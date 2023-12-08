@@ -51,4 +51,6 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.list.role': '查询角色',
   'menu.generator': '代码生成器',
+  'menu.list.task': '查询任务',
+  'menu.control.task': '管理任务',
 };

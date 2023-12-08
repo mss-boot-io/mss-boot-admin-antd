@@ -44,6 +44,20 @@ export async function postRoles(body: API.Role, options?: { [key: string]: any }
   });
 }
 
+/** 获取角色 获取角色 GET /admin/api/roles/${param0} */
+export async function getRolesId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getRolesIdParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<API.Role>(`/admin/api/roles/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** 更新角色 更新角色 PUT /admin/api/roles/${param0} */
 export async function putRolesId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
