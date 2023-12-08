@@ -10,6 +10,16 @@ declare namespace API {
     id: string;
   };
 
+  type deleteTasksIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type deleteUsersIdParams = {
+    /** id */
+    id: string;
+  };
+
   type GenerateParams = {
     params?: Record<string, any>;
     repo: string;
@@ -33,11 +43,43 @@ declare namespace API {
     id: string;
   };
 
+  type getRolesIdParams = {
+    /** id */
+    id: string;
+  };
+
   type getRolesParams = {
     /** page */
     page?: number;
     /** pageSize */
     page_size?: number;
+    /** id */
+    id?: string;
+    /** name */
+    name?: string;
+    /** status */
+    status?: number;
+    /** remark */
+    remark?: string;
+  };
+
+  type getTaskOperateIdParams = {
+    /** 任务ID */
+    id: string;
+    /** 操作类型 */
+    operate: string;
+  };
+
+  type getTasksIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getTasksParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
     /** id */
     id?: string;
     /** name */
@@ -73,6 +115,22 @@ declare namespace API {
     branch?: string;
     /** access token */
     accessToken?: string;
+  };
+
+  type getUsersIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getUsersParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+    /** id */
+    id?: string;
+    /** name */
+    name?: string;
   };
 
   type getUserUserInfoParams = {
@@ -147,6 +205,16 @@ The Type method returns either this or "Bearer", the default. */
     id: string;
   };
 
+  type putTasksIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putUsersIdParams = {
+    /** id */
+    id: string;
+  };
+
   type Response = {
     code?: number;
     errorCode?: string;
@@ -167,6 +235,29 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     root?: boolean;
     status?: number;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
+  type Task = {
+    protocol: string;
+    args?: number[];
+    checkedAt?: string;
+    command?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    endpoint?: string;
+    entryID?: number;
+    /** ID primary key */
+    id?: string;
+    metadata?: string;
+    method?: string;
+    name?: string;
+    python?: string;
+    remark?: string;
+    spec?: string;
+    status?: number;
+    timeout?: number;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -234,6 +325,7 @@ The Type method returns either this or "Bearer", the default. */
     registrationTime?: string;
     roleId?: string;
     status?: number;
+    type?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
     username?: string;

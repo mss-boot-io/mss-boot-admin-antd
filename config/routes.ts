@@ -81,6 +81,18 @@ export default [
     component: './RoleList',
   },
   {
+    name: 'list.task',
+    icon: 'table',
+    path: '/task',
+    component: './TaskList',
+  },
+  {
+    name: 'control.task',
+    path: '/task/:id',
+    hideInMenu: true,
+    component: './TaskList/Control/$id.tsx',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

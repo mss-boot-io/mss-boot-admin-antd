@@ -158,4 +158,7 @@ export default defineConfig({
   },
   esbuildMinifyIIFE: true,
   requestRecord: {},
+  define: {
+    API_URL: '',
+  },
 });
