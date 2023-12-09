@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import {
   ProCard,
@@ -8,20 +8,20 @@ import {
   ProForm,
 } from '@ant-design/pro-components';
 import { message } from 'antd';
-import { 
+import {
   getGithubGetLoginUrl,
-  getTemplateGetBranches, 
-  getTemplateGetParams, 
-  getTemplateGetPath, 
-  postTemplateGenerate
+  getTemplateGetBranches,
+  getTemplateGetParams,
+  getTemplateGetPath,
+  postTemplateGenerate,
 } from '@/services/admin/generator';
-import { GithubOutlined, ReloadOutlined } from '@ant-design/icons';
+import { GithubOutlined } from '@ant-design/icons';
 import { useLocation } from '@umijs/max';
-
 
 function randToken(): string {
   const buffer = new Uint8Array(32);
   window.crypto.getRandomValues(buffer);
+  // @ts-ignore
   return btoa(String.fromCharCode.apply(null, buffer));
 }
 
@@ -35,17 +35,16 @@ const Generate: React.FC = () => {
   const [source, setSource] = useState<string>('');
   const [branch, setBranch] = useState<string>('');
   const [path, setPath] = useState<string>('');
-  const location  = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
-
     if (!accessToken) {
       const intervalId = setInterval(() => {
         console.log('interval');
         const token = localStorage.getItem('github.token');
         if (token) {
           setAccessToken(token);
-          formRef.current?.setFieldsValue({ accessToken: token })
+          formRef.current?.setFieldsValue({ accessToken: token });
           clearInterval(intervalId);
         }
       }, 1000);
@@ -97,19 +96,18 @@ const Generate: React.FC = () => {
             }}
             onFinish={async () => {
               if (!accessToken) {
-                const token = localStorage.getItem('github.token')
+                const token = localStorage.getItem('github.token');
                 if (token) {
                   setAccessToken(token);
                 }
               }
-              formRef.current?.setFieldsValue({ accessToken })
+              formRef.current?.setFieldsValue({ accessToken });
               setSource(formRef.current?.getFieldsValue().source);
-              const data = formRef.current?.getFieldsValue()
-              // setAccessToken(formRef.current?.getFieldsValue().accessToken);
+              const data = formRef.current?.getFieldsValue();
               data.accessToken = accessToken;
-              console.log(data)
+              console.log(data);
               const branchesData = await getTemplateGetBranches(data);
-              console.log(branchesData)
+              console.log(branchesData);
               setBranches(branchesData.branches || []);
               return true;
             }}
@@ -122,17 +120,23 @@ const Generate: React.FC = () => {
               placeholder="请输入模板仓库地址"
               rules={[{ required: true }]}
             />
-            {accessToken ? '' : (<ProCard onClick={async () => {
-              console.log(location);
-              const state = randToken();
-              localStorage.setItem('github.state', state);
-              const loginURL = await getGithubGetLoginUrl({state: state})
-              const w = window.open('about:blank');
-              w.location.href = loginURL; 
-            }}>
-            获取GitHub权限 <GithubOutlined key="GithubOutlined"  />
-            </ProCard>)}
-            
+            {accessToken ? (
+              ''
+            ) : (
+              <ProCard
+                onClick={async () => {
+                  console.log(location);
+                  const state = randToken();
+                  localStorage.setItem('github.state', state);
+                  const loginURL = await getGithubGetLoginUrl({ state: state });
+                  const w = window.open('about:blank');
+                  // @ts-ignore
+                  w.location.href = loginURL;
+                }}
+              >
+                获取GitHub权限 <GithubOutlined key="GithubOutlined" />
+              </ProCard>
+            )}
           </StepsForm.StepForm>
           <StepsForm.StepForm<{
             checkbox: string;

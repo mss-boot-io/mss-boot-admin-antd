@@ -7,9 +7,9 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
+import { getUserUserInfo } from './services/admin/user';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const callbackPath = ['/user/github-callback'];
@@ -19,13 +19,13 @@ const callbackPath = ['/user/github-callback'];
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.User;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<API.User | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
+      const msg = await getUserUserInfo({
         skipErrorHandler: true,
       });
       return msg;

@@ -1,110 +1,26 @@
-import { addRule, getTree, removeRule, role, updateRule } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import {
-  DrawerForm,
-  FooterToolbar,
-  ModalForm,
-  PageContainer,
-  ProDescriptions,
-  ProFormText,
-  ProFormTextArea,
-  ProTable,
-} from '@ant-design/pro-components';
-import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
+import { FormattedMessage, Link, useIntl } from '@umijs/max';
+import { Button, Drawer, Input, Popconfirm, message } from 'antd';
 import React, { useRef, useState } from 'react';
-import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
 import Auth from './components/Auth';
 import { DataNode } from 'antd/es/tree';
-
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.RuleListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('Added successfully');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Adding failed, please try again!');
-    return false;
-  }
-};
-
-/**
- * @en-US Update node
- * @zh-CN 更新节点
- *
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('Configuring');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-
-    message.success('Configuration is successful');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Configuration failed, please try again!');
-    return false;
-  }
-};
-
-/**
- *  Delete node
- * @zh-CN 删除节点
- *
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
-    hide();
-    message.success('Deleted successfully and will refresh soon');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Delete failed, please try again');
-    return false;
-  }
-};
+import {
+  deleteRolesId,
+  getRoleAuthorizeRoleId,
+  postRoleAuthorizeRoleId,
+  getRoles,
+} from '@/services/admin/role';
+import { getMenuTree } from '@/services/admin/menu';
 
 const TableList: React.FC = () => {
-  /**
-   * @en-US Pop-up window of new window
-   * @zh-CN 新建窗口的弹窗
-   *  */
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  /**
-   * @en-US The pop-up window of the distribution update window
-   * @zh-CN 分布更新窗口的弹窗
-   * */
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-
   const [authModalOpen, handleAuthModalOpen] = useState<boolean>(false);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
   const [treeData, setTreeData] = useState<DataNode[]>([]);
 
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
@@ -115,7 +31,7 @@ const TableList: React.FC = () => {
    * */
   const intl = useIntl();
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns<API.Role>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -134,13 +50,30 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: "名称",
+      title: '名称',
       dataIndex: 'name',
     },
     {
       title: '描述',
+      search: false,
       dataIndex: 'remark',
       valueType: 'textarea',
+    },
+    {
+      title: 'root权限',
+      dataIndex: 'root',
+      search: false,
+      valueType: 'checkbox',
+      valueEnum: {
+        false: {
+          text: '否',
+          status: 'fasle',
+        },
+        true: {
+          text: '是',
+          status: 'true',
+        },
+      },
     },
     {
       title: '状态',
@@ -192,154 +125,85 @@ const TableList: React.FC = () => {
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Button key="edit" onClick={() => {
-          handleUpdateModalOpen(true);
-          setCurrentRow(record);
-        }}>
-          编辑
+        <Button key="edit">
+          <Link to={`/role/${record.id}`}>编辑</Link>
         </Button>,
-        <Button key="auth" onClick={() => {
-          handleAuthModalOpen(true);
-          setCurrentRow(record);
-        }} >
+        <Button
+          key="auth"
+          onClick={() => {
+            handleAuthModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
           授权
         </Button>,
-        <Button key="delete">
-          删除
-        </Button>
+        <Popconfirm
+          key="delete"
+          title="删除角色"
+          disabled={record.root}
+          description="你确定要删除这个角色吗?"
+          onConfirm={async () => {
+            const res = await deleteRolesId({ id: record.id! });
+            if (!res) {
+              message.success('删除成功');
+              actionRef.current?.reload();
+            }
+          }}
+          okText="确定"
+          cancelText="再想想"
+        >
+          <Button disabled={record.root} key="delete.button">
+            删除
+          </Button>
+        </Popconfirm>,
       ],
     },
   ];
 
   const onOpenChange = async (e: boolean) => {
     if (e) {
-      const data = await getTree()
+      const data = await getMenuTree();
+      //@ts-ignore
       setTreeData(data);
+      //get checkedKeys
+      const checkedRes = await getRoleAuthorizeRoleId({
+        roleID: currentRow?.id ?? '',
+      });
+      if (checkedRes) {
+        const checkedKeys: React.Key[] = [];
+        checkedRes.menuIDS?.forEach((value) => {
+          checkedKeys.push(value);
+        });
+        setCheckedKeys(checkedKeys);
+      }
       console.log('onOpenChange0');
       return;
     }
     console.log('onOpenChange1');
     setTreeData([]);
     handleAuthModalOpen(e);
-  }
+  };
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
-        headerTitle='角色列表'
+      <ProTable<API.Role, API.Page>
+        headerTitle="角色列表"
         actionRef={actionRef}
         rowKey="id"
         search={{
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+          <Button type="primary" key="create">
+            <Link type="primary" key="primary" to="/role/create">
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Link>
           </Button>,
         ]}
-        request={role}
+        // @ts-ignore
+        request={getRoles}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
       />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
-              &nbsp;&nbsp;
-              <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="Total number of service calls"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
-          </Button>
-        </FooterToolbar>
-      )}
-      <ModalForm
-        title={intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: 'New rule',
-        })}
-        width="400px"
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          const success = await handleAdd(value as API.RuleListItem);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      >
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="Rule name is required"
-                />
-              ),
-            },
-          ]}
-          width="md"
-          name="name"
-        />
-        <ProFormTextArea width="md" name="remark" />
-      </ModalForm>
-      <UpdateForm
-        onSubmit={async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalOpen(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={() => {
-          handleUpdateModalOpen(false);
-          if (!showDetail) {
-            setCurrentRow(undefined);
-          }
-        }}
-        updateModalOpen={updateModalOpen}
-        values={currentRow || {}}
-      />
-
       <Drawer
         width={600}
         open={showDetail}
@@ -369,17 +233,33 @@ const TableList: React.FC = () => {
         title="授权"
         open={authModalOpen}
         onFinish={async () => {
-          console.log(checkedKeys);
-          message.success('提交成功');
-          return true;
+          const menuIDS: string[] = [];
+          checkedKeys.forEach((value) => {
+            menuIDS.push(value.toString());
+          });
+
+          const res = await postRoleAuthorizeRoleId(
+            {
+              roleID: currentRow?.id ?? '',
+            },
+            {
+              menuIDS: menuIDS,
+            },
+          );
+          if (!res) {
+            message.success('提交成功');
+            return true;
+          }
+          message.error('提交失败');
+          return false;
         }}
       >
-        <Auth 
-        values={treeData} 
-        id={currentRow?.id} 
-        setCheckedKeys={setCheckedKeys}
-        checkedKeys={checkedKeys}
-         />
+        <Auth
+          values={treeData}
+          id={currentRow?.id}
+          setCheckedKeys={setCheckedKeys}
+          checkedKeys={checkedKeys}
+        />
       </DrawerForm>
     </PageContainer>
   );

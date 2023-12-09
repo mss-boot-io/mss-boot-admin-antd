@@ -149,7 +149,7 @@ export default defineConfig({
     // },
     {
       requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: join(__dirname, 'admin.json'),
+      schemaPath: 'http://localhost:8080/swagger.json',
       projectName: 'admin',
     },
   ],

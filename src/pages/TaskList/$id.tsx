@@ -7,7 +7,7 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { useParams } from '@umijs/max';
+import { useParams, history } from '@umijs/max';
 import { message } from 'antd';
 import { useRef, useState } from 'react';
 
@@ -35,14 +35,18 @@ const TaskControl: React.FC = () => {
             console.log(formRef.current?.getFieldsValue());
             const res = await postTasks(formRef.current?.getFieldsValue());
             if (!res) {
-              message.success('新增成功');
+              message.success('新增成功').then(() => {
+                history.push('/task');
+              });
             }
             return;
           }
           //update
           const res = await putTasksId({ id: id! }, formRef.current?.getFieldsValue());
           if (!res) {
-            message.success('更新成功');
+            message.success('更新成功').then(() => {
+              history.push('/task');
+            });
           }
         }}
         // initialValues={{

@@ -1,10 +1,4 @@
 declare namespace API {
-  type AuthorizeRequest = {
-    apiIDS?: string[];
-    menuIDS?: string[];
-    roleID?: string;
-  };
-
   type deleteRolesIdParams = {
     /** id */
     id: string;
@@ -20,10 +14,25 @@ declare namespace API {
     id: string;
   };
 
+  type FakeCaptchaRequest = {
+    phone: string;
+  };
+
+  type FakeCaptchaResponse = {
+    code?: number;
+    status?: string;
+  };
+
   type GenerateParams = {
     params?: Record<string, any>;
     repo: string;
     service?: string;
+  };
+
+  type GetAuthorizeResponse = {
+    apiIDS?: string[];
+    menuIDS?: string[];
+    roleID?: string;
   };
 
   type getGithubCallbackParams = {
@@ -41,6 +50,11 @@ declare namespace API {
   type getMenuAuthorizeIdParams = {
     /** id */
     id: string;
+  };
+
+  type getRoleAuthorizeRoleIDParams = {
+    /** roleID */
+    roleID: string;
   };
 
   type getRolesIdParams = {
@@ -133,11 +147,6 @@ declare namespace API {
     name?: string;
   };
 
-  type getUserUserInfoParams = {
-    /** id */
-    id: string;
-  };
-
   type GithubControlReq = {
     /** github密码或者token */
     password: string;
@@ -173,6 +182,12 @@ The Type method returns either this or "Bearer", the default. */
     tokenType?: string;
   };
 
+  type LoginResponse = {
+    code?: number;
+    expire?: string;
+    token?: string;
+  };
+
   type MenuSingle = {
     breadcrumb?: boolean;
     /** CreatedAt create time */
@@ -193,6 +208,11 @@ The Type method returns either this or "Bearer", the default. */
     current?: number;
     pageSize?: number;
     total?: number;
+  };
+
+  type postRoleAuthorizeRoleIDParams = {
+    /** roleID */
+    roleID: string;
   };
 
   type putMenuAuthorizeIdParams = {
@@ -239,9 +259,14 @@ The Type method returns either this or "Bearer", the default. */
     updatedAt?: string;
   };
 
+  type SetAuthorizeRequest = {
+    apiIDS?: string[];
+    menuIDS?: string[];
+  };
+
   type Task = {
-    protocol: string;
-    args?: number[];
+    args?: string[];
+    body?: string;
     checkedAt?: string;
     command?: string;
     /** CreatedAt create time */
@@ -253,6 +278,7 @@ The Type method returns either this or "Bearer", the default. */
     metadata?: string;
     method?: string;
     name?: string;
+    protocol?: string;
     python?: string;
     remark?: string;
     spec?: string;
@@ -323,12 +349,19 @@ The Type method returns either this or "Bearer", the default. */
     personalWebsite?: string;
     phoneNumber?: string;
     registrationTime?: string;
-    roleId?: string;
     status?: number;
     type?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
     username?: string;
     verified?: boolean;
+  };
+
+  type UserLogin = {
+    email?: string;
+    password?: string;
+    status?: number;
+    type?: string;
+    username?: string;
   };
 }

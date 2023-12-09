@@ -248,7 +248,34 @@
         }
       }
     },
-    "/admin/api/role/authorize": {
+    "/admin/api/role/authorize/{roleID}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "获取角色授权",
+        "tags": ["role"],
+        "summary": "获取角色授权",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "roleID",
+            "name": "roleID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dto.GetAuthorizeResponse"
+            }
+          }
+        }
+      },
       "post": {
         "security": [
           {
@@ -260,12 +287,19 @@
         "summary": "角色授权",
         "parameters": [
           {
+            "type": "string",
+            "description": "roleID",
+            "name": "roleID",
+            "in": "path",
+            "required": true
+          },
+          {
             "description": "data",
             "name": "data",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/dto.AuthorizeRequest"
+              "$ref": "#/definitions/dto.SetAuthorizeRequest"
             }
           }
         ],
@@ -843,6 +877,60 @@
         }
       }
     },
+    "/admin/api/user/fakeCaptcha": {
+      "post": {
+        "description": "获取验证码",
+        "consumes": ["application/json"],
+        "tags": ["user"],
+        "summary": "获取验证码",
+        "parameters": [
+          {
+            "description": "data",
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dto.FakeCaptchaRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dto.FakeCaptchaResponse"
+            }
+          }
+        }
+      }
+    },
+    "/admin/api/user/login/account": {
+      "post": {
+        "description": "登录",
+        "consumes": ["application/json"],
+        "tags": ["user"],
+        "summary": "登录",
+        "parameters": [
+          {
+            "description": "data",
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.UserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{\"code\": 200, \"expire\": \"2023-12-10T12:31:30+08:00\", \"token\": \"xxx\"}",
+            "schema": {
+              "$ref": "#/definitions/dto.LoginResponse"
+            }
+          }
+        }
+      }
+    },
     "/admin/api/user/userInfo": {
       "get": {
         "security": [
@@ -1051,22 +1139,22 @@
     }
   },
   "definitions": {
-    "dto.AuthorizeRequest": {
+    "dto.FakeCaptchaRequest": {
+      "type": "object",
+      "required": ["phone"],
+      "properties": {
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "dto.FakeCaptchaResponse": {
       "type": "object",
       "properties": {
-        "apiIDS": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "code": {
+          "type": "integer"
         },
-        "menuIDS": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "roleID": {
+        "status": {
           "type": "string"
         }
       }
@@ -1085,6 +1173,26 @@
           "type": "string"
         },
         "service": {
+          "type": "string"
+        }
+      }
+    },
+    "dto.GetAuthorizeResponse": {
+      "type": "object",
+      "properties": {
+        "apiIDS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "menuIDS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "roleID": {
           "type": "string"
         }
       }
@@ -1138,6 +1246,37 @@
         "tokenType": {
           "description": "TokenType is the type of token.\nThe Type method returns either this or \"Bearer\", the default.",
           "type": "string"
+        }
+      }
+    },
+    "dto.LoginResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "expire": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "dto.SetAuthorizeRequest": {
+      "type": "object",
+      "properties": {
+        "apiIDS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "menuIDS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -1316,8 +1455,11 @@
         "args": {
           "type": "array",
           "items": {
-            "type": "integer"
+            "type": "string"
           }
+        },
+        "body": {
+          "type": "string"
         },
         "checkedAt": {
           "type": "string"
@@ -1346,6 +1488,9 @@
           "type": "string"
         },
         "name": {
+          "type": "string"
+        },
+        "protocol": {
           "type": "string"
         },
         "python": {
@@ -1434,9 +1579,6 @@
         "registrationTime": {
           "type": "string"
         },
-        "roleId": {
-          "type": "string"
-        },
         "status": {
           "type": "integer"
         },
@@ -1452,6 +1594,26 @@
         },
         "verified": {
           "type": "boolean"
+        }
+      }
+    },
+    "models.UserLogin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
         }
       }
     },

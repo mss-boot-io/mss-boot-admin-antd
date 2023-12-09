@@ -7,8 +7,7 @@ export type AuthFormProps = {
   id?: string;
   checkedKeys: React.Key[];
   setCheckedKeys: (checkedKeysValue: React.Key[]) => void;
-  
-}
+};
 
 const Auth: React.FC<AuthFormProps> = (props) => {
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
@@ -27,7 +26,6 @@ const Auth: React.FC<AuthFormProps> = (props) => {
   const onCheck = (checkedKeysValue: React.Key[]) => {
     console.log('onCheck', checkedKeysValue);
     props.setCheckedKeys(checkedKeysValue);
-    // setCheckedKeys(checkedKeysValue);
   };
 
   const onSelect = (selectedKeysValue: React.Key[], info: any) => {

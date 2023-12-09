@@ -2,16 +2,37 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 获取登录用户信息 获取登录用户信息 GET /admin/api/user/userInfo */
-export async function getUserUserInfo(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getUserUserInfoParams,
+/** 获取验证码 获取验证码 POST /admin/api/user/fakeCaptcha */
+export async function postUserFakeCaptcha(
+  body: API.FakeCaptchaRequest,
   options?: { [key: string]: any },
 ) {
-  const { id: param0, ...queryParams } = params;
+  return request<API.FakeCaptchaResponse>('/admin/api/user/fakeCaptcha', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 登录 登录 POST /admin/api/user/login/account */
+export async function postUserLoginAccount(body: API.UserLogin, options?: { [key: string]: any }) {
+  return request<API.LoginResponse>('/admin/api/user/login/account', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 获取登录用户信息 获取登录用户信息 GET /admin/api/user/userInfo */
+export async function getUserUserInfo(options?: { [key: string]: any }) {
   return request<API.User>('/admin/api/user/userInfo', {
     method: 'GET',
-    params: { ...queryParams },
     ...(options || {}),
   });
 }
