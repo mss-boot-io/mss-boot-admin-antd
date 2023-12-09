@@ -162,7 +162,7 @@ const TaskList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.Task, API.Page>
         headerTitle="任务列表"
         actionRef={actionRef}
         rowKey="id"

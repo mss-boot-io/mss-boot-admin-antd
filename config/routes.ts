@@ -75,6 +75,18 @@ export default [
     ],
   },
   {
+    name: 'list.user',
+    icon: 'table',
+    path: '/users',
+    component: './User',
+  },
+  {
+    name: 'control.user',
+    path: '/users/:id',
+    hideInMenu: true,
+    component: './User/$id.tsx',
+  },
+  {
     name: 'list.role',
     icon: 'table',
     path: '/role',

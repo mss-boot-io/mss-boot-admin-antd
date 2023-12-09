@@ -49,8 +49,11 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
-  'menu.list.role': '查询角色',
+  'menu.list.role': '角色列表',
+  'menu.control.role': '管理角色',
   'menu.generator': '代码生成器',
-  'menu.list.task': '查询任务',
+  'menu.list.task': '任务列表',
   'menu.control.task': '管理任务',
+  'menu.list.user': '用户列表',
+  'menu.control.user': '管理用户',
 };

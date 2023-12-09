@@ -20,7 +20,7 @@ const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
+  const [currentRow, setCurrentRow] = useState<API.Role>();
   const [treeData, setTreeData] = useState<DataNode[]>([]);
 
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
@@ -39,6 +39,7 @@ const TableList: React.FC = () => {
       render: (dom, entity) => {
         return (
           <a
+            key={entity.id}
             onClick={() => {
               setCurrentRow(entity);
               setShowDetail(true);
@@ -214,7 +215,7 @@ const TableList: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
+          <ProDescriptions<API.Role>
             column={2}
             title={currentRow?.name}
             request={async () => ({
@@ -223,7 +224,7 @@ const TableList: React.FC = () => {
             params={{
               id: currentRow?.id,
             }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
+            columns={columns as ProDescriptionsItemProps<API.Role>[]}
           />
         )}
       </Drawer>
