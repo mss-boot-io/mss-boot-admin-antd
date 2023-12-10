@@ -82,9 +82,15 @@ export default [
   },
   {
     name: 'control.user',
-    path: '/users/:id',
+    path: '/users/control/:id',
     hideInMenu: true,
     component: './User/$id.tsx',
+  },
+  {
+    name: 'reset.user',
+    path: '/users/password-reset/:id',
+    hideInMenu: true,
+    component: './User/Reset/$id.tsx',
   },
   {
     name: 'list.role',

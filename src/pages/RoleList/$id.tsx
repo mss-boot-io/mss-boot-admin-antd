@@ -18,37 +18,34 @@ const RoleControl: React.FC = () => {
     { label: '启用', value: 1 },
     { label: '禁用', value: 2 },
   ];
+  const onFinish = async () => {
+    if (id === 'create') {
+      const res = await postRoles(formRef.current?.getFieldsValue());
+      if (!res) {
+        message.success('新增成功').then(() => {
+          history.push('/role');
+        });
+      }
+      return;
+    }
+    //update
+    const res = await putRolesId({ id: id! }, formRef.current?.getFieldsValue());
+    if (!res) {
+      message.success('更新成功').then(() => {
+        history.push('/role');
+      });
+    }
+  };
 
   return (
     <PageContainer title={id === 'create' ? '新增' : '更新'}>
       <ProForm
         formRef={formRef}
         omitNil={true}
-        onFinish={async () => {
-          if (id === 'create') {
-            const res = await postRoles(formRef.current?.getFieldsValue());
-            if (!res) {
-              message.success('新增成功').then(() => {
-                history.push('/role');
-              });
-            }
-            return;
-          }
-          //update
-          const res = await putRolesId({ id: id! }, formRef.current?.getFieldsValue());
-          if (!res) {
-            message.success('更新成功').then(() => {
-              history.push('/role');
-            });
-          }
-        }}
-        request={async () => {
-          if (id === 'create') {
-            return {};
-          }
-          const data = await getRolesId({ id: id! });
-          return data;
-        }}
+        onFinish={onFinish}
+        params={{ id }}
+        // @ts-ignore
+        request={getRolesId}
         autoFocusFirstInput
       >
         <ProFormText

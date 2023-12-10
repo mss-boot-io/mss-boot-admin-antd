@@ -56,4 +56,5 @@ export default {
   'menu.control.task': '管理任务',
   'menu.list.user': '用户列表',
   'menu.control.user': '管理用户',
+  'menu.reset.user': '重置密码',
 };

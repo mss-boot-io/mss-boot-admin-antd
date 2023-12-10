@@ -2,6 +2,25 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
+/** 重置密码 重置密码 PUT /admin/api/user/${param0}/password-reset */
+export async function putUserUserIdPasswordReset(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.putUserUserIDPasswordResetParams,
+  body: API.PasswordResetRequest,
+  options?: { [key: string]: any },
+) {
+  const { userID: param0, ...queryParams } = params;
+  return request<any>(`/admin/api/user/${param0}/password-reset`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    params: { ...queryParams },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 获取验证码 获取验证码 POST /admin/api/user/fakeCaptcha */
 export async function postUserFakeCaptcha(
   body: API.FakeCaptchaRequest,

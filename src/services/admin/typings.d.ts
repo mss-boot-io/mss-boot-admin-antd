@@ -210,6 +210,11 @@ The Type method returns either this or "Bearer", the default. */
     total?: number;
   };
 
+  type PasswordResetRequest = {
+    password: string;
+    userID: string;
+  };
+
   type postRoleAuthorizeRoleIDParams = {
     /** roleID */
     roleID: string;
@@ -233,6 +238,11 @@ The Type method returns either this or "Bearer", the default. */
   type putUsersIdParams = {
     /** id */
     id: string;
+  };
+
+  type putUserUserIDPasswordResetParams = {
+    /** userID */
+    userID: string;
   };
 
   type Response = {

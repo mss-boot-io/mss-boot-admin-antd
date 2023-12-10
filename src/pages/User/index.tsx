@@ -10,11 +10,6 @@ const UserList: React.FC = () => {
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
 
-  // const providerLogin: (provider: string) => {
-  //       // return <GithubOutlined/>
-  //     return (<PlusCircleOutlined />)
-  // }
-
   const columns: ProColumns<API.User>[] = [
     {
       title: 'id',
@@ -28,6 +23,10 @@ const UserList: React.FC = () => {
       render: (dom) => {
         return <Avatar src={dom} />;
       },
+    },
+    {
+      title: '用户名',
+      dataIndex: 'username',
     },
     {
       title: '名称',
@@ -106,7 +105,10 @@ const UserList: React.FC = () => {
       hideInForm: true,
       render: (_, record) => [
         <Button key="edit">
-          <Link to={`/role/${record.id}`}>编辑</Link>
+          <Link to={`/users/control/${record.id}`}>编辑</Link>
+        </Button>,
+        <Button key="passwordReset">
+          <Link to={`/users/password-reset/${record.id}/`}>重置密码</Link>
         </Button>,
         <Popconfirm
           key="delete"
@@ -139,7 +141,7 @@ const UserList: React.FC = () => {
         }}
         toolBarRender={() => [
           <Button type="primary" key="create">
-            <Link type="primary" key="primary" to="/user/create">
+            <Link type="primary" key="primary" to="/users/control/create">
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Link>
           </Button>,

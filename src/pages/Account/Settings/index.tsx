@@ -1,43 +1,35 @@
-import { PageContainer } from '@ant-design/pro-components';
-import { Alert, Card, Typography } from 'antd';
+import { PageContainer, ProCard } from '@ant-design/pro-components';
 import React from 'react';
-import { useIntl } from '@umijs/max';
-import { HeartTwoTone, SmileTwoTone } from '@ant-design/icons';
 
 const Settings: React.FC = () => {
-  const intl = useIntl();
+  const [tab, setTab] = React.useState('account');
+
   return (
     <PageContainer
-      content={intl.formatMessage({
-        id: 'pages.admin.subPage.title',
-        defaultMessage: 'This page can only be viewed by admin',
-      })}
+      content="欢迎使用 ProLayout 组件"
+      tabList={[
+        {
+          tab: '账号设置',
+          key: 'account',
+        },
+        {
+          tab: '安全设置',
+          key: 'security',
+        },
+      ]}
+      onTabChange={(key: any) => {
+        console.log(key);
+        setTab(key);
+        console.log(tab);
+      }}
     >
-      <Card>
-        <Alert
-          message={intl.formatMessage({
-            id: 'pages.welcome.alertMessage',
-            defaultMessage: 'Faster and stronger heavy-duty components have been released.',
-          })}
-          type="success"
-          showIcon
-          banner
-          style={{
-            margin: -12,
-            marginBottom: 48,
-          }}
-        />
-        <Typography.Title level={2} style={{ textAlign: 'center' }}>
-          <SmileTwoTone /> mss-boot-io <HeartTwoTone twoToneColor="#eb2f96" /> You
-        </Typography.Title>
-      </Card>
-      <p style={{ textAlign: 'center', marginTop: 24 }}>
-        Want to add more pages? Please refer to{' '}
-        <a href="https://pro.ant.design/docs/block-cn" target="_blank" rel="noopener noreferrer">
-          use block
-        </a>
-        。
-      </p>
+      <ProCard direction="column" ghost gutter={[0, 16]}>
+        <ProCard style={{ height: 200 }} />
+        <ProCard gutter={16} ghost style={{ height: 200 }}>
+          <ProCard colSpan={16} />
+          <ProCard colSpan={8} />
+        </ProCard>
+      </ProCard>
     </PageContainer>
   );
 };
