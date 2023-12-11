@@ -56,6 +56,21 @@ export async function getUserUserInfo(options?: { [key: string]: any }) {
   });
 }
 
+/** 更新用户信息 更新用户信息 PUT /admin/api/user/userInfo */
+export async function putUserUserInfo(
+  body: API.UpdateUserInfoRequest,
+  options?: { [key: string]: any },
+) {
+  return request<any>('/admin/api/user/userInfo', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 用户列表 用户列表 GET /admin/api/users */
 export async function getUsers(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

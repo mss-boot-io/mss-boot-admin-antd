@@ -338,33 +338,60 @@ The Type method returns either this or "Bearer", the default. */
     roleID: string;
   };
 
-  type User = {
-    accountId?: string;
+  type UpdateUserInfoRequest = {
+    /** Address 地址 */
+    address?: string;
+    /** Avatar 头像 */
     avatar?: string;
+    /** City 城市 */
+    city?: string;
+    /** Country 国家 */
+    country?: string;
+    /** Email 邮箱 */
+    email?: string;
+    /** Group 组别 */
+    group?: string;
+    /** Name 昵称 */
+    name?: string;
+    /** Phone 手机号 */
+    phone?: string;
+    /** Profile 个人简介 */
+    profile?: string;
+    /** Province 省份 */
+    province?: string;
+    /** Signature 个性签名 */
+    signature?: string;
+    /** Tags 标签 */
+    tags?: string[];
+    /** Title 职位 */
+    title?: string;
+  };
+
+  type User = {
+    address?: string;
+    avatar?: string;
+    city?: string;
+    country?: string;
     /** CreatedAt create time */
     createdAt?: string;
     email?: string;
+    group?: string;
     /** ID primary key */
     id?: string;
-    introduction?: string;
-    job?: string;
-    jobName?: string;
-    location?: string;
-    locationName?: string;
     name?: string;
-    organization?: string;
-    organizationName?: string;
     password?: string;
     permissions?: Record<string, any>;
-    personalWebsite?: string;
-    phoneNumber?: string;
-    registrationTime?: string;
+    phone?: string;
+    profile?: string;
+    province?: string;
+    signature?: string;
     status?: number;
+    tags?: string[];
+    title?: string;
     type?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
     username?: string;
-    verified?: boolean;
   };
 
   type UserLogin = {
