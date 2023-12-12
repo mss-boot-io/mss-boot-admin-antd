@@ -47,11 +47,6 @@ declare namespace API {
     state: string;
   };
 
-  type getMenuAuthorizeIdParams = {
-    /** id */
-    id: string;
-  };
-
   type getRoleAuthorizeRoleIDParams = {
     /** roleID */
     roleID: string;
@@ -188,18 +183,23 @@ The Type method returns either this or "Bearer", the default. */
     token?: string;
   };
 
-  type MenuSingle = {
+  type Menu = {
     breadcrumb?: boolean;
+    component?: string;
     /** CreatedAt create time */
     createdAt?: string;
+    icon?: string;
     /** ID primary key */
     id?: string;
     ignore?: boolean;
-    key?: string;
     name?: string;
     parentId?: string;
+    path?: string;
+    permission?: string;
     select?: boolean;
-    title?: string;
+    sort?: number;
+    status?: number;
+    type?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };

@@ -10,6 +10,10 @@ import { errorConfig } from './requestErrorConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { getUserUserInfo } from './services/admin/user';
+import { getMenuAuthorize } from './services/admin/menu';
+import fixMenuItemIcon from './util/fixMenuItemIcon';
+import { MenuDataItem } from '@ant-design/pro-components';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const callbackPath = ['/user/github-callback'];
@@ -53,6 +57,12 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    menu: {
+      request: async () => {
+        const menuData = await getMenuAuthorize();
+        return menuData;
+      },
+    },
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
@@ -100,7 +110,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
           </Link>,
         ]
       : [],
-    menuHeaderRender: undefined,
+    // menuHeaderRender: undefined,
+    menuDataRender: (menuData: MenuDataItem[]) => fixMenuItemIcon(menuData),
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态

@@ -62,11 +62,11 @@ export default [
     icon: 'user',
     hideInMenu: true,
     routes: [
-      {
-        path: '/account/center',
-        name: 'center',
-        component: './Account/Center',
-      },
+      // {
+      //   path: '/account/center',
+      //   name: 'center',
+      //   component: './Account/Center',
+      // },
       {
         path: '/account/settings',
         name: 'settings',
