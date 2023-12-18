@@ -1,14 +1,5 @@
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
-import {
-  GithubOutlined,
-  LockOutlined,
-  MobileOutlined,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
+import { GithubOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import {
   LoginForm,
   ProFormCaptcha,
@@ -22,19 +13,20 @@ import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { getGithubGetLoginUrl } from '@/services/admin/generator';
+import { postUserFakeCaptcha, postUserLoginAccount } from '@/services/admin/user';
 
 function randToken(): string {
   const buffer = new Uint8Array(28);
   window.crypto.getRandomValues(buffer);
+  // @ts-ignore
   return btoa(String.fromCharCode.apply(null, buffer));
 }
 
 export type ActionIconsFormProps = {
   fetchUserInfo: () => void;
-}
+};
 
 const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
-  
   const langClassName = useEmotionCss(({ token }) => {
     return {
       marginLeft: '8px',
@@ -51,42 +43,46 @@ const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
 
   return (
     <>
-      <GithubOutlined key="GithubOutlined" className={langClassName} onClick={async () => {
-        localStorage.removeItem('login.type');
-        localStorage.removeItem('github.token');
-        localStorage.removeItem('token');
-        localStorage.removeItem('github.state');
-        const state = 'ghs_' + randToken();
-        localStorage.setItem('github.state', state);
-        const loginURL = await getGithubGetLoginUrl({ state: state})
-        console.log(loginURL);
-        const w = window.open('about:blank');
-        w.location.href = loginURL; 
-        const intervalId = setInterval(() => {
-          console.log('interval');
-          const loginType = localStorage.getItem('login.type');
-          const token = localStorage.getItem('token');
-          console.log(token, loginType);
-          if (token && loginType === 'github') {
-            clearInterval(intervalId);
-            try {
-              props.fetchUserInfo();
-
-            } catch (e) {
-              message.error('登录失败，请重试！');
-              return
-            } finally {
-              console.log('login ok');
-              //登录成功跳转
-              const urlParams = new URL(window.location.href).searchParams;
-              console.log(urlParams.get('redirect'));
-              setTimeout(() => {
-                history.push(urlParams.get('redirect') || '/');
-              }, 1000);
+      <GithubOutlined
+        key="GithubOutlined"
+        className={langClassName}
+        onClick={async () => {
+          localStorage.removeItem('login.type');
+          localStorage.removeItem('github.token');
+          localStorage.removeItem('token');
+          localStorage.removeItem('github.state');
+          const state = 'ghs_' + randToken();
+          localStorage.setItem('github.state', state);
+          const loginURL = await getGithubGetLoginUrl({ state: state });
+          console.log(loginURL);
+          const w = window.open('about:blank');
+          // @ts-ignore
+          w.location.href = loginURL;
+          const intervalId = setInterval(() => {
+            console.log('interval');
+            const loginType = localStorage.getItem('login.type');
+            const token = localStorage.getItem('token');
+            console.log(token, loginType);
+            if (token && loginType === 'github') {
+              clearInterval(intervalId);
+              try {
+                props.fetchUserInfo();
+              } catch (e) {
+                message.error('登录失败，请重试！');
+                return;
+              } finally {
+                console.log('login ok');
+                //登录成功跳转
+                const urlParams = new URL(window.location.href).searchParams;
+                console.log(urlParams.get('redirect'));
+                setTimeout(() => {
+                  history.push(urlParams.get('redirect') || '/');
+                }, 1000);
+              }
             }
-          }
-        }, 1000);
-      }} />
+          }, 1000);
+        }}
+      />
     </>
   );
 };
@@ -159,10 +155,10 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: API.UserLogin) => {
     try {
       // 登录
-      const msg = await login({ ...values, type });
+      const msg = await postUserLoginAccount({ ...values, type });
       if (msg.code === 200 && msg.token) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
@@ -170,7 +166,7 @@ const Login: React.FC = () => {
         });
         message.success(defaultLoginSuccessMessage);
         //set token to localstorage
-        localStorage.setItem("token", msg.token)
+        localStorage.setItem('token', msg.token);
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
@@ -226,7 +222,7 @@ const Login: React.FC = () => {
             <ActionIcons fetchUserInfo={fetchUserInfo} key="icons" />,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as API.UserLogin);
           }}
         >
           <Tabs
@@ -379,7 +375,7 @@ const Login: React.FC = () => {
                   },
                 ]}
                 onGetCaptcha={async (phone) => {
-                  const result = await getFakeCaptcha({
+                  const result = await postUserFakeCaptcha({
                     phone,
                   });
                   if (!result) {

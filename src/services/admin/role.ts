@@ -2,16 +2,34 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 角色授权 给角色授权 POST /admin/api/role/authorize */
-export async function postRoleAuthorize(
-  body: API.AuthorizeRequest,
+/** 获取角色授权 获取角色授权 GET /admin/api/role/authorize/${param0} */
+export async function getRoleAuthorizeRoleId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getRoleAuthorizeRoleIDParams,
   options?: { [key: string]: any },
 ) {
-  return request<any>('/admin/api/role/authorize', {
+  const { roleID: param0, ...queryParams } = params;
+  return request<API.GetAuthorizeResponse>(`/admin/api/role/authorize/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 角色授权 给角色授权 POST /admin/api/role/authorize/${param0} */
+export async function postRoleAuthorizeRoleId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.postRoleAuthorizeRoleIDParams,
+  body: API.SetAuthorizeRequest,
+  options?: { [key: string]: any },
+) {
+  const { roleID: param0, ...queryParams } = params;
+  return request<any>(`/admin/api/role/authorize/${param0}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    params: { ...queryParams },
     data: body,
     ...(options || {}),
   });

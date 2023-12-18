@@ -1,9 +1,11 @@
 # mss-boot-admin-antd
-mss-boot-admin前端项目，基于antdpro开发
+
+mss-boot-admin 前端项目，基于 antdpro 开发
 
 ## feature
+
 - [x] 通过模板生成代码
-- [x] github oauth2登录
+- [x] github oauth2 登录
 - [ ] 定时任务管理
 - [ ] 角色管理
 - [ ] 角色授权

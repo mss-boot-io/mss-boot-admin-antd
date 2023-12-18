@@ -4,12 +4,17 @@ import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history, Link } from '@umijs/max';
+import { addLocale, history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
+import { getUserUserInfo } from './services/admin/user';
+import { getMenuAuthorize } from './services/admin/menu';
+import fixMenuItemIcon from './util/fixMenuItemIcon';
+import { MenuDataItem } from '@ant-design/pro-components';
+import { getLanguageAll } from './services/admin/language';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const callbackPath = ['/user/github-callback'];
@@ -19,13 +24,34 @@ const callbackPath = ['/user/github-callback'];
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.User;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<API.User | undefined>;
 }> {
+  // load language
+  const languages = await getLanguageAll();
+  if (languages) {
+    languages.forEach((item) => {
+      const obj = {};
+      item.defines?.forEach((define) => {
+        // @ts-ignore
+        obj[`${define.group}.${define.key}`] = define.value;
+      });
+
+      const importPath = item.name!.replace('-', '_');
+      //转成小写
+      const momentLocale = item.name!.toLowerCase();
+
+      addLocale(item.name!, obj, {
+        momentLocale: momentLocale,
+        // @ts-ignore
+        antd: import(`antd/es/locale/${importPath}`).default,
+      });
+    });
+  }
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
+      const msg = await getUserUserInfo({
         skipErrorHandler: true,
       });
       return msg;
@@ -53,6 +79,12 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    menu: {
+      request: async () => {
+        const menuData = await getMenuAuthorize();
+        return menuData;
+      },
+    },
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
@@ -100,7 +132,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
           </Link>,
         ]
       : [],
-    menuHeaderRender: undefined,
+    // menuHeaderRender: undefined,
+    menuDataRender: (menuData: MenuDataItem[]) => fixMenuItemIcon(menuData),
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
