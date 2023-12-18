@@ -24,13 +24,6 @@ const TaskControl: React.FC = () => {
         formRef={formRef}
         omitNil={true}
         onFinish={async () => {
-          formRef.current?.setFieldValue(
-            'endpoint',
-            formRef.current?.getFieldValue('protocol') +
-              '://' +
-              formRef.current?.getFieldValue('endpoint'),
-          );
-          formRef.current?.setFieldValue('protocol', null);
           if (id === 'create') {
             console.log(formRef.current?.getFieldsValue());
             const res = await postTasks(formRef.current?.getFieldsValue());
@@ -49,19 +42,11 @@ const TaskControl: React.FC = () => {
             });
           }
         }}
-        // initialValues={{
-        //   // name: '',
-        //   // useMode: '',
-        // }}
         request={async () => {
           if (id === 'create') {
             return {};
           }
           const data = await getTasksId({ id: id! });
-          if (data?.endpoint) {
-            data.protocol = data.endpoint.split('://')[0];
-            data.endpoint = data.endpoint.split('://')[1];
-          }
           setNeedMethod(data.protocol === 'http' || data.protocol === 'https');
           setNeedBody(data.method !== 'GET');
           setMustBody(data.method === 'POST' || data.method === 'PUT');
