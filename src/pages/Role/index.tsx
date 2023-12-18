@@ -131,6 +131,7 @@ const TableList: React.FC = () => {
         </Button>,
         <Button
           key="auth"
+          disabled={record.root}
           onClick={() => {
             handleAuthModalOpen(true);
             setCurrentRow(record);
@@ -161,11 +162,22 @@ const TableList: React.FC = () => {
     },
   ];
 
+  const transfer = (data: API.Menu[]) => {
+    return data.map((item) => {
+      return {
+        title: intl.formatMessage({ id: `menu.${item.name}` }),
+        key: item.path,
+        // @ts-ignore
+        children: item.children ? transfer(item.children) : null,
+      };
+    });
+  };
+
   const onOpenChange = async (e: boolean) => {
     if (e) {
       const data = await getMenuTree();
-      //@ts-ignore
-      setTreeData(data);
+      console.log(transfer(data));
+      setTreeData(transfer(data));
       //get checkedKeys
       const checkedRes = await getRoleAuthorizeRoleId({
         roleID: currentRow?.id ?? '',

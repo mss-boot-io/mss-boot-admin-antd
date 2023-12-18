@@ -1,9 +1,4 @@
-import {
-  ProFormRadio,
-  ProFormText,
-  ProFormTextArea,
-  StepsForm,
-} from '@ant-design/pro-components';
+import { ProFormRadio, ProFormText, ProFormTextArea, StepsForm } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
 import { Modal } from 'antd';
 import React from 'react';
@@ -64,7 +59,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       >
         <ProFormText
           name="name"
-          label='名称'
+          label="名称"
           width="md"
           rules={[
             {
@@ -78,22 +73,18 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
             },
           ]}
         />
-        <ProFormTextArea
-          name="remark"
-          width="md"
-          label='备注'
-        />
+        <ProFormTextArea name="remark" width="md" label="备注" />
       </StepsForm.StepForm>
       <StepsForm.StepForm
         initialValues={{
           target: '0',
           template: '0',
         }}
-        title='状态调整'
+        title="状态调整"
       >
         <ProFormRadio.Group
           name="status"
-          label='状态'
+          label="状态"
           options={[
             {
               value: '1',
@@ -105,8 +96,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
             },
             {
               value: '3',
-              label: '锁定'
-            }
+              label: '锁定',
+            },
           ]}
         />
       </StepsForm.StepForm>

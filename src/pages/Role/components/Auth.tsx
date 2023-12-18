@@ -39,6 +39,7 @@ const Auth: React.FC<AuthFormProps> = (props) => {
       onExpand={onExpand}
       expandedKeys={expandedKeys}
       autoExpandParent={autoExpandParent}
+      // @ts-ignore
       onCheck={onCheck}
       checkedKeys={props.checkedKeys}
       onSelect={onSelect}

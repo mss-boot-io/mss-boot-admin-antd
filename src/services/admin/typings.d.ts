@@ -1,4 +1,19 @@
 declare namespace API {
+  type deleteLanguageDefinesIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type deleteLanguagesIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type deleteMenusIdParams = {
+    /** id */
+    id: string;
+  };
+
   type deleteRolesIdParams = {
     /** id */
     id: string;
@@ -45,6 +60,42 @@ declare namespace API {
   type getGithubGetLoginUrlParams = {
     /** state */
     state: string;
+  };
+
+  type getLanguagesIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getLanguagesParams = {
+    /** name */
+    name?: string;
+    /** status */
+    status?: string;
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+  };
+
+  type getMenusIdParams = {
+    /** id */
+    id: string;
+    /** preloads */
+    preloads?: string[];
+  };
+
+  type getMenusParams = {
+    /** name */
+    name?: string;
+    /** status */
+    status?: string;
+    /** parentID */
+    parentID?: string;
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
   };
 
   type getRoleAuthorizeRoleIDParams = {
@@ -177,6 +228,38 @@ The Type method returns either this or "Bearer", the default. */
     tokenType?: string;
   };
 
+  type Language = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** Defines */
+    defines?: LanguageDefine[];
+    /** ID primary key */
+    id?: string;
+    /** Name 名称 */
+    name?: string;
+    /** Statue 状态 */
+    status?: number;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
+  type LanguageDefine = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** Group 分组 */
+    group: string;
+    /** ID primary key */
+    id?: string;
+    /** Key 键 */
+    key: string;
+    /** LanguageID 语言ID */
+    languageID: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+    /** Value 值 */
+    value: string;
+  };
+
   type LoginResponse = {
     code?: number;
     expire?: string;
@@ -184,21 +267,59 @@ The Type method returns either this or "Bearer", the default. */
   };
 
   type Menu = {
-    breadcrumb?: boolean;
+    /** Access 权限配置，需要与 plugin-access 插件配合使用 */
+    access?: string;
+    /** Component 组件 */
     component?: string;
     /** CreatedAt create time */
     createdAt?: string;
+    /** FixedSideBar 固定菜单 */
+    fixSiderbar?: boolean;
+    /** FixedHeader 固定顶栏 */
+    fixedHeader?: boolean;
+    /** FlatMenu 子项往上提，仍旧展示 */
+    flatMenu?: boolean;
+    /** FooterRender 不展示页脚 */
+    footerRender?: boolean;
+    /** HeaderRender 不展示顶栏 */
+    headerRender?: boolean;
+    /** HeaderTheme 顶部导航的主题，mix 模式生效 */
+    headerTheme?: string;
+    /** HideChildrenInMenu 隐藏子菜单 */
+    hideChildrenInMenu?: boolean;
+    /** HideInBreadcrumb 在面包屑中隐藏 */
+    hideInBreadcrumb?: boolean;
+    /** HideInMenu 隐藏自己和子菜单 */
+    hideInMenu?: boolean;
+    /** Icon 图标 */
     icon?: string;
     /** ID primary key */
     id?: string;
-    ignore?: boolean;
+    /** Layout 导航菜单的位置, side 为正常模式，top菜单显示在顶部，mix 两种兼有 */
+    layout?: string;
+    /** MenuHeaderRender 不展示菜单头部 */
+    menuHeaderRender?: boolean;
+    /** MenuRender 不展示菜单 */
+    menuRender?: boolean;
+    /** Name 菜单名称 */
     name?: string;
-    parentId?: string;
+    /** NavTheme 导航菜单的主题 */
+    navTheme?: string;
+    /** ParentID 父级id */
+    parentID?: string;
+    /** // Title 菜单标题
+Title string `json:"title" gorm:"column:title;comment:菜单标题;type:varchar(255);not null"`
+Path 路由 */
     path?: string;
+    /** Permission 菜单权限 */
     permission?: string;
-    select?: boolean;
+    /** Sort 排序 */
     sort?: number;
+    /** Status 状态 */
     status?: number;
+    /** Target 新页面打开 */
+    target?: string;
+    /** Type 菜单类型 */
     type?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
@@ -220,7 +341,17 @@ The Type method returns either this or "Bearer", the default. */
     roleID: string;
   };
 
+  type putLanguagesIdParams = {
+    /** id */
+    id: string;
+  };
+
   type putMenuAuthorizeIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putMenusIdParams = {
     /** id */
     id: string;
   };
@@ -264,6 +395,7 @@ The Type method returns either this or "Bearer", the default. */
     name?: string;
     remark?: string;
     root?: boolean;
+    /** Status 状态 */
     status?: number;
     /** UpdatedAt update time */
     updatedAt?: string;
@@ -292,6 +424,7 @@ The Type method returns either this or "Bearer", the default. */
     python?: string;
     remark?: string;
     spec?: string;
+    /** Status 状态 */
     status?: number;
     timeout?: number;
     /** UpdatedAt update time */
@@ -385,6 +518,7 @@ The Type method returns either this or "Bearer", the default. */
     profile?: string;
     province?: string;
     signature?: string;
+    /** Status 状态 */
     status?: number;
     tags?: string[];
     title?: string;
@@ -397,6 +531,7 @@ The Type method returns either this or "Bearer", the default. */
   type UserLogin = {
     email?: string;
     password?: string;
+    /** Status 状态 */
     status?: number;
     type?: string;
     username?: string;

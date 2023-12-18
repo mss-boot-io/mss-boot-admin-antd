@@ -45,7 +45,7 @@ const RoleControl: React.FC = () => {
         onFinish={onFinish}
         params={{ id }}
         // @ts-ignore
-        request={getRolesId}
+        request={id === 'create' ? null : getRolesId}
         autoFocusFirstInput
       >
         <ProFormText

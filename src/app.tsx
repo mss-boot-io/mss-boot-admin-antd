@@ -4,7 +4,7 @@ import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history, Link } from '@umijs/max';
+import { addLocale, history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import React from 'react';
@@ -13,6 +13,7 @@ import { getUserUserInfo } from './services/admin/user';
 import { getMenuAuthorize } from './services/admin/menu';
 import fixMenuItemIcon from './util/fixMenuItemIcon';
 import { MenuDataItem } from '@ant-design/pro-components';
+import { getLanguageAll } from './services/admin/language';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -27,6 +28,27 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.User | undefined>;
 }> {
+  // load language
+  const languages = await getLanguageAll();
+  if (languages) {
+    languages.forEach((item) => {
+      const obj = {};
+      item.defines?.forEach((define) => {
+        // @ts-ignore
+        obj[`${define.group}.${define.key}`] = define.value;
+      });
+
+      const importPath = item.name!.replace('-', '_');
+      //转成小写
+      const momentLocale = item.name!.toLowerCase();
+
+      addLocale(item.name!, obj, {
+        momentLocale: momentLocale,
+        // @ts-ignore
+        antd: import(`antd/es/locale/${importPath}`).default,
+      });
+    });
+  }
   const fetchUserInfo = async () => {
     try {
       const msg = await getUserUserInfo({
