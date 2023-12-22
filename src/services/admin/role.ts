@@ -52,7 +52,7 @@ export async function getRoles(
 
 /** 创建角色 创建角色 POST /admin/api/roles */
 export async function postRoles(body: API.Role, options?: { [key: string]: any }) {
-  return request<any>('/admin/api/roles', {
+  return request<API.Role>('/admin/api/roles', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export async function putRolesId(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/roles/${param0}`, {
+  return request<API.Role>(`/admin/api/roles/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

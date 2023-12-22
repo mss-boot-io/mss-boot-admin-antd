@@ -83,7 +83,7 @@ export async function getMenus(
 
 /** 创建菜单 创建菜单 POST /admin/api/menus */
 export async function postMenus(body: API.Menu, options?: { [key: string]: any }) {
-  return request<any>('/admin/api/menus', {
+  return request<API.Menu>('/admin/api/menus', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export async function putMenusId(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/menus/${param0}`, {
+  return request<API.Menu>(`/admin/api/menus/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ export async function getLanguages(
 
 /** 创建Language 创建Language POST /admin/api/languages */
 export async function postLanguages(body: API.Language, options?: { [key: string]: any }) {
-  return request<any>('/admin/api/languages', {
+  return request<API.Language>('/admin/api/languages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export async function putLanguagesId(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/languages/${param0}`, {
+  return request<API.Language>(`/admin/api/languages/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

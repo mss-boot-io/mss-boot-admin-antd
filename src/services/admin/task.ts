@@ -33,7 +33,7 @@ export async function getTasks(
 
 /** 创建任务 创建任务 POST /admin/api/tasks */
 export async function postTasks(body: API.Task, options?: { [key: string]: any }) {
-  return request<any>('/admin/api/tasks', {
+  return request<API.Task>('/admin/api/tasks', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export async function putTasksId(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/tasks/${param0}`, {
+  return request<API.Task>(`/admin/api/tasks/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

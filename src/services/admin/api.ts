@@ -19,7 +19,7 @@ export async function getApis(
 
 /** 创建API 创建API POST /admin/api/apis */
 export async function postApis(body: API.API, options?: { [key: string]: any }) {
-  return request<any>('/admin/api/apis', {
+  return request<API.API>('/admin/api/apis', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export async function putApisId(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/apis/${param0}`, {
+  return request<API.API>(`/admin/api/apis/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

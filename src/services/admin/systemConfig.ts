@@ -19,7 +19,7 @@ export async function getSystemConfigs(
 
 /** 创建系统配置 创建系统配置 POST /admin/api/system-configs */
 export async function postSystemConfigs(body: API.SystemConfig, options?: { [key: string]: any }) {
-  return request<any>('/admin/api/system-configs', {
+  return request<API.SystemConfig>('/admin/api/system-configs', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export async function putSystemConfigsId(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/system-configs/${param0}`, {
+  return request<API.SystemConfig>(`/admin/api/system-configs/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
