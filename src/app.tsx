@@ -4,7 +4,7 @@ import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { addLocale, history, Link } from '@umijs/max';
+import { addLocale, FormattedMessage, history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import React from 'react';
@@ -13,7 +13,7 @@ import { getUserUserInfo } from './services/admin/user';
 import { getMenuAuthorize } from './services/admin/menu';
 import fixMenuItemIcon from './util/fixMenuItemIcon';
 import { MenuDataItem } from '@ant-design/pro-components';
-import { getLanguageAll } from './services/admin/language';
+import { getLanguages } from './services/admin/language';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -29,9 +29,9 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.User | undefined>;
 }> {
   // load language
-  const languages = await getLanguageAll();
-  if (languages) {
-    languages.forEach((item) => {
+  const { data } = await getLanguages({ pageSize: 999 });
+  if (data) {
+    data.forEach((item) => {
       const obj = {};
       item.defines?.forEach((define) => {
         // @ts-ignore
@@ -128,7 +128,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       ? [
           <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
             <LinkOutlined />
-            <span>OpenAPI 文档</span>
+            <span>
+              OpenAPI <FormattedMessage id="app.documentation" defaultMessage="文档" />
+            </span>
           </Link>,
         ]
       : [],

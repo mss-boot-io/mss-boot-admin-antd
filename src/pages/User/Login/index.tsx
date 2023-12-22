@@ -209,7 +209,7 @@ const Login: React.FC = () => {
           }}
           logo={<img alt="logo" src="https://docs.mss-boot-io.top/favicon.ico" />}
           title="mss-boot-io"
-          subTitle="快速开发http/grpc服务的框架，帮助您快速搭建单体服务或微服务系统"
+          subTitle={intl.formatMessage({ id: 'pages.login.form.title' })}
           initialValues={{
             autoLogin: true,
           }}
@@ -304,7 +304,14 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && type === 'mobile' && <LoginMessage content="验证码错误" />}
+          {status === 'error' && type === 'mobile' && (
+            <LoginMessage
+              content={intl.formatMessage({
+                id: 'pages.login.phoneLogin.errorMessage',
+                defaultMessage: '验证码错误',
+              })}
+            />
+          )}
           {type === 'mobile' && (
             <>
               <ProFormText

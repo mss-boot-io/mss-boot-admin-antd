@@ -16,12 +16,10 @@ export default [
     layout: false,
     routes: [
       {
-        name: 'login',
         path: '/user/login',
         component: './User/Login',
       },
       {
-        name: 'github-callback',
         path: '/user/github-callback',
         component: './User/Github/callback.tsx',
       },
@@ -29,19 +27,16 @@ export default [
   },
   {
     path: '/welcome',
-    name: 'welcome',
     icon: 'smile',
     component: './Welcome',
   },
   {
-    name: 'generator',
     path: '/generator',
     icon: 'smile',
     component: './Generator',
   },
   {
     path: '/account',
-    name: 'account',
     icon: 'user',
     hideInMenu: true,
     routes: [
@@ -52,30 +47,25 @@ export default [
       // },
       {
         path: '/account/settings',
-        name: 'settings',
         component: './Account/Settings',
       },
     ],
   },
   {
-    name: 'user',
     icon: 'table',
     path: '/users',
     routes: [
       {
-        name: 'list',
         path: '/users',
         hideInMenu: true,
         component: './User',
       },
       {
-        name: 'control',
         path: '/users/control/:id',
         hideInMenu: true,
-        component: './User/$id.tsx',
+        component: './User',
       },
       {
-        name: 'reset',
         path: '/users/password-reset/:id',
         hideInMenu: true,
         component: './User/Reset/$id.tsx',
@@ -83,76 +73,78 @@ export default [
     ],
   },
   {
-    name: 'role',
     icon: 'table',
     path: '/role',
     routes: [
       {
-        name: 'list',
         path: '/role',
         hideInMenu: true,
         component: './Role',
       },
       {
-        name: 'control',
         path: '/role/:id',
         hideInMenu: true,
-        component: './Role/$id.tsx',
+        component: './Role',
       },
     ],
   },
   {
-    name: 'task',
     icon: 'table',
     path: '/task',
     routes: [
       {
-        name: 'list',
         path: '/task',
         hideInMenu: true,
         component: './Task',
       },
       {
-        name: 'control',
         path: '/task/:id',
         hideInMenu: true,
-        component: './Task/$id.tsx',
+        component: './Task',
       },
     ],
   },
   {
-    name: 'language',
     path: '/language',
     icon: 'translation',
     routes: [
       {
-        name: 'list',
         path: '/language',
         hideInMenu: true,
         component: './Language',
       },
       {
-        name: 'control',
         path: '/language/:id',
-        component: './Language/$id.tsx',
+        component: './Language',
       },
     ],
   },
   {
-    name: 'menu',
     path: '/menu',
     icon: 'menu',
     routes: [
       {
-        name: 'list',
         path: '/menu',
         hideInMenu: true,
-        component: './Menu',
+        component: './Menu/index.tsx',
       },
       {
-        name: 'control',
         path: '/menu/:id',
-        component: './Menu/$id.tsx',
+        component: './Menu/index.tsx',
+      },
+    ],
+  },
+  {
+    path: '/system-config',
+    routes: [
+      {
+        path: '/system-config',
+        hideInMenu: true,
+        component: './SystemConfig',
+      },
+      {
+        path: '/system-config/:id',
+        component: './SystemConfig',
       },
     ],
   },

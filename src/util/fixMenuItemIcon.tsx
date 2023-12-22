@@ -19,7 +19,6 @@ const fixMenuItemIcon = (menus: MenuDataItem[], iconType = 'Outlined'): MenuData
       item.children = fixMenuItemIcon(children);
     }
   });
-  console.log(menus);
   return menus;
 };
 

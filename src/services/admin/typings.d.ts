@@ -1,5 +1,19 @@
 declare namespace API {
-  type deleteLanguageDefinesIdParams = {
+  type API = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    handler?: string;
+    history?: boolean;
+    /** ID primary key */
+    id?: string;
+    method?: string;
+    name?: string;
+    path?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
+  type deleteApisIdParams = {
     /** id */
     id: string;
   };
@@ -14,7 +28,17 @@ declare namespace API {
     id: string;
   };
 
+  type deleteNoticesIdParams = {
+    /** id */
+    id: string;
+  };
+
   type deleteRolesIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type deleteSystemConfigsIdParams = {
     /** id */
     id: string;
   };
@@ -44,9 +68,20 @@ declare namespace API {
     service?: string;
   };
 
+  type getApisIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getApisParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+  };
+
   type GetAuthorizeResponse = {
-    apiIDS?: string[];
-    menuIDS?: string[];
+    paths?: string[];
     roleID?: string;
   };
 
@@ -78,6 +113,11 @@ declare namespace API {
     pageSize?: number;
   };
 
+  type getMenuApiIdParams = {
+    /** id */
+    id: string;
+  };
+
   type getMenusIdParams = {
     /** id */
     id: string;
@@ -92,6 +132,26 @@ declare namespace API {
     status?: string;
     /** parentID */
     parentID?: string;
+    /** type */
+    type?: string;
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+  };
+
+  type getNoticesIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getNoticesParams = {
+    /** title */
+    title?: string;
+    /** status */
+    status?: string;
+    /** userID */
+    userID?: string;
     /** page */
     page?: number;
     /** pageSize */
@@ -112,15 +172,27 @@ declare namespace API {
     /** page */
     page?: number;
     /** pageSize */
-    page_size?: number;
+    pageSize?: number;
     /** id */
     id?: string;
     /** name */
     name?: string;
     /** status */
-    status?: number;
+    status?: string;
     /** remark */
     remark?: string;
+  };
+
+  type getSystemConfigsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getSystemConfigsParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
   };
 
   type getTaskOperateIdParams = {
@@ -145,7 +217,7 @@ declare namespace API {
     /** name */
     name?: string;
     /** status */
-    status?: number;
+    status?: string;
     /** remark */
     remark?: string;
   };
@@ -193,22 +265,6 @@ declare namespace API {
     name?: string;
   };
 
-  type GithubControlReq = {
-    /** github密码或者token */
-    password: string;
-  };
-
-  type GithubGetResp = {
-    /** 已配置 */
-    configured?: boolean;
-    /** 创建时间 */
-    createdAt?: string;
-    /** github邮箱 */
-    email?: string;
-    /** 更新时间 */
-    updatedAt?: string;
-  };
-
   type GithubToken = {
     /** AccessToken is the token that authorizes and authenticates
 the requests. */
@@ -236,26 +292,22 @@ The Type method returns either this or "Bearer", the default. */
     /** ID primary key */
     id?: string;
     /** Name 名称 */
-    name?: string;
+    name: string;
+    /** Remark 备注 */
+    remark?: string;
     /** Statue 状态 */
-    status?: number;
+    status?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
 
   type LanguageDefine = {
-    /** CreatedAt create time */
-    createdAt?: string;
     /** Group 分组 */
     group: string;
-    /** ID primary key */
+    /** ID 主键 */
     id?: string;
     /** Key 键 */
     key: string;
-    /** LanguageID 语言ID */
-    languageID: string;
-    /** UpdatedAt update time */
-    updatedAt?: string;
     /** Value 值 */
     value: string;
   };
@@ -301,6 +353,8 @@ The Type method returns either this or "Bearer", the default. */
     menuHeaderRender?: boolean;
     /** MenuRender 不展示菜单 */
     menuRender?: boolean;
+    /** Method 请求方法 */
+    method?: string;
     /** Name 菜单名称 */
     name?: string;
     /** NavTheme 导航菜单的主题 */
@@ -316,13 +370,36 @@ Path 路由 */
     /** Sort 排序 */
     sort?: number;
     /** Status 状态 */
-    status?: number;
+    status?: string;
     /** Target 新页面打开 */
     target?: string;
     /** Type 菜单类型 */
     type?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
+  };
+
+  type MenuBindAPIRequest = {
+    menuID: string;
+    paths: string[];
+  };
+
+  type Notice = {
+    avatar?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    datetime?: string;
+    extra?: string;
+    /** ID primary key */
+    id?: string;
+    key?: string;
+    read?: boolean;
+    status?: string;
+    title?: string;
+    type?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+    userID?: string;
   };
 
   type Page = {
@@ -341,6 +418,11 @@ Path 路由 */
     roleID: string;
   };
 
+  type putApisIdParams = {
+    /** id */
+    id: string;
+  };
+
   type putLanguagesIdParams = {
     /** id */
     id: string;
@@ -356,7 +438,17 @@ Path 路由 */
     id: string;
   };
 
+  type putNoticesIdParams = {
+    /** id */
+    id: string;
+  };
+
   type putRolesIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putSystemConfigsIdParams = {
     /** id */
     id: string;
   };
@@ -390,20 +482,39 @@ Path 路由 */
   type Role = {
     /** CreatedAt create time */
     createdAt?: string;
+    default?: boolean;
     /** ID primary key */
     id?: string;
     name?: string;
     remark?: string;
     root?: boolean;
     /** Status 状态 */
-    status?: number;
+    status?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
 
   type SetAuthorizeRequest = {
-    apiIDS?: string[];
-    menuIDS?: string[];
+    paths?: string[];
+  };
+
+  type SystemConfig = {
+    /** Content 内容 */
+    content?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** Ext 扩展名 */
+    ext: string;
+    /** ID primary key */
+    id?: string;
+    /** 内置配置 */
+    isBuiltIn?: boolean;
+    /** Name 名称 */
+    name: string;
+    /** remark 备注 */
+    remark?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
   };
 
   type Task = {
@@ -420,12 +531,13 @@ Path 路由 */
     metadata?: string;
     method?: string;
     name?: string;
+    once?: boolean;
     protocol?: string;
     python?: string;
     remark?: string;
     spec?: string;
     /** Status 状态 */
-    status?: number;
+    status?: string;
     timeout?: number;
     /** UpdatedAt update time */
     updatedAt?: string;
@@ -512,14 +624,16 @@ Path 路由 */
     /** ID primary key */
     id?: string;
     name?: string;
+    oauth2?: UserOAuth2[];
     password?: string;
     permissions?: Record<string, any>;
     phone?: string;
     profile?: string;
     province?: string;
+    role?: Role;
     signature?: string;
     /** Status 状态 */
-    status?: number;
+    status?: string;
     tags?: string[];
     title?: string;
     type?: string;
@@ -530,10 +644,42 @@ Path 路由 */
 
   type UserLogin = {
     email?: string;
+    oauth2?: UserOAuth2[];
     password?: string;
+    role?: Role;
     /** Status 状态 */
-    status?: number;
+    status?: string;
     type?: string;
     username?: string;
+  };
+
+  type UserOAuth2 = {
+    address?: string;
+    birthdata?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    email?: string;
+    email_verified?: boolean;
+    family_name?: string;
+    gender?: string;
+    given_name?: string;
+    /** ID primary key */
+    id?: string;
+    locale?: string;
+    middle_name?: string;
+    name?: string;
+    nickname?: string;
+    openID?: string;
+    phone_number?: string;
+    phone_number_verified?: boolean;
+    picture?: string;
+    preferred_username?: string;
+    profile?: string;
+    sub?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+    user_id?: string;
+    website?: string;
+    zoneinfo?: string;
   };
 }
