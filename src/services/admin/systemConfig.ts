@@ -2,13 +2,13 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** Language列表数据 Language列表数据 GET /admin/api/languages */
-export async function getLanguages(
+/** 系统配置列表数据 系统配置列表数据 GET /admin/api/system-configs */
+export async function getSystemConfigs(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getLanguagesParams,
+  params: API.getSystemConfigsParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.Page & { data?: API.Language[] }>('/admin/api/languages', {
+  return request<API.Page & { data?: API.SystemConfig[] }>('/admin/api/system-configs', {
     method: 'GET',
     params: {
       ...params,
@@ -17,9 +17,9 @@ export async function getLanguages(
   });
 }
 
-/** 创建Language 创建Language POST /admin/api/languages */
-export async function postLanguages(body: API.Language, options?: { [key: string]: any }) {
-  return request<API.Language>('/admin/api/languages', {
+/** 创建系统配置 创建系统配置 POST /admin/api/system-configs */
+export async function postSystemConfigs(body: API.SystemConfig, options?: { [key: string]: any }) {
+  return request<API.SystemConfig>('/admin/api/system-configs', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,29 +29,29 @@ export async function postLanguages(body: API.Language, options?: { [key: string
   });
 }
 
-/** 获取Language 获取Language GET /admin/api/languages/${param0} */
-export async function getLanguagesId(
+/** 获取系统配置 获取系统配置 GET /admin/api/system-configs/${param0} */
+export async function getSystemConfigsId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getLanguagesIdParams,
+  params: API.getSystemConfigsIdParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.Language>(`/admin/api/languages/${param0}`, {
+  return request<API.SystemConfig>(`/admin/api/system-configs/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });
 }
 
-/** 更新Language 更新Language PUT /admin/api/languages/${param0} */
-export async function putLanguagesId(
+/** 更新系统配置 更新系统配置 PUT /admin/api/system-configs/${param0} */
+export async function putSystemConfigsId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.putLanguagesIdParams,
-  body: API.Language,
+  params: API.putSystemConfigsIdParams,
+  body: API.SystemConfig,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.Language>(`/admin/api/languages/${param0}`, {
+  return request<API.SystemConfig>(`/admin/api/system-configs/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -62,14 +62,14 @@ export async function putLanguagesId(
   });
 }
 
-/** 删除Language 删除Language DELETE /admin/api/languages/${param0} */
-export async function deleteLanguagesId(
+/** 删除系统配置 删除系统配置 DELETE /admin/api/system-configs/${param0} */
+export async function deleteSystemConfigsId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteLanguagesIdParams,
+  params: API.deleteSystemConfigsIdParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/languages/${param0}`, {
+  return request<any>(`/admin/api/system-configs/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),

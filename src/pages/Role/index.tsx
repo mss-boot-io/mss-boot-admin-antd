@@ -1,21 +1,27 @@
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useIntl } from '@umijs/max';
-import { Button, Drawer, Input, Popconfirm, message } from 'antd';
+import { FormattedMessage, Link, useIntl, useParams, history } from '@umijs/max';
+import { Button, Drawer, Popconfirm, message } from 'antd';
 import React, { useRef, useState } from 'react';
-import Auth from './components/Auth';
+import Auth from '@/components/MssBoot/Auth';
 import { DataNode } from 'antd/es/tree';
 import {
   deleteRolesId,
   getRoleAuthorizeRoleId,
   postRoleAuthorizeRoleId,
   getRoles,
+  postRoles,
+  putRolesId,
+  getRolesId,
 } from '@/services/admin/role';
 import { getMenuTree } from '@/services/admin/menu';
+import { Access } from '@/components/MssBoot/Access';
+import { indexTitle } from '@/util/indexTitle';
+import { idRender, statusOptions } from '@/util/columnOptions';
 
 const TableList: React.FC = () => {
-  const [authModalOpen, handleAuthModalOpen] = useState<boolean>(false);
+  const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
@@ -24,6 +30,8 @@ const TableList: React.FC = () => {
   const [treeData, setTreeData] = useState<DataNode[]>([]);
 
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
+
+  const { id } = useParams();
 
   /**
    * @en-US International configuration
@@ -37,17 +45,7 @@ const TableList: React.FC = () => {
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
-        return (
-          <a
-            key={entity.id}
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
+        return idRender(dom, entity, setCurrentRow, setShowDetail);
       },
     },
     {
@@ -64,7 +62,7 @@ const TableList: React.FC = () => {
       title: 'root权限',
       dataIndex: 'root',
       search: false,
-      valueType: 'checkbox',
+      hideInForm: true,
       valueEnum: {
         false: {
           text: '否',
@@ -79,20 +77,7 @@ const TableList: React.FC = () => {
     {
       title: '状态',
       dataIndex: 'status',
-      valueEnum: {
-        1: {
-          text: '启用',
-          status: '1',
-        },
-        2: {
-          text: '禁用',
-          status: '2',
-        },
-        3: {
-          text: '锁定',
-          status: '3',
-        },
-      },
+      valueEnum: statusOptions,
     },
     {
       title: '上次修改时间',
@@ -100,24 +85,7 @@ const TableList: React.FC = () => {
       dataIndex: 'updatedAt',
       search: false,
       valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return (
-            <Input
-              {...rest}
-              placeholder={intl.formatMessage({
-                id: 'pages.searchTable.exception',
-                defaultMessage: 'Please enter the reason for the exception!',
-              })}
-            />
-          );
-        }
-        return defaultRender(item);
-      },
+      hideInForm: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -126,43 +94,50 @@ const TableList: React.FC = () => {
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Button key="edit">
-          <Link to={`/role/${record.id}`}>编辑</Link>
-        </Button>,
-        <Button
-          key="auth"
-          disabled={record.root}
-          onClick={() => {
-            handleAuthModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          授权
-        </Button>,
-        <Popconfirm
-          key="delete"
-          title="删除角色"
-          disabled={record.root}
-          description="你确定要删除这个角色吗?"
-          onConfirm={async () => {
-            const res = await deleteRolesId({ id: record.id! });
-            if (!res) {
-              message.success('删除成功');
-              actionRef.current?.reload();
-            }
-          }}
-          okText="确定"
-          cancelText="再想想"
-        >
-          <Button disabled={record.root} key="delete.button">
-            删除
+        <Access key="/menu/edit">
+          <Button key="edit">
+            <Link to={`/role/${record.id}`}>编辑</Link>
           </Button>
-        </Popconfirm>,
+        </Access>,
+        <Access key="/menu/auth">
+          <Button
+            key="auth"
+            disabled={record.root}
+            onClick={() => {
+              setAuthModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            授权
+          </Button>
+        </Access>,
+        <Access key="/menu/delete">
+          <Popconfirm
+            key="delete"
+            title="删除角色"
+            disabled={record.root}
+            description="你确定要删除这个角色吗?"
+            onConfirm={async () => {
+              const res = await deleteRolesId({ id: record.id! });
+              if (!res) {
+                message.success('删除成功');
+                actionRef.current?.reload();
+              }
+            }}
+            okText="确定"
+            cancelText="再想想"
+          >
+            <Button disabled={record.root} key="delete.button">
+              删除
+            </Button>
+          </Popconfirm>
+        </Access>,
       ],
     },
   ];
 
-  const transfer = (data: API.Menu[]) => {
+  const transfer = (data: API.Menu[]): DataNode[] => {
+    // @ts-ignore
     return data.map((item) => {
       return {
         title: intl.formatMessage({ id: `menu.${item.name}` }),
@@ -184,7 +159,7 @@ const TableList: React.FC = () => {
       });
       if (checkedRes) {
         const checkedKeys: React.Key[] = [];
-        checkedRes.menuIDS?.forEach((value) => {
+        checkedRes.paths?.forEach((value) => {
           checkedKeys.push(value);
         });
         setCheckedKeys(checkedKeys);
@@ -194,11 +169,26 @@ const TableList: React.FC = () => {
     }
     console.log('onOpenChange1');
     setTreeData([]);
-    handleAuthModalOpen(e);
+    setAuthModalOpen(e);
+  };
+
+  const onSubmit = async (params: any) => {
+    if (!id) {
+      return;
+    }
+    if (id === 'create') {
+      await postRoles(params);
+      message.success('创建成功');
+      history.push('/role');
+      return;
+    }
+    await putRolesId({ id }, params);
+    message.success('修改成功');
+    history.push('/role');
   };
 
   return (
-    <PageContainer>
+    <PageContainer title={indexTitle(id)}>
       <ProTable<API.Role, API.Page>
         headerTitle="角色列表"
         actionRef={actionRef}
@@ -206,13 +196,28 @@ const TableList: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
+        type={id ? 'form' : 'table'}
+        onSubmit={id ? onSubmit : undefined}
         toolBarRender={() => [
-          <Button type="primary" key="create">
-            <Link type="primary" key="primary" to="/role/create">
-              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            </Link>
-          </Button>,
+          <Access key="/menu/create">
+            <Button type="primary" key="create">
+              <Link type="primary" key="primary" to="/role/create">
+                <PlusOutlined />{' '}
+                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+              </Link>
+            </Button>
+          </Access>,
         ]}
+        form={
+          id && id !== 'create'
+            ? {
+                request: async () => {
+                  const res = await getRolesId({ id });
+                  return res;
+                },
+              }
+            : undefined
+        }
         // @ts-ignore
         request={getRoles}
         columns={columns}
@@ -246,9 +251,9 @@ const TableList: React.FC = () => {
         title="授权"
         open={authModalOpen}
         onFinish={async () => {
-          const menuIDS: string[] = [];
+          const paths: string[] = [];
           checkedKeys.forEach((value) => {
-            menuIDS.push(value.toString());
+            paths.push(value.toString());
           });
 
           const res = await postRoleAuthorizeRoleId(
@@ -256,7 +261,7 @@ const TableList: React.FC = () => {
               roleID: currentRow?.id ?? '',
             },
             {
-              menuIDS: menuIDS,
+              paths,
             },
           );
           if (!res) {
@@ -267,12 +272,7 @@ const TableList: React.FC = () => {
           return false;
         }}
       >
-        <Auth
-          values={treeData}
-          id={currentRow?.id}
-          setCheckedKeys={setCheckedKeys}
-          checkedKeys={checkedKeys}
-        />
+        <Auth values={treeData} setCheckedKeys={setCheckedKeys} checkedKeys={checkedKeys} />
       </DrawerForm>
     </PageContainer>
   );

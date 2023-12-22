@@ -2,13 +2,13 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** Language列表数据 Language列表数据 GET /admin/api/languages */
-export async function getLanguages(
+/** API列表数据 API列表数据 GET /admin/api/apis */
+export async function getApis(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getLanguagesParams,
+  params: API.getApisParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.Page & { data?: API.Language[] }>('/admin/api/languages', {
+  return request<API.Page & { data?: API.API[] }>('/admin/api/apis', {
     method: 'GET',
     params: {
       ...params,
@@ -17,9 +17,9 @@ export async function getLanguages(
   });
 }
 
-/** 创建Language 创建Language POST /admin/api/languages */
-export async function postLanguages(body: API.Language, options?: { [key: string]: any }) {
-  return request<API.Language>('/admin/api/languages', {
+/** 创建API 创建API POST /admin/api/apis */
+export async function postApis(body: API.API, options?: { [key: string]: any }) {
+  return request<API.API>('/admin/api/apis', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,29 +29,29 @@ export async function postLanguages(body: API.Language, options?: { [key: string
   });
 }
 
-/** 获取Language 获取Language GET /admin/api/languages/${param0} */
-export async function getLanguagesId(
+/** 获取API 获取API GET /admin/api/apis/${param0} */
+export async function getApisId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getLanguagesIdParams,
+  params: API.getApisIdParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.Language>(`/admin/api/languages/${param0}`, {
+  return request<API.API>(`/admin/api/apis/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });
 }
 
-/** 更新Language 更新Language PUT /admin/api/languages/${param0} */
-export async function putLanguagesId(
+/** 更新API 更新API PUT /admin/api/apis/${param0} */
+export async function putApisId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.putLanguagesIdParams,
-  body: API.Language,
+  params: API.putApisIdParams,
+  body: API.API,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.Language>(`/admin/api/languages/${param0}`, {
+  return request<API.API>(`/admin/api/apis/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -62,14 +62,14 @@ export async function putLanguagesId(
   });
 }
 
-/** 删除Language 删除Language DELETE /admin/api/languages/${param0} */
-export async function deleteLanguagesId(
+/** 删除API 删除API DELETE /admin/api/apis/${param0} */
+export async function deleteApisId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteLanguagesIdParams,
+  params: API.deleteApisIdParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/languages/${param0}`, {
+  return request<any>(`/admin/api/apis/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),

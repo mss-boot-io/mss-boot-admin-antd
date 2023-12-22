@@ -4,7 +4,6 @@ import type { DataNode } from 'antd/es/tree';
 
 export type AuthFormProps = {
   values: DataNode[];
-  id?: string;
   checkedKeys: React.Key[];
   setCheckedKeys: (checkedKeysValue: React.Key[]) => void;
 };

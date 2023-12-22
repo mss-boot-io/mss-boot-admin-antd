@@ -88,7 +88,7 @@ export async function getUsers(
 
 /** 创建用户 创建用户 POST /admin/api/users */
 export async function postUsers(body: API.User, options?: { [key: string]: any }) {
-  return request<any>('/admin/api/users', {
+  return request<API.User>('/admin/api/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export async function putUsersId(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/users/${param0}`, {
+  return request<API.User>(`/admin/api/users/${param0}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
