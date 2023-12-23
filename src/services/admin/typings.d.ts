@@ -389,6 +389,7 @@ Path 路由 */
     /** CreatedAt create time */
     createdAt?: string;
     datetime?: string;
+    description?: string;
     extra?: string;
     /** ID primary key */
     id?: string;
