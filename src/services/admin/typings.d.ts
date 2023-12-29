@@ -140,6 +140,11 @@ declare namespace API {
     pageSize?: number;
   };
 
+  type getNoticeReadIdParams = {
+    /** id */
+    id: string;
+  };
+
   type getNoticesIdParams = {
     /** id */
     id: string;
@@ -435,6 +440,11 @@ Path 路由 */
   };
 
   type putMenusIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putNoticeReadIdParams = {
     /** id */
     id: string;
   };

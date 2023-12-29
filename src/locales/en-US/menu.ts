@@ -86,4 +86,6 @@ export default {
   'menu.system.task.edit': 'Edit Task',
   'menu.system.task.delete': 'Delete Task',
   'menu.system.task.operate': 'Operate Task',
+  'menu.system.notice': 'Notice List',
+  'menu.system.notice.control': 'Manage Notice',
 };

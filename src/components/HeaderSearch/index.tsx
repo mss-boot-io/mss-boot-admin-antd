@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import useMergedState from 'rc-util/es/hooks/useMergedState';
 import React, { useRef } from 'react';
 import styles from './index.less';
+import { useIntl } from '@umijs/max';
 
 export type HeaderSearchProps = {
   onSearch?: (value?: string) => void;
@@ -30,6 +31,12 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
     defaultVisible,
     ...restProps
   } = props;
+
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  const intl = useIntl();
 
   const inputRef = useRef<InputRef | null>(null);
 
@@ -80,8 +87,8 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
           size="small"
           ref={inputRef}
           defaultValue={defaultValue}
-          aria-label={placeholder}
-          placeholder={placeholder}
+          aria-label={intl.formatMessage({ id: placeholder, defaultMessage: placeholder })}
+          placeholder={intl.formatMessage({ id: placeholder, defaultMessage: placeholder })}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               if (restProps.onSearch) {

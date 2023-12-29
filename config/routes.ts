@@ -149,6 +149,20 @@ export default [
     ],
   },
   {
+    path: '/notice',
+    routes: [
+      {
+        path: '/notice',
+        hideInMenu: true,
+        component: './Notice',
+      },
+      // {
+      //   path: '/notice/:id',
+      //   component: './Notice',
+      // },
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

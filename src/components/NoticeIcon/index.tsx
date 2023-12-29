@@ -4,8 +4,8 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import styles from './index.less';
 import NoticeIcon from './NoticeIcon';
-import { useRequest } from '@umijs/max';
-import { getNotices } from '@/services/admin/notice';
+import { getNoticeUnread, putNoticeReadId } from '@/services/admin/notice';
+import { history, useIntl } from '@umijs/max';
 
 export type GlobalHeaderRightProps = {
   fetchingNotices?: boolean;
@@ -53,103 +53,100 @@ const getNoticeData = (notices: API.Notice[]): Record<string, API.Notice[]> => {
   return groupBy(newNotices, 'type');
 };
 
-const getUnreadData = (noticeData: Record<string, API.Notice[]>) => {
-  const unreadMsg: Record<string, number> = {};
-  Object.keys(noticeData).forEach((key) => {
-    const value = noticeData[key];
-
-    if (!unreadMsg[key]) {
-      unreadMsg[key] = 0;
-    }
-
-    if (Array.isArray(value)) {
-      unreadMsg[key] = value.filter((item) => !item.read).length;
-    }
-  });
-  return unreadMsg;
-};
-
 const NoticeIconView: React.FC = () => {
-  // const { initialState } = useModel('@@initialState');
-  // const { currentUser } = initialState || {};
   const [notices, setNotices] = useState<API.Notice[]>([]);
-  const { data } = useRequest(getNotices);
+  const [noticeData, setNoticeData] = useState<Record<string, API.Notice[]>>({});
+  // const { data, loading } = useRequest(getNoticeUnread);
 
-  useEffect(() => {
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  const intl = useIntl();
+
+  const changeReadState = async (e: API.Notice) => {
+    await putNoticeReadId({ id: e.id! });
+    const data = await getNoticeUnread();
     setNotices(data || []);
-  }, [data]);
-
-  const noticeData = getNoticeData(notices);
-  const unreadMsg = getUnreadData(noticeData || {});
-
-  const changeReadState = (id: string) => {
-    setNotices(
-      notices.map((item) => {
-        const notice = { ...item };
-        if (notice.id === id) {
-          notice.read = true;
-        }
-        return notice;
-      }),
-    );
+    setNoticeData(getNoticeData(data || []));
   };
 
-  const clearReadState = (title: string, key: string) => {
-    setNotices(
-      notices.map((item) => {
-        const notice = { ...item };
-        if (notice.type === key) {
-          notice.read = true;
-        }
-        return notice;
-      }),
+  const clearReadState = async (title: string, key: string) => {
+    await putNoticeReadId({ id: key });
+    const data = await getNoticeUnread();
+    setNotices(data || []);
+    setNoticeData(getNoticeData(data || []));
+    message.success(
+      `${intl.formatMessage({
+        id: 'component.noticeIcon.cleared',
+        defaultMessage: '清空了',
+      })} ${title}`,
     );
-    message.success(`${'清空了'} ${title}`);
   };
   useEffect(() => {
+    getNoticeUnread().then((data) => {
+      setNotices(data || []);
+      setNoticeData(getNoticeData(data || []));
+    });
     setInterval(async () => {
-      const data = await getNotices({ pageSize: 999 });
-      if (data.data) {
-        setNotices(data.data || []);
+      const data = await getNoticeUnread();
+      if (data) {
+        setNotices(data || []);
+        setNoticeData(getNoticeData(data || []));
       }
     }, 50000);
   }, []);
   return (
     <NoticeIcon
       className={styles.action}
-      // count={currentUser && currentUser.unreadCount}
       count={notices.length}
-      onItemClick={(item) => {
-        changeReadState(item.id!);
-      }}
-      onClear={(title: string, key: string) => clearReadState(title, key)}
+      onItemClick={changeReadState}
+      onClear={clearReadState}
       loading={false}
-      clearText="清空"
-      viewMoreText="查看更多"
-      onViewMore={() => location.replace('/list/basiclist')}
+      clearText={intl.formatMessage({ id: 'component.noticeIcon.clear', defaultMessage: '清空' })}
+      viewMoreText={intl.formatMessage({
+        id: 'component.noticeIcon.view-more',
+        defaultMessage: '查看更多',
+      })}
+      onViewMore={(e) => {
+        console.log(e);
+        history.push(`/notice?type=${e.tabKey}`);
+      }}
       clearClose
     >
       <NoticeIcon.Tab
         tabKey="notification"
-        count={unreadMsg.notification}
+        count={noticeData.notification?.length}
         list={noticeData.notification}
-        title="通知"
-        emptyText="你已查看所有通知"
+        title={intl.formatMessage({
+          id: 'component.globalHeader.notification',
+          defaultMessage: '通知',
+        })}
+        emptyText={intl.formatMessage({
+          id: 'component.globalHeader.notification.empty',
+          defaultMessage: '你已查看所有通知',
+        })}
         showViewMore
       />
       <NoticeIcon.Tab
         tabKey="message"
-        count={unreadMsg.message}
+        count={noticeData.message?.length}
         list={noticeData.message}
-        title="消息"
-        emptyText="您已读完所有消息"
+        title={intl.formatMessage({ id: 'component.globalHeader.message', defaultMessage: '消息' })}
+        emptyText={intl.formatMessage({
+          id: 'component.globalHeader.message.empty',
+          defaultMessage: '您已读完所有消息',
+        })}
         showViewMore
       />
       <NoticeIcon.Tab
         tabKey="event"
-        title="待办"
-        emptyText="你已完成所有待办"
-        count={unreadMsg.event}
+        title={intl.formatMessage({ id: 'component.globalHeader.event', defaultMessage: '待办' })}
+        emptyText={intl.formatMessage({
+          id: 'component.globalHeader.event.empty',
+          defaultMessage: '你已完成所有待办',
+        })}
+        count={noticeData.event?.length}
         list={noticeData.event}
         showViewMore
       />
