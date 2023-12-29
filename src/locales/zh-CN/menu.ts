@@ -86,4 +86,6 @@ export default {
   'menu.system.task.edit': '编辑任务',
   'menu.system.task.delete': '删除任务',
   'menu.system.task.operate': '操作任务',
+  'menu.system.notice': '通知列表',
+  'menu.system.notice.control': '管理通知',
 };

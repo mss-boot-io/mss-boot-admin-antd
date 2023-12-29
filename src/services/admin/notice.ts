@@ -2,6 +2,34 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
+/** 获取通知 获取通知 GET /admin/api/notice/read/${param0} */
+export async function getNoticeReadId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getNoticeReadIdParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<API.Notice>(`/admin/api/notice/read/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 标记已读 标记已读 PUT /admin/api/notice/read/${param0} */
+export async function putNoticeReadId(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.putNoticeReadIdParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<any>(`/admin/api/notice/read/${param0}`, {
+    method: 'PUT',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** 获取未读通知列表 获取未读通知列表 GET /admin/api/notice/unread */
 export async function getNoticeUnread(options?: { [key: string]: any }) {
   return request<API.Notice[]>('/admin/api/notice/unread', {

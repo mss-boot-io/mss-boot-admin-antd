@@ -80,6 +80,7 @@ export default {
   'page.title.delete.confirm': 'Confirm Delete',
   'page.title.ok': 'OK',
   'page.title.cancel': 'Cancel',
+  'page.title.notice.read': 'Mark as read',
   'page.description.delete.confirm': 'Are you sure to delete this record?',
   'page.message.delete.success': 'Delete successfully!',
   'page.message.create.success': 'Create successfully!',

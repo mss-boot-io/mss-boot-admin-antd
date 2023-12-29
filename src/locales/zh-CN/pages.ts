@@ -76,6 +76,7 @@ export default {
   'page.title.delete.confirm': '确认删除',
   'page.title.ok': '好的',
   'page.title.cancel': '取消',
+  'page.title.notice.read': '标为已读',
   'page.description.delete.confirm': '确认删除该记录吗？',
   'page.message.delete.success': '删除成功！',
   'page.message.create.success': '创建成功！',

@@ -14,6 +14,8 @@ import { getMenuAuthorize } from './services/admin/menu';
 import fixMenuItemIcon from './util/fixMenuItemIcon';
 import { MenuDataItem } from '@ant-design/pro-components';
 import { getLanguages } from './services/admin/language';
+import NoticeIconView from './components/NoticeIcon';
+import HeaderSearch from './components/HeaderSearch';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -85,7 +87,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return menuData;
       },
     },
-    actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
+    actionsRender: () => [
+      <HeaderSearch key="search" placeholder="component.search.placeholder" options={undefined} />,
+      <NoticeIconView key="notice" />,
+      <Question key="doc" />,
+      <SelectLang key="SelectLang" />,
+    ],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
       title: <AvatarName />,
