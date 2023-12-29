@@ -18,12 +18,22 @@ declare namespace API {
     id: string;
   };
 
+  type deleteFieldsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type deleteLanguagesIdParams = {
     /** id */
     id: string;
   };
 
   type deleteMenusIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type deleteModelsIdParams = {
     /** id */
     id: string;
   };
@@ -62,6 +72,29 @@ declare namespace API {
     status?: string;
   };
 
+  type Field = {
+    comment?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    default?: string;
+    /** ID primary key */
+    id?: string;
+    index?: string;
+    jsonTag?: string;
+    label?: string;
+    modelID?: string;
+    name?: string;
+    notNull?: boolean;
+    primaryKey?: string;
+    search?: string;
+    show?: number[];
+    size?: number;
+    type?: string;
+    unique?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
   type GenerateParams = {
     params?: Record<string, any>;
     repo: string;
@@ -83,6 +116,18 @@ declare namespace API {
   type GetAuthorizeResponse = {
     paths?: string[];
     roleID?: string;
+  };
+
+  type getFieldsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getFieldsParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
   };
 
   type getGithubCallbackParams = {
@@ -138,6 +183,25 @@ declare namespace API {
     page?: number;
     /** pageSize */
     pageSize?: number;
+  };
+
+  type getModelMigrateIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getModelsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getModelsParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+    /** preloads */
+    preloads?: string[];
   };
 
   type getNoticeReadIdParams = {
@@ -389,6 +453,21 @@ Path 路由 */
     paths: string[];
   };
 
+  type Model = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    description?: string;
+    fields?: Field[];
+    hardDeleted?: boolean;
+    /** ID primary key */
+    id?: string;
+    name?: string;
+    path?: string;
+    tableName?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
   type Notice = {
     avatar?: string;
     /** CreatedAt create time */
@@ -429,6 +508,11 @@ Path 路由 */
     id: string;
   };
 
+  type putFieldsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type putLanguagesIdParams = {
     /** id */
     id: string;
@@ -440,6 +524,11 @@ Path 路由 */
   };
 
   type putMenusIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putModelsIdParams = {
     /** id */
     id: string;
   };

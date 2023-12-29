@@ -163,6 +163,20 @@ export default [
     ],
   },
   {
+    path: '/model',
+    routes: [
+      {
+        path: '/model',
+        hideInMenu: true,
+        component: './Model',
+      },
+      {
+        path: '/model/:id',
+        component: './Model',
+      },
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

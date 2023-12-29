@@ -3,6 +3,7 @@
 // API 更新时间：
 // API 唯一标识：
 import * as api from './api';
+import * as field from './field';
 import * as generator from './generator';
 import * as language from './language';
 import * as menu from './menu';
@@ -14,6 +15,7 @@ import * as task from './task';
 import * as user from './user';
 export default {
   api,
+  field,
   generator,
   language,
   menu,
