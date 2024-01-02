@@ -163,6 +163,20 @@ export default [
     ],
   },
   {
+    path: '/option',
+    routes: [
+      {
+        path: '/option',
+        hideInMenu: true,
+        component: './Option',
+      },
+      {
+        path: '/option/:id',
+        component: './Option',
+      },
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

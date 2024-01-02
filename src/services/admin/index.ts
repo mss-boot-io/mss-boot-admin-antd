@@ -8,6 +8,7 @@ import * as language from './language';
 import * as menu from './menu';
 import * as model from './model';
 import * as notice from './notice';
+import * as option from './option';
 import * as role from './role';
 import * as systemConfig from './systemConfig';
 import * as task from './task';
@@ -19,6 +20,7 @@ export default {
   menu,
   model,
   notice,
+  option,
   role,
   systemConfig,
   task,
