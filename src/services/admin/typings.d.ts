@@ -33,6 +33,11 @@ declare namespace API {
     id: string;
   };
 
+  type deleteOptionsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type deleteRolesIdParams = {
     /** id */
     id: string;
@@ -157,6 +162,22 @@ declare namespace API {
     status?: string;
     /** userID */
     userID?: string;
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+  };
+
+  type getOptionsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getOptionsParams = {
+    /** name */
+    name?: string;
+    /** status */
+    status?: string;
     /** page */
     page?: number;
     /** pageSize */
@@ -408,6 +429,32 @@ Path 路由 */
     userID?: string;
   };
 
+  type Option = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** ID primary key */
+    id?: string;
+    /** Items 选项内容 */
+    items?: OptionItem[];
+    /** Name 选项名称 */
+    name?: string;
+    /** Remark 备注 */
+    remark?: string;
+    /** Status 状态 */
+    status?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
+  type OptionItem = {
+    color?: string;
+    id?: string;
+    key?: string;
+    label?: string;
+    sort?: number;
+    value?: string;
+  };
+
   type Page = {
     current?: number;
     pageSize?: number;
@@ -450,6 +497,11 @@ Path 路由 */
   };
 
   type putNoticesIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putOptionsIdParams = {
     /** id */
     id: string;
   };

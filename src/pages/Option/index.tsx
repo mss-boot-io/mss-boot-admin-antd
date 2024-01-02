@@ -1,11 +1,11 @@
 import { Access } from '@/components/MssBoot/Access';
 import {
-  deleteLanguagesId,
-  getLanguages,
-  getLanguagesId,
-  postLanguages,
-  putLanguagesId,
-} from '@/services/admin/language';
+  deleteOptionsId,
+  getOptions,
+  getOptionsId,
+  postOptions,
+  putOptionsId,
+} from '@/services/admin/option';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
@@ -27,15 +27,15 @@ import React, { useRef, useState } from 'react';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 
-const Language: React.FC = () => {
+const Option: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const { id } = useParams();
   const [showDetail, setShowDetail] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<API.Language>();
+  const [currentRow, setCurrentRow] = useState<API.Option>();
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
 
-  const columnsTable: ProColumns<API.LanguageDefine>[] = [
+  const columnsTable: ProColumns<API.OptionItem>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -43,14 +43,13 @@ const Language: React.FC = () => {
       hideInTable: true,
     },
     {
-      title: '分组',
-      dataIndex: 'group',
+      title: '标签',
+      dataIndex: 'label',
       formItemProps: () => {
         return {
           rules: [{ required: true, message: '此项为必填项' }],
         };
       },
-      width: '30%',
     },
     {
       title: '键',
@@ -60,7 +59,6 @@ const Language: React.FC = () => {
           rules: [{ required: true, message: '此项为必填项' }],
         };
       },
-      width: '30%',
     },
     {
       title: '值',
@@ -70,12 +68,56 @@ const Language: React.FC = () => {
           rules: [{ required: true, message: '此项为必填项' }],
         };
       },
-      width: '30%',
+    },
+    {
+      title: '颜色',
+      dataIndex: 'color',
+      valueEnum: {
+        red: {
+          text: '红色',
+          status: 'red',
+          color: 'red',
+        },
+        green: {
+          text: '绿色',
+          status: 'green',
+          color: 'green',
+        },
+        yellow: {
+          text: '黄色',
+          status: 'yellow',
+          color: 'yellow',
+        },
+        orange: {
+          text: '橙色',
+          status: 'orange',
+          color: 'orange',
+        },
+        blue: {
+          text: '蓝色',
+          status: 'blue',
+          color: 'blue',
+        },
+        purple: {
+          text: '紫色',
+          status: 'purple',
+          color: 'purple',
+        },
+        cyan: {
+          text: '青色',
+          status: 'cyan',
+          color: 'cyan',
+        },
+        volcano: {
+          text: '火山色',
+          status: 'volcano',
+          color: 'volcano',
+        },
+      },
     },
     {
       title: '操作',
       valueType: 'option',
-      width: 200,
       render: (text, record, _, action) => [
         <Button
           key="editable"
@@ -88,11 +130,9 @@ const Language: React.FC = () => {
         <Button
           key="delete"
           onClick={async () => {
-            const tableDataSource = formRef.current?.getFieldValue(
-              'defines',
-            ) as API.LanguageDefine[];
+            const tableDataSource = formRef.current?.getFieldValue('items') as API.OptionItem[];
             formRef.current?.setFieldsValue({
-              defines: tableDataSource.filter((item) => item.id !== record.id),
+              items: tableDataSource.filter((item) => item.id !== record.id),
             });
           }}
         >
@@ -102,7 +142,7 @@ const Language: React.FC = () => {
     },
   ];
 
-  const columns: ProColumns<API.Language>[] = [
+  const columns: ProColumns<API.Option>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -120,19 +160,19 @@ const Language: React.FC = () => {
       title: '状态',
       dataIndex: 'status',
       valueEnum: {
-        1: {
+        enabled: {
           text: '启用',
-          status: '1',
+          status: 'enabled',
         },
-        2: {
+        disbaled: {
           text: '禁用',
-          status: '2',
+          status: 'disabled',
         },
       },
     },
     {
-      title: '定义',
-      dataIndex: 'defines',
+      title: '选项',
+      dataIndex: 'items',
       hideInTable: true,
       search: false,
       renderText(text) {
@@ -140,10 +180,10 @@ const Language: React.FC = () => {
           <List
             bordered
             dataSource={text}
-            renderItem={(item: API.LanguageDefine) => (
+            renderItem={(item: API.OptionItem) => (
               <List.Item>
                 <Typography.Text mark>
-                  {item.group}.{item.id}
+                  {item.label}[{item.key}]
                 </Typography.Text>
                 : {item.value}
               </List.Item>
@@ -153,16 +193,16 @@ const Language: React.FC = () => {
       },
       renderFormItem() {
         return (
-          <EditableProTable<API.LanguageDefine>
+          <EditableProTable<API.OptionItem>
             rowKey="id"
             scroll={{
               x: 960,
             }}
             formRef={formRef}
             // editableFormRef={schema.formRef}
-            headerTitle="语言内容"
+            headerTitle="选项列表"
             maxLength={1000}
-            name="defines"
+            name="items"
             controlled={false}
             // @ts-ignore
             recordCreatorProps={{
@@ -205,18 +245,18 @@ const Language: React.FC = () => {
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Access key="/language/edit">
-          <Link to={`/language/${record.id}`}>
+        <Access key="/option/edit">
+          <Link to={`/option/${record.id}`}>
             <Button key="edit">编辑</Button>
           </Link>
         </Access>,
-        <Access key="/language/delete">
+        <Access key="/option/delete">
           <Popconfirm
             key="delete"
-            title="删除语言"
-            description="你确定要删除这个语言吗?"
+            title="删除"
+            description="你确定要删除吗?"
             onConfirm={async () => {
-              const res = await deleteLanguagesId({ id: record.id! });
+              const res = await deleteOptionsId({ id: record.id! });
               if (!res) {
                 message.success('删除成功');
                 actionRef.current?.reload();
@@ -237,20 +277,20 @@ const Language: React.FC = () => {
       return;
     }
     if (id === 'create') {
-      await postLanguages(params);
+      await postOptions(params);
       message.success('创建成功');
-      history.push('/language');
+      history.push('/option');
       return;
     }
-    await putLanguagesId({ id }, params);
+    await putOptionsId({ id }, params);
     message.success('修改成功');
-    history.push('/language');
+    history.push('/option');
   };
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Language, API.Page>
-        headerTitle="语言列表"
+      <ProTable<API.Option, API.getOptionsParams>
+        headerTitle="选项列表"
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
@@ -258,9 +298,9 @@ const Language: React.FC = () => {
         type={id ? 'form' : 'table'}
         onSubmit={id ? onSubmit : undefined}
         toolBarRender={() => [
-          <Access key="/language/create">
+          <Access key="/option/create">
             <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/language/create">
+              <Link type="primary" key="primary" to="/option/create">
                 <PlusOutlined />{' '}
                 <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
               </Link>
@@ -271,13 +311,13 @@ const Language: React.FC = () => {
           id && id !== 'create'
             ? {
                 request: async () => {
-                  const res = await getLanguagesId({ id });
+                  const res = await getOptionsId({ id });
                   return res;
                 },
               }
             : undefined
         }
-        request={getLanguages}
+        request={getOptions}
         columns={columns}
       />
 
@@ -291,7 +331,7 @@ const Language: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.Language>
+          <ProDescriptions<API.Option>
             column={1}
             title={currentRow?.name}
             request={async () => ({
@@ -300,7 +340,7 @@ const Language: React.FC = () => {
             params={{
               id: currentRow?.id,
             }}
-            columns={columns as ProDescriptionsItemProps<API.Language>[]}
+            columns={columns as ProDescriptionsItemProps<API.Option>[]}
           />
         )}
       </Drawer>
@@ -308,4 +348,4 @@ const Language: React.FC = () => {
   );
 };
 
-export default Language;
+export default Option;
