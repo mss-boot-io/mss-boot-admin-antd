@@ -88,4 +88,9 @@ export default {
   'menu.system.task.operate': '操作任务',
   'menu.system.notice': '通知列表',
   'menu.system.notice.control': '管理通知',
+  'menu.system.option': '选项列表',
+  'menu.system.option.control': '管理选项',
+  'menu.system.option.create': '创建选项',
+  'menu.system.option.edit': '编辑选项',
+  'menu.system.option.delete': '删除选项',
 };
