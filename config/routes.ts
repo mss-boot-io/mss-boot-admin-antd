@@ -177,6 +177,20 @@ export default [
     ],
   },
   {
+    path: '/field/:modelID',
+    routes: [
+      {
+        path: '/field/:modelID',
+        hideInMenu: true,
+        component: './Field',
+      },
+      {
+        path: '/field/:modelID/:id',
+        component: './Field',
+      },
+    ],
+  },
+  {
     path: '/option',
     routes: [
       {
@@ -187,6 +201,20 @@ export default [
       {
         path: '/option/:id',
         component: './Option',
+      },
+    ],
+  },
+  {
+    path: '/virtual/:key',
+    routes: [
+      {
+        path: '/virtual/:key',
+        hideInMenu: true,
+        component: './Virtual',
+      },
+      {
+        path: '/virtual/:key/:id',
+        component: './Virtual',
       },
     ],
   },

@@ -93,4 +93,10 @@ export default {
   'menu.system.option.create': 'Create Option',
   'menu.system.option.edit': 'Edit Option',
   'menu.system.option.delete': 'Delete Option',
+  'menu.system.model': 'Model List',
+  'menu.system.model.control': 'Manage Model',
+  'menu.system.model.create': 'Create Model',
+  'menu.system.model.edit': 'Edit Model',
+  'menu.system.model.delete': 'Delete Model',
+  'pages.table.titleOption': 'Operating',
 };

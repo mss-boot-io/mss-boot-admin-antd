@@ -93,4 +93,9 @@ export default {
   'menu.system.option.create': '创建选项',
   'menu.system.option.edit': '编辑选项',
   'menu.system.option.delete': '删除选项',
+  'menu.system.model': '模型列表',
+  'menu.system.model.control': '管理模型',
+  'menu.system.model.create': '创建模型',
+  'menu.system.model.edit': '编辑模型',
+  'menu.system.model.delete': '删除模型',
 };

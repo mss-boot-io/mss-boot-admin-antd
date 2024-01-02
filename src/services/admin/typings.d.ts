@@ -13,6 +13,15 @@ declare namespace API {
     updatedAt?: string;
   };
 
+  type ColumnType = {
+    dataIndex?: string;
+    hideInDescriptions?: boolean;
+    hideInForm?: boolean;
+    hideInTable?: boolean;
+    title?: string;
+    valueEnum?: Record<string, any>;
+  };
+
   type deleteApisIdParams = {
     /** id */
     id: string;
@@ -82,6 +91,9 @@ declare namespace API {
     /** CreatedAt create time */
     createdAt?: string;
     default?: string;
+    hideInDescriptions?: boolean;
+    hideInForm?: boolean;
+    hideInTable?: boolean;
     /** ID primary key */
     id?: string;
     index?: string;
@@ -92,12 +104,13 @@ declare namespace API {
     notNull?: boolean;
     primaryKey?: string;
     search?: string;
-    show?: number[];
     size?: number;
+    sort?: number;
     type?: string;
     unique?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
+    valueEnumName?: string;
   };
 
   type GenerateParams = {
@@ -123,6 +136,11 @@ declare namespace API {
     roleID?: string;
   };
 
+  type getDocumentationKeyParams = {
+    /** key */
+    key: string;
+  };
+
   type getFieldsIdParams = {
     /** id */
     id: string;
@@ -133,6 +151,8 @@ declare namespace API {
     page?: number;
     /** pageSize */
     pageSize?: number;
+    /** modelID */
+    modelID?: string;
   };
 
   type getGithubCallbackParams = {
@@ -188,11 +208,6 @@ declare namespace API {
     page?: number;
     /** pageSize */
     pageSize?: number;
-  };
-
-  type getModelMigrateIdParams = {
-    /** id */
-    id: string;
   };
 
   type getModelsIdParams = {
@@ -482,6 +497,7 @@ Path 路由 */
     hardDeleted?: boolean;
     /** ID primary key */
     id?: string;
+    migrate?: boolean;
     name?: string;
     path?: string;
     tableName?: string;
@@ -571,6 +587,11 @@ Path 路由 */
   };
 
   type putMenusIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putModelMigrateIdParams = {
     /** id */
     id: string;
   };
@@ -833,5 +854,12 @@ Path 路由 */
     user_id?: string;
     website?: string;
     zoneinfo?: string;
+  };
+
+  type ValueEnumType = {
+    color?: string;
+    disabled?: boolean;
+    status?: string;
+    text?: string;
   };
 }

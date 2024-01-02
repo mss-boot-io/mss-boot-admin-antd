@@ -1,12 +1,4 @@
 import { Access } from '@/components/MssBoot/Access';
-import {
-  deleteModelsId,
-  getModels,
-  getModelsId,
-  postModels,
-  putModelMigrateId,
-  putModelsId,
-} from '@/services/admin/model';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
@@ -19,22 +11,24 @@ import type {
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, Link, useParams, history } from '@umijs/max';
 import { Button, Drawer, Popconfirm, message } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  deleteFieldsId,
+  getFields,
+  getFieldsId,
+  postFields,
+  putFieldsId,
+} from '@/services/admin/field';
 
-const Model: React.FC = () => {
+const Field: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const { id } = useParams();
+  const { id, modelID } = useParams();
+
   const [showDetail, setShowDetail] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<API.Model>();
+  const [currentRow, setCurrentRow] = useState<API.Field>();
   const formRef = useRef<ProFormInstance>();
 
-  const migrate = async (id: string) => {
-    await putModelMigrateId({ id });
-    message.success('生成成功');
-    actionRef.current?.reload();
-  };
-
-  const columns: ProColumns<API.Model>[] = [
+  const columns: ProColumns<API.Field>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -43,6 +37,12 @@ const Model: React.FC = () => {
       render: (dom, entity) => {
         return idRender(dom, entity, setCurrentRow, setShowDetail);
       },
+    },
+    {
+      title: '模型ID',
+      dataIndex: 'modelID',
+      hideInForm: true,
+      hideInTable: true,
     },
     {
       title: '名称',
@@ -54,20 +54,117 @@ const Model: React.FC = () => {
       },
     },
     {
-      title: '表名',
-      dataIndex: 'table',
+      title: 'json标签',
+      dataIndex: 'jsonTag',
     },
     {
-      title: 'path路径',
-      dataIndex: 'path',
+      title: '标签',
+      dataIndex: 'label',
     },
     {
-      title: '描述',
-      dataIndex: 'description',
+      title: '数据类型',
+      dataIndex: 'type',
+      valueEnum: {
+        string: {
+          text: '字符串',
+          status: 'string',
+        },
+        float: {
+          text: '浮点数',
+          status: 'float',
+        },
+        int: {
+          text: '整数',
+          status: 'int',
+        },
+        uint: {
+          text: '无符号整数',
+          status: 'uint',
+        },
+        bool: {
+          text: '布尔值',
+          status: 'bool',
+        },
+        time: {
+          text: '时间',
+          status: 'time',
+        },
+        bytes: {
+          text: '字节',
+          status: 'bytes',
+        },
+      },
     },
     {
-      title: '硬删除',
-      dataIndex: 'hardDeleted',
+      title: '长度',
+      dataIndex: 'size',
+      valueType: 'digit',
+    },
+    {
+      title: '主键',
+      dataIndex: 'primaryKey',
+    },
+    {
+      title: '唯一键',
+      dataIndex: 'uniqueKey',
+    },
+    {
+      title: '索引',
+      dataIndex: 'index',
+    },
+    {
+      title: '默认值',
+      dataIndex: 'default',
+    },
+    {
+      title: '注释',
+      dataIndex: 'comment',
+    },
+    {
+      title: '搜索类型',
+      dataIndex: 'search',
+      valueEnum: {
+        exact: {
+          text: '精确匹配',
+          status: 'exact',
+        },
+        contains: {
+          text: '包含',
+          status: 'contains',
+        },
+        gt: {
+          text: '大于',
+          status: 'gt',
+        },
+        lt: {
+          text: '小于',
+          status: 'lt',
+        },
+        startswith: {
+          text: '前缀',
+          status: 'startswith',
+        },
+        endswith: {
+          text: '后缀',
+          status: 'endswith',
+        },
+        in: {
+          text: '在',
+          status: 'in',
+        },
+        isnull: {
+          text: '为空',
+          status: 'isnull',
+        },
+        order: {
+          text: '排序',
+          status: 'order',
+        },
+      },
+    },
+    {
+      title: '非空',
+      dataIndex: 'notNull',
       valueType: 'switch',
     },
     {
@@ -77,28 +174,18 @@ const Model: React.FC = () => {
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Access key="/model/edit">
-          <Link to={`/model/${record.id}`}>
+        <Access key="/field/edit">
+          <Link to={`/field/${modelID}/${record.id}`}>
             <Button key="edit">编辑</Button>
           </Link>
         </Access>,
-        <Access key="/model/field">
-          <Link to={`/field/${record.id}`}>
-            <Button key="field">字段</Button>
-          </Link>
-        </Access>,
-        <Access key="/model/migrate">
-          <Button onClick={async () => migrate(record.id!)} disabled={record.migrate} key="migrate">
-            生成表
-          </Button>
-        </Access>,
-        <Access key="/model/delete">
+        <Access key="/field/delete">
           <Popconfirm
             key="delete"
             title="删除"
             description="你确定要删除吗?"
             onConfirm={async () => {
-              const res = await deleteModelsId({ id: record.id! });
+              const res = await deleteFieldsId({ id: record.id! });
               if (!res) {
                 message.success('删除成功');
                 actionRef.current?.reload();
@@ -119,20 +206,27 @@ const Model: React.FC = () => {
       return;
     }
     if (id === 'create') {
-      await postModels(params);
+      await postFields(params);
       message.success('创建成功');
-      history.push('/model');
+      history.push('/field');
       return;
     }
-    await putModelsId({ id }, params);
+    await putFieldsId({ id }, params);
     message.success('修改成功');
-    history.push('/model');
+    history.push('/field');
   };
+
+  useEffect(() => {
+    // request modelID
+    if (!modelID || !id) {
+      message.error('modelID is empty').then(() => history.push('/model'));
+    }
+  }, [modelID]);
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Model, API.getModelsParams>
-        headerTitle="模型列表"
+      <ProTable<API.Field, API.getFieldsParams>
+        headerTitle="字段列表"
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
@@ -140,9 +234,9 @@ const Model: React.FC = () => {
         type={id ? 'form' : 'table'}
         onSubmit={id ? onSubmit : undefined}
         toolBarRender={() => [
-          <Access key="/model/create">
+          <Access key="/field/create">
             <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/models/create">
+              <Link type="primary" key="primary" to="/field/create">
                 <PlusOutlined />{' '}
                 <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
               </Link>
@@ -153,14 +247,14 @@ const Model: React.FC = () => {
           id && id !== 'create'
             ? {
                 request: async () => {
-                  const res = await getModelsId({ id });
+                  const res = await getFieldsId({ id });
                   return res;
                 },
               }
             : undefined
         }
-        request={getModels}
-        params={{ preloads: ['Fields'] }}
+        request={getFields}
+        params={{ modelID }}
         columns={columns}
       />
 
@@ -174,7 +268,7 @@ const Model: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.Model>
+          <ProDescriptions<API.Field>
             column={1}
             title={currentRow?.name}
             request={async () => ({
@@ -183,7 +277,7 @@ const Model: React.FC = () => {
             params={{
               id: currentRow?.id,
             }}
-            columns={columns as ProDescriptionsItemProps<API.Model>[]}
+            columns={columns as ProDescriptionsItemProps<API.Field>[]}
           />
         )}
       </Drawer>
@@ -191,4 +285,4 @@ const Model: React.FC = () => {
   );
 };
 
-export default Model;
+export default Field;
