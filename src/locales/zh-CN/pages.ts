@@ -65,6 +65,7 @@ export default {
   'pages.searchTable.batchApproval': '批量审批',
   'pages.404.description': '抱歉，你访问的页面不存在',
   'pages.goback.home': '返回首页',
+  'pages.table.new': '新建',
   'pages.title.option': '操作',
   'pages.title.list': '列表',
   'pages.title.edit': '编辑',

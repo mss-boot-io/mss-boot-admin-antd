@@ -2,16 +2,17 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 迁移虚拟模型 迁移虚拟模型 PUT /admin/api/model/migrate/${param0} */
-export async function putModelMigrateId(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.putModelMigrateIdParams,
+/** 生成数据 生成数据 PUT /admin/api/model/generate-data */
+export async function putModelGenerateData(
+  body: API.ModelGenerateDataRequest,
   options?: { [key: string]: any },
 ) {
-  const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/api/model/migrate/${param0}`, {
+  return request<any>('/admin/api/model/generate-data', {
     method: 'PUT',
-    params: { ...queryParams },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
@@ -57,7 +58,7 @@ export async function getModelsId(
   });
 }
 
-/** 更新模型 更新模型 PUT /admin/api/models/${param0} */
+/** 更新模型 PUT /admin/api/models/${param0} */
 export async function putModelsId(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.putModelsIdParams,

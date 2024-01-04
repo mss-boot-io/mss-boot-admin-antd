@@ -1,13 +1,16 @@
 import { Access } from '@/components/MssBoot/Access';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
-import type {
+import {
   ActionType,
+  ProColumns,
   ProDescriptionsItemProps,
   ProFormInstance,
+  PageContainer,
+  ProDescriptions,
+  ProTable,
 } from '@ant-design/pro-components';
-import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history, useLocation } from '@umijs/max';
+import { FormattedMessage, Link, useParams, history, useLocation, useIntl } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import {
@@ -19,7 +22,7 @@ import {
 } from './service/virtual';
 import { useRequest } from 'ahooks';
 import { addOption } from '@/util/addOption';
-import { useIntl } from '@@/exports';
+import { idRender } from '@/util/columnOptions';
 
 const Virtual: React.FC = () => {
   /**
@@ -37,6 +40,31 @@ const Virtual: React.FC = () => {
   const { data, loading } = useRequest(() => {
     return getVirtualDocumentation({ key: key! });
   });
+
+  const setFormItemProps = (rules: API.ColumnType[]): ProColumns<{ [key: string]: any }>[] => {
+    let columns: ProColumns<{ [key: string]: any }>[] = [];
+    rules.forEach((item) => {
+      let column: ProColumns<{ [key: string]: any }> = {
+        ...item,
+      };
+      if (item.pk) {
+        column.render = (dom, entity) => {
+          return idRender(dom, entity, setCurrentRow, setShowDetail);
+        };
+      }
+      if (item.validateRules && item.validateRules.length > 0) {
+        // @ts-ignore
+        column.formItemProps = () => {
+          return {
+            rules: item.validateRules,
+          };
+        };
+      }
+
+      columns.push(column);
+    });
+    return columns;
+  };
 
   const getListPath = (path: string): string => {
     const lastIndex = path.lastIndexOf('/');
@@ -63,7 +91,11 @@ const Virtual: React.FC = () => {
     <></>
   ) : (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<{ [key: string]: any }, API.listVirtualModelsParams>
+      <ProTable<
+        { [key: string]: any },
+        // @ts-ignore
+        API.listVirtualModelsParams
+      >
         headerTitle={`${data.name}列表`}
         actionRef={actionRef}
         formRef={formRef}
@@ -74,9 +106,8 @@ const Virtual: React.FC = () => {
         toolBarRender={() => [
           <Access key="/model/create">
             <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/models/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+              <Link type="primary" key="primary" to={`${pathname}/create`}>
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,
@@ -94,7 +125,7 @@ const Virtual: React.FC = () => {
         params={{ key }}
         request={listVirtualModels}
         // @ts-ignore
-        columns={addOption(intl, pathname, key, actionRef, data.columns)}
+        columns={addOption(intl, pathname, key, actionRef, setFormItemProps(data.columns))}
       />
 
       <Drawer
@@ -116,7 +147,9 @@ const Virtual: React.FC = () => {
             params={{
               id: currentRow?.id,
             }}
-            columns={data.columns as ProDescriptionsItemProps<{ [key: string]: any }>[]}
+            columns={
+              setFormItemProps(data.columns) as ProDescriptionsItemProps<{ [key: string]: any }>[]
+            }
           />
         )}
       </Drawer>

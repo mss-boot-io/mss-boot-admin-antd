@@ -2,8 +2,9 @@ import { Access } from '@/components/MssBoot/Access';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
-import type {
+import {
   ActionType,
+  EditableProTable,
   ProColumns,
   ProDescriptionsItemProps,
   ProFormInstance,
@@ -19,6 +20,8 @@ import {
   postFields,
   putFieldsId,
 } from '@/services/admin/field';
+// @ts-ignore
+import { v4 as uuidv4 } from 'uuid';
 
 const Field: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -27,6 +30,155 @@ const Field: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.Field>();
   const formRef = useRef<ProFormInstance>();
+  const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
+
+  const columnsTable: ProColumns<API.BaseRule>[] = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      hideInForm: true,
+      hideInTable: true,
+    },
+    {
+      title: '必填',
+      dataIndex: 'required',
+      valueType: 'switch',
+    },
+    {
+      dataIndex: 'message',
+      title: '错误信息',
+    },
+    {
+      dataIndex: 'pattern',
+      title: '正则表达式',
+    },
+    {
+      dataIndex: 'type',
+      title: '类型',
+      valueEnum: {
+        string: {
+          text: '字符串',
+          status: 'string',
+        },
+        number: {
+          text: '数字',
+          status: 'number',
+        },
+        boolean: {
+          text: '布尔值',
+          status: 'boolean',
+        },
+        method: {
+          text: '方法',
+          status: 'method',
+        },
+        regexp: {
+          text: '正则表达式',
+          status: 'regexp',
+        },
+        integer: {
+          text: '整数',
+          status: 'integer',
+        },
+        float: {
+          text: '浮点数',
+          status: 'float',
+        },
+        array: {
+          text: '数组',
+          status: 'array',
+        },
+        object: {
+          text: '对象',
+          status: 'object',
+        },
+        enum: {
+          text: '枚举',
+          status: 'enum',
+        },
+        date: {
+          text: '日期',
+          status: 'date',
+        },
+        url: {
+          text: 'url',
+          status: 'url',
+        },
+        hex: {
+          text: 'hex',
+          status: 'hex',
+        },
+        email: {
+          text: 'email',
+          status: 'email',
+        },
+      },
+    },
+    {
+      dataIndex: 'min',
+      title: '最小值',
+    },
+    {
+      dataIndex: 'max',
+      title: '最大值',
+    },
+    {
+      dataIndex: 'len',
+      title: '长度',
+    },
+    {
+      dataIndex: 'warningOnly',
+      title: '警告',
+    },
+    {
+      dataIndex: 'whitespace',
+      title: '空格',
+    },
+    {
+      dataIndex: 'validateTrigger',
+      title: '触发器',
+      valueEnum: {
+        onChange: {
+          text: 'onChange',
+          status: 'onChange',
+        },
+        onBlur: {
+          text: 'onBlur',
+          status: 'onBlur',
+        },
+        onValidate: {
+          text: 'onValidate',
+          status: 'onValidate',
+        },
+      },
+    },
+    {
+      title: <FormattedMessage id="pages.title.option" defaultMessage="Operating" />,
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <Button
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.id!);
+          }}
+        >
+          编辑
+        </Button>,
+        <Button
+          key="delete"
+          onClick={async () => {
+            const tableDataSource = formRef.current?.getFieldValue('defines') as API.BaseRule[];
+            formRef.current?.setFieldsValue({
+              defines: tableDataSource.filter((item) => item.id !== record.id),
+            });
+          }}
+        >
+          删除
+        </Button>,
+      ],
+    },
+  ];
 
   const columns: ProColumns<API.Field>[] = [
     {
@@ -166,6 +318,61 @@ const Field: React.FC = () => {
       title: '非空',
       dataIndex: 'notNull',
       valueType: 'switch',
+      search: false,
+    },
+    {
+      title: '表单中隐藏',
+      dataIndex: 'hideInForm',
+      valueType: 'switch',
+      search: false,
+    },
+    {
+      title: '表格中隐藏',
+      dataIndex: 'hideInTable',
+      valueType: 'switch',
+      search: false,
+    },
+    {
+      title: '详情中隐藏',
+      dataIndex: 'hideInDescriptions',
+      valueType: 'switch',
+      search: false,
+    },
+    {
+      title: '验证规则',
+      dataIndex: 'rules',
+      hideInTable: true,
+      search: false,
+      renderFormItem() {
+        return (
+          <EditableProTable<API.BaseRule>
+            rowKey="id"
+            scroll={{ x: 960 }}
+            formRef={formRef}
+            headerTitle="验证规则"
+            maxLength={10}
+            name="rules"
+            controlled={false}
+            // @ts-ignore
+            recordCreatorProps={{
+              position: 'bottom' as 'top',
+              // @ts-ignore
+              record: () => ({
+                id: uuidv4().replace(/-/g, ''),
+              }),
+            }}
+            columns={columnsTable}
+            editable={{
+              type: 'multiple',
+              editableKeys,
+              onChange: setEditableKeys,
+              actionRender: (row, config, defaultDom) => {
+                return [defaultDom.save, defaultDom.delete ?? defaultDom.cancel];
+              },
+            }}
+          />
+        );
+      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -208,17 +415,17 @@ const Field: React.FC = () => {
     if (id === 'create') {
       await postFields(params);
       message.success('创建成功');
-      history.push('/field');
+      history.push(`/field/${modelID}`);
       return;
     }
     await putFieldsId({ id }, params);
     message.success('修改成功');
-    history.push('/field');
+    history.push(`/field/${modelID}`);
   };
 
   useEffect(() => {
     // request modelID
-    if (!modelID || !id) {
+    if (!modelID) {
       message.error('modelID is empty').then(() => history.push('/model'));
     }
   }, [modelID]);

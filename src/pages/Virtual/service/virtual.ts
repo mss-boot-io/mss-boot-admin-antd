@@ -3,6 +3,7 @@
 import { request } from '@umijs/max';
 
 export async function listVirtualModels(
+  // @ts-ignore
   params: API.listVirtualModelsParams,
   options?: { [key: string]: any },
 ) {
@@ -17,6 +18,7 @@ export async function listVirtualModels(
 }
 
 export async function getVirtualModel(
+  // @ts-ignore
   params: API.getVirtualModelParams,
   options?: { [key: string]: any },
 ) {
@@ -31,6 +33,7 @@ export async function getVirtualModel(
 }
 
 export async function createVirtualModel(
+  // @ts-ignore
   params: API.createVirtualModelParams,
   body: { [key: string]: any },
   options?: { [key: string]: any },
@@ -50,6 +53,7 @@ export async function createVirtualModel(
 }
 
 export async function updateVirtualModel(
+  // @ts-ignore
   params: API.updateVirtualModelParams,
   body: { [key: string]: any },
   options?: { [key: string]: any },
@@ -69,6 +73,7 @@ export async function updateVirtualModel(
 }
 
 export async function deleteVirtualModel(
+  // @ts-ignore
   params: API.deleteVirtualModelParams,
   options?: { [key: string]: any },
 ) {
@@ -83,10 +88,12 @@ export async function deleteVirtualModel(
 }
 
 export async function getVirtualDocumentation(
+  // @ts-ignore
   params: API.getVirtualDocumentationParams,
   options?: { [key: string]: any },
 ) {
   const { key, ...queryParams } = params;
+  // @ts-ignore
   return request<API.documentation>(`/admin/api/documentation/${key}`, {
     method: 'GET',
     params: {

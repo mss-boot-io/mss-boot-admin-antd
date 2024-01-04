@@ -69,6 +69,7 @@ export default {
   'pages.searchTable.batchApproval': 'batch approval',
   'pages.404.description': 'Sorry, the page you visited does not exist',
   'pages.goback.home': 'Back Home',
+  'pages.table.new': 'New',
   'pages.title.option': 'Option',
   'pages.title.list': 'List',
   'pages.title.edit': 'Edit',

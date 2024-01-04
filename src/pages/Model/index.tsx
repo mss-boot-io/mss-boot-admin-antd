@@ -4,35 +4,46 @@ import {
   getModels,
   getModelsId,
   postModels,
-  putModelMigrateId,
+  putModelGenerateData,
   putModelsId,
 } from '@/services/admin/model';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
-import type {
+import {
   ActionType,
   ProColumns,
   ProDescriptionsItemProps,
   ProFormInstance,
+  ProFormText,
 } from '@ant-design/pro-components';
-import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message } from 'antd';
+import {
+  PageContainer,
+  ProDescriptions,
+  ProTable,
+  DrawerForm,
+  ProFormTreeSelect,
+} from '@ant-design/pro-components';
+import { FormattedMessage, Link, useParams, history, useIntl } from '@umijs/max';
+import { Button, Drawer, Popconfirm, message, Form } from 'antd';
 import React, { useRef, useState } from 'react';
+import { menuTransferTree } from '@/util/menuTransferTree';
+import { getMenus } from '@/services/admin/menu';
 
 const Model: React.FC = () => {
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  const intl = useIntl();
+
   const actionRef = useRef<ActionType>();
   const { id } = useParams();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.Model>();
   const formRef = useRef<ProFormInstance>();
-
-  const migrate = async (id: string) => {
-    await putModelMigrateId({ id });
-    message.success('生成成功');
-    actionRef.current?.reload();
-  };
+  const [openSelectMenu, setOpenSelectMenu] = useState<boolean>(false);
+  const [generateDataForm] = Form.useForm<{ id: string; menuParentID: string }>();
 
   const columns: ProColumns<API.Model>[] = [
     {
@@ -87,9 +98,15 @@ const Model: React.FC = () => {
             <Button key="field">字段</Button>
           </Link>
         </Access>,
-        <Access key="/model/migrate">
-          <Button onClick={async () => migrate(record.id!)} disabled={record.migrate} key="migrate">
-            生成表
+        <Access key="/model/generate-data">
+          <Button
+            onClick={async () => {
+              setCurrentRow(record);
+              setOpenSelectMenu(true);
+            }}
+            disabled={record.generatedData}
+          >
+            生成数据
           </Button>
         </Access>,
         <Access key="/model/delete">
@@ -129,6 +146,13 @@ const Model: React.FC = () => {
     history.push('/model');
   };
 
+  const onOpenChange = async (e: boolean) => {
+    if (e) {
+      return;
+    }
+    setOpenSelectMenu(e);
+  };
+
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Model, API.getModelsParams>
@@ -142,7 +166,7 @@ const Model: React.FC = () => {
         toolBarRender={() => [
           <Access key="/model/create">
             <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/models/create">
+              <Link type="primary" key="primary" to="/model/create">
                 <PlusOutlined />{' '}
                 <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
               </Link>
@@ -153,8 +177,7 @@ const Model: React.FC = () => {
           id && id !== 'create'
             ? {
                 request: async () => {
-                  const res = await getModelsId({ id });
-                  return res;
+                  return await getModelsId({ id });
                 },
               }
             : undefined
@@ -187,6 +210,32 @@ const Model: React.FC = () => {
           />
         )}
       </Drawer>
+      <DrawerForm<API.ModelGenerateDataRequest>
+        title="选择父级"
+        width={600}
+        form={generateDataForm}
+        open={openSelectMenu}
+        onOpenChange={onOpenChange}
+        onFinish={async (e) => {
+          await putModelGenerateData(e);
+          message.success('生成成功');
+          actionRef.current?.reload();
+          setOpenSelectMenu(false);
+        }}
+      >
+        <ProFormText name="id" hidden initialValue={currentRow?.id} />
+        <ProFormTreeSelect
+          name="menuParentID"
+          allowClear
+          width="xl"
+          placeholder="请选择父级"
+          request={async () => {
+            const res = await getMenus({ pageSize: 1000 });
+            // @ts-ignore
+            return menuTransferTree(intl, res.data);
+          }}
+        />
+      </DrawerForm>
     </PageContainer>
   );
 };

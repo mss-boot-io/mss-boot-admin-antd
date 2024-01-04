@@ -9,7 +9,7 @@ export async function getDocumentationKey(
   options?: { [key: string]: any },
 ) {
   const { key: param0, ...queryParams } = params;
-  return request<API.ColumnType[]>(`/admin/api/documentation/${param0}`, {
+  return request<API.VirtualModelObject>(`/admin/api/documentation/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),

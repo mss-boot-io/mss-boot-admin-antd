@@ -13,12 +13,28 @@ declare namespace API {
     updatedAt?: string;
   };
 
+  type BaseRule = {
+    id?: string;
+    len?: number;
+    max?: number;
+    message?: string;
+    min?: number;
+    pattern?: string;
+    required?: boolean;
+    type?: string;
+    validateTrigger?: string;
+    warningOnly?: boolean;
+    whitespace?: boolean;
+  };
+
   type ColumnType = {
     dataIndex?: string;
     hideInDescriptions?: boolean;
     hideInForm?: boolean;
     hideInTable?: boolean;
+    pk?: boolean;
     title?: string;
+    validateRules?: BaseRule[];
     valueEnum?: Record<string, any>;
   };
 
@@ -87,6 +103,7 @@ declare namespace API {
   };
 
   type Field = {
+    associationsID?: string;
     comment?: string;
     /** CreatedAt create time */
     createdAt?: string;
@@ -103,6 +120,7 @@ declare namespace API {
     name?: string;
     notNull?: boolean;
     primaryKey?: string;
+    rules?: BaseRule[];
     search?: string;
     size?: number;
     sort?: number;
@@ -111,6 +129,7 @@ declare namespace API {
     /** UpdatedAt update time */
     updatedAt?: string;
     valueEnumName?: string;
+    width?: string;
   };
 
   type GenerateParams = {
@@ -494,15 +513,20 @@ Path 路由 */
     createdAt?: string;
     description?: string;
     fields?: Field[];
+    generatedData?: boolean;
     hardDeleted?: boolean;
     /** ID primary key */
     id?: string;
-    migrate?: boolean;
     name?: string;
     path?: string;
     tableName?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
+  };
+
+  type ModelGenerateDataRequest = {
+    id: string;
+    menuParentID?: string;
   };
 
   type Notice = {
@@ -587,11 +611,6 @@ Path 路由 */
   };
 
   type putMenusIdParams = {
-    /** id */
-    id: string;
-  };
-
-  type putModelMigrateIdParams = {
     /** id */
     id: string;
   };
@@ -861,5 +880,10 @@ Path 路由 */
     disabled?: boolean;
     status?: string;
     text?: string;
+  };
+
+  type VirtualModelObject = {
+    columns?: ColumnType[];
+    name?: string;
   };
 }
