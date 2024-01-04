@@ -228,7 +228,7 @@ const UserList: React.FC = () => {
   ) : (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.User, API.Page>
-        headerTitle={intl.formatMessage({ id: 'page.title.list', defaultMessage: '列表' })}
+        headerTitle={intl.formatMessage({ id: 'pages.title.list', defaultMessage: '列表' })}
         actionRef={actionRef}
         rowKey="id"
         search={{

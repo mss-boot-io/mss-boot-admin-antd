@@ -19,6 +19,7 @@ import { getApis } from '@/services/admin/api';
 import { Access } from '@/components/MssBoot/Access';
 import { indexTitle } from '@/util/indexTitle';
 import { idRender } from '@/util/columnOptions';
+import { menuTransferTree } from '@/util/menuTransferTree';
 
 const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -55,8 +56,7 @@ const TableList: React.FC = () => {
       search: false,
       hideInTable: true,
       dataIndex: 'parentID',
-      renderFormItem: (e) => {
-        console.log(e);
+      renderFormItem: () => {
         return (
           <TreeSelect
             showSearch
@@ -212,23 +212,10 @@ const TableList: React.FC = () => {
     },
   ];
 
-  const transfer = (data: API.API[]): DataNode[] => {
-    // @ts-ignore
-    return data.map((item) => {
-      return {
-        title: `${item.method}---${item.name}`,
-        key: `${item.method}---${item.path}`,
-        // @ts-ignore
-        children: item.children ? transfer(item.children) : null,
-      };
-    });
-  };
-
   const onOpenChange = async (e: boolean) => {
     if (e) {
       const { data } = await getApis({ pageSize: 1000 });
-      console.log(transfer(data!));
-      setTreeData(transfer(data!));
+      setTreeData(menuTransferTree(intl, data!));
       //get checkedKeys
       const checkedRes = await getMenuApiId({
         id: currentRow?.id ?? '',
@@ -241,10 +228,8 @@ const TableList: React.FC = () => {
         console.log(checkedKeys);
         setCheckedKeys(checkedKeys);
       }
-      console.log('onOpenChange0');
       return;
     }
-    console.log('onOpenChange1');
     setTreeData([]);
     setAuthModalOpen(e);
   };

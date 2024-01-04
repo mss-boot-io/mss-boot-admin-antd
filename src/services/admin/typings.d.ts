@@ -13,7 +13,37 @@ declare namespace API {
     updatedAt?: string;
   };
 
+  type BaseRule = {
+    id?: string;
+    len?: number;
+    max?: number;
+    message?: string;
+    min?: number;
+    pattern?: string;
+    required?: boolean;
+    type?: string;
+    validateTrigger?: string;
+    warningOnly?: boolean;
+    whitespace?: boolean;
+  };
+
+  type ColumnType = {
+    dataIndex?: string;
+    hideInDescriptions?: boolean;
+    hideInForm?: boolean;
+    hideInTable?: boolean;
+    pk?: boolean;
+    title?: string;
+    validateRules?: BaseRule[];
+    valueEnum?: Record<string, any>;
+  };
+
   type deleteApisIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type deleteFieldsIdParams = {
     /** id */
     id: string;
   };
@@ -24,6 +54,11 @@ declare namespace API {
   };
 
   type deleteMenusIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type deleteModelsIdParams = {
     /** id */
     id: string;
   };
@@ -67,6 +102,36 @@ declare namespace API {
     status?: string;
   };
 
+  type Field = {
+    associationsID?: string;
+    comment?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    default?: string;
+    hideInDescriptions?: boolean;
+    hideInForm?: boolean;
+    hideInTable?: boolean;
+    /** ID primary key */
+    id?: string;
+    index?: string;
+    jsonTag?: string;
+    label?: string;
+    modelID?: string;
+    name?: string;
+    notNull?: boolean;
+    primaryKey?: string;
+    rules?: BaseRule[];
+    search?: string;
+    size?: number;
+    sort?: number;
+    type?: string;
+    unique?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+    valueEnumName?: string;
+    width?: string;
+  };
+
   type GenerateParams = {
     params?: Record<string, any>;
     repo: string;
@@ -88,6 +153,25 @@ declare namespace API {
   type GetAuthorizeResponse = {
     paths?: string[];
     roleID?: string;
+  };
+
+  type getDocumentationKeyParams = {
+    /** key */
+    key: string;
+  };
+
+  type getFieldsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getFieldsParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+    /** modelID */
+    modelID?: string;
   };
 
   type getGithubCallbackParams = {
@@ -143,6 +227,20 @@ declare namespace API {
     page?: number;
     /** pageSize */
     pageSize?: number;
+  };
+
+  type getModelsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getModelsParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+    /** preloads */
+    preloads?: string[];
   };
 
   type getNoticeReadIdParams = {
@@ -410,6 +508,27 @@ Path 路由 */
     paths: string[];
   };
 
+  type Model = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    description?: string;
+    fields?: Field[];
+    generatedData?: boolean;
+    hardDeleted?: boolean;
+    /** ID primary key */
+    id?: string;
+    name?: string;
+    path?: string;
+    tableName?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
+  type ModelGenerateDataRequest = {
+    id: string;
+    menuParentID?: string;
+  };
+
   type Notice = {
     avatar?: string;
     /** CreatedAt create time */
@@ -476,6 +595,11 @@ Path 路由 */
     id: string;
   };
 
+  type putFieldsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type putLanguagesIdParams = {
     /** id */
     id: string;
@@ -487,6 +611,11 @@ Path 路由 */
   };
 
   type putMenusIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putModelsIdParams = {
     /** id */
     id: string;
   };
@@ -744,5 +873,17 @@ Path 路由 */
     user_id?: string;
     website?: string;
     zoneinfo?: string;
+  };
+
+  type ValueEnumType = {
+    color?: string;
+    disabled?: boolean;
+    status?: string;
+    text?: string;
+  };
+
+  type VirtualModelObject = {
+    columns?: ColumnType[];
+    name?: string;
   };
 }
