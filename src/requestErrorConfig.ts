@@ -71,10 +71,13 @@ export const errorConfig: RequestConfig = {
           }
         }
       } else if (error.response) {
-        console.log(error.response);
+        let msg = error.response.data.msg;
+        if (!msg) {
+          msg = error.response.data.errorMessage;
+        }
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error(`${error.response.statusText}:${error.response.data.msg}`).then(() => {
+        message.error(`${error.response.statusText}:${msg}`).then(() => {
           if (error.response.status === 401) {
             history.push('/user/login');
           }
