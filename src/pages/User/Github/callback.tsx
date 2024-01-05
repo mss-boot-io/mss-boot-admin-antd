@@ -46,7 +46,7 @@ const Github: React.FC = () => {
 
           setTimeout(() => {
             window.close();
-          }, 1000);
+          }, 2000);
         }
       });
     }
