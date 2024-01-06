@@ -136,11 +136,10 @@ npm run start
 2. [ant-design-pro](https://github.com/ant-design/ant-design-pro)
 3. [gin](https://github.com/gin-gonic/gin)
 4. [casbin](https://github.com/casbin/casbin)
-5. [spf13/viper](https://github.com/spf13/viper)
-6. [gorm](https://github.com/jinzhu/gorm)
-7. [gin-swagger](https://github.com/swaggo/gin-swagger)
-8. [jwt-go](https://github.com/dgrijalva/jwt-go)
-9. [oauth2](https://pkg.go.dev/golang.org/x/oauth2)
+5. [gorm](https://github.com/jinzhu/gorm)
+6. [gin-swagger](https://github.com/swaggo/gin-swagger)
+7. [jwt-go](https://github.com/dgrijalva/jwt-go)
+8. [oauth2](https://pkg.go.dev/golang.org/x/oauth2)
 
 ## 🔑 License
 
