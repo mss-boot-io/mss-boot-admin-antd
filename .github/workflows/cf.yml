@@ -14,6 +14,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,37 +44,9 @@ jobs:
           cp dist/index.html dist/404.html
           cp -r workers-site dist/
 
-      - name: Package Dist
-        run: tar -czvf dist.tar.gz dist
-
-      - name: Upload Artifact
-        if: ${{ inputs.env == 'beta' || inputs.env == 'prod' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist.tar.gz
-          retention-days: 3
-
-  cd:
-    runs-on: ubuntu-latest
-    needs: build
-    name: cd
-    if: ${{ inputs.env == 'beta' || inputs.env == 'prod' }}
-    environment: ${{ inputs.env }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-
-      - name: Unpack Artifact
-        run: tar -xzvf dist.tar.gz
-
       - name: deploy ${{ inputs.env }}
         uses: cloudflare/wrangler-action@1.3.0
+        if: ${{ inputs.env == 'beta' || inputs.env == 'prod' }}
         env:
           USER: root
         with:
