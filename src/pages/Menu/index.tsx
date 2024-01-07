@@ -1,9 +1,6 @@
-import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, useIntl, Link, useParams, history } from '@umijs/max';
-import { Button, Drawer, Popconfirm, TreeSelect, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import { Access } from '@/components/MssBoot/Access';
+import Auth from '@/components/MssBoot/Auth';
+import { getApis } from '@/services/admin/api';
 import {
   deleteMenusId,
   getMenuApiId,
@@ -13,13 +10,16 @@ import {
   postMenus,
   putMenusId,
 } from '@/services/admin/menu';
-import { DataNode } from 'antd/es/tree';
-import Auth from '@/components/MssBoot/Auth';
-import { getApis } from '@/services/admin/api';
-import { Access } from '@/components/MssBoot/Access';
-import { indexTitle } from '@/util/indexTitle';
 import { idRender } from '@/util/columnOptions';
+import { indexTitle } from '@/util/indexTitle';
 import { menuTransferTree } from '@/util/menuTransferTree';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
+import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
+import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max';
+import { Button, Drawer, message, Popconfirm, TreeSelect } from 'antd';
+import { DataNode } from 'antd/es/tree';
+import React, { useEffect, useRef, useState } from 'react';
 
 const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -305,7 +305,6 @@ const TableList: React.FC = () => {
               }
             : undefined
         }
-        params={{ type: 'MENU' }}
         request={getMenus}
         columns={columns}
       />

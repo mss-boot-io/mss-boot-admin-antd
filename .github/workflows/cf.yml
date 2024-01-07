@@ -48,7 +48,7 @@ jobs:
 
       - name: Upload Artifact
         if: ${{ inputs.env == 'beta' || inputs.env == 'prod' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist.tar.gz

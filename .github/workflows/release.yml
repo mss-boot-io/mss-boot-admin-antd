@@ -38,7 +38,7 @@ jobs:
         run: tar -czvf dist.tar.gz dist
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: dist-release
           path: dist
@@ -58,6 +58,7 @@ jobs:
   image:
     needs: release
     runs-on: ubuntu-latest
+    name: Image
     steps:
       - name: Checkout
         uses: actions/checkout@v4
