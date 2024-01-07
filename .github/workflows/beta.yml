@@ -4,11 +4,12 @@ on:
   push:
     branches:
       - main
+      - fix/workflow
 
 jobs:
   cicd:
-    uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@main
+    uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@fix/workflow
     with:
       env: beta
-    secrets: 
+    secrets:
       CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
