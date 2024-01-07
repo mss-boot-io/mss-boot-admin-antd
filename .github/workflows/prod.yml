@@ -23,6 +23,7 @@ jobs:
   release:
 #    needs: cicd
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     name: Release
     steps:
       - name: Checkout
@@ -42,6 +43,39 @@ jobs:
 
       - name: Build
         run: rm -rf config.prod.* && pnpm build
+
+      - name: Pack dist
+        run: tar -czvf dist.tar.gz dist
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-release
+          path: dist
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          files: |
+            dist.tar.gz
+          prerelease: false
+          body: |
+            ## Pull Image
+            ```shell
+            docker pull ghcr.io/${{ github.repository }}:${{ github.ref }}
+
+  image:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-release
+          path: dist
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
@@ -76,19 +110,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-
-      - name: Pack dist
-        run: tar -czvf dist.tar.gz dist
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
-          files: |
-            dist.tar.gz
-          prerelease: false
-          body: |
-            ## Pull Image
-            ```shell
-            docker pull ghcr.io/${{ github.repository }}:${{ github.ref }}
             ```
