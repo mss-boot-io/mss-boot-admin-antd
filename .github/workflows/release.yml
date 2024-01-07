@@ -32,7 +32,9 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: rm -rf config.prod.* && pnpm build
+        run: |
+          rm -rf config/config.prod.*
+          pnpm build
 
       - name: Pack dist
         run: tar -czvf dist.tar.gz dist
@@ -54,6 +56,7 @@ jobs:
             ## Pull Image
             ```shell
             docker pull ghcr.io/${{ github.repository }}:${{ github.ref }}
+            ```
 
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
