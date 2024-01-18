@@ -41,7 +41,7 @@ const Base: React.FC = () => {
     },
   ];
 
-  const onSubmit = async (params: any) => {
+  const onSubmit = async (params: Record<string, any>) => {
     await putAppConfigsGroup({ group: 'base' }, { data: params });
     message.success(
       intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: 'Update Success!' }),

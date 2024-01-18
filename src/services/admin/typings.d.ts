@@ -15,7 +15,6 @@ declare namespace API {
 
   type AppConfigControlRequest = {
     data: Record<string, any>;
-    group: string;
   };
 
   type BaseRule = {
@@ -320,6 +319,11 @@ declare namespace API {
     status?: string;
     /** remark */
     remark?: string;
+  };
+
+  type getStatisticsNameParams = {
+    /** name */
+    name: string;
   };
 
   type getSystemConfigsIdParams = {
@@ -640,6 +644,11 @@ Path 路由 */
     id: string;
   };
 
+  type putAppConfigsGroupParams = {
+    /** group */
+    group: string;
+  };
+
   type putFieldsIdParams = {
     /** id */
     id: string;
@@ -740,6 +749,17 @@ Path 路由 */
 
   type SetAuthorizeRequest = {
     paths?: string[];
+  };
+
+  type StatisticsGetResponse = {
+    items?: StatisticsItem[];
+    name?: string;
+    type?: string;
+  };
+
+  type StatisticsItem = {
+    scales?: number;
+    time?: string;
   };
 
   type SystemConfig = {

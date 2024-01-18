@@ -12,6 +12,7 @@ import * as model from './model';
 import * as notice from './notice';
 import * as option from './option';
 import * as role from './role';
+import * as statistics from './statistics';
 import * as systemConfig from './systemConfig';
 import * as task from './task';
 import * as tenant from './tenant';
@@ -29,6 +30,7 @@ export default {
   notice,
   option,
   role,
+  statistics,
   systemConfig,
   task,
   tenant,
