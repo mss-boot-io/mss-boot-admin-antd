@@ -317,6 +317,7 @@ const TaskList: React.FC = () => {
             ? {
                 request: async () => {
                   const res = await getTasksId({ id });
+                  setNeedBody(res.method !== 'GET');
                   return res;
                 },
                 onChange,
