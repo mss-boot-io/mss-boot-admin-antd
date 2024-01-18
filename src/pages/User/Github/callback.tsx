@@ -1,7 +1,7 @@
 import { getGithubCallback } from '@/services/admin/generator';
-import { postUserLoginAccount } from '@/services/admin/user';
+import { postUserLogin } from '@/services/admin/user';
 import { useSearchParams } from '@umijs/max';
-import { Spin, message } from 'antd';
+import { message, Spin } from 'antd';
 import React, { useEffect } from 'react';
 
 const Github: React.FC = () => {
@@ -29,9 +29,8 @@ const Github: React.FC = () => {
           message.success('获取成功');
 
           //get token
-          console.log(state);
           if (state.startsWith('ghs_')) {
-            postUserLoginAccount({ password: res.accessToken, type: 'github' }).then((msg) => {
+            postUserLogin({ password: res.accessToken, type: 'github' }).then((msg) => {
               if (msg.code === 200 && msg.token) {
                 message.success('登录成功');
                 //set token to localstorage

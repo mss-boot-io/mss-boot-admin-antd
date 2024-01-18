@@ -84,4 +84,12 @@ export default {
   'pages.message.create.success': '创建成功！',
   'pages.message.edit.success': '更新成功！',
   'pages.message.username.rule.pattern': '用户名只能包含字母、数字、下划线',
+  'pages.app.config.title': '应用配置',
+  'pages.account.settings.title': '个人设置',
+  'pages.base.settings.title': '基本设置',
+  'pages.security.settings.title': '安全设置',
+  'pages.binding.settings.title': '账号绑定',
+  'pages.notification.settings.title': '新消息通知',
+  'pages.user.settings.title': '用户设置',
+  'pages.application.settings.title': '应用设置',
 };

@@ -7,8 +7,8 @@ import { toOptions } from '@/util/toOptions';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history, useRequest, useIntl } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message } from 'antd';
+import { FormattedMessage, history, Link, useIntl, useParams, useRequest } from '@umijs/max';
+import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 
 const UserList: React.FC = () => {
@@ -60,7 +60,7 @@ const UserList: React.FC = () => {
           {
             pattern: /^[a-zA-Z0-9_]+$/,
             message: intl.formatMessage({
-              id: 'page.message.username.rule.pattern',
+              id: 'pages.message.username.rule.pattern',
               defaultMessage: '用户名只能包含字母、数字和下划线',
             }),
           },
@@ -159,14 +159,14 @@ const UserList: React.FC = () => {
         <Access key="/users/edit">
           <Link to={`/users/control/${record.id}`}>
             <Button key="edit">
-              <FormattedMessage id="page.title.edit" defaultMessage="编辑" />
+              <FormattedMessage id="pages.title.edit" defaultMessage="编辑" />
             </Button>
           </Link>
         </Access>,
         <Access key="/users/password-reset">
           <Link to={`/users/password-reset/${record.id}/`}>
             <Button key="passwordReset">
-              <FormattedMessage id="page.title.password.reset" defaultMessage="重置密码" />
+              <FormattedMessage id="pages.title.password.reset" defaultMessage="重置密码" />
             </Button>
           </Link>
         </Access>,
@@ -174,11 +174,11 @@ const UserList: React.FC = () => {
           <Popconfirm
             key="delete"
             title={intl.formatMessage({
-              id: 'page.title.delete.confirm',
+              id: 'pages.title.delete.confirm',
               defaultMessage: '确认删除',
             })}
             description={intl.formatMessage({
-              id: 'page.description.delete.confirm',
+              id: 'pages.description.delete.confirm',
               defaultMessage: '确认删除该记录吗？',
             })}
             onConfirm={async () => {
@@ -186,17 +186,17 @@ const UserList: React.FC = () => {
               message
                 .success(
                   intl.formatMessage({
-                    id: 'page.message.delete.success',
+                    id: 'pages.message.delete.success',
                     defaultMessage: '删除成功',
                   }),
                 )
                 .then(() => actionRef.current?.reload());
             }}
-            okText={intl.formatMessage({ id: 'page.title.ok', defaultMessage: '确认' })}
-            cancelText={intl.formatMessage({ id: 'page.title.cancel', defaultMessage: '取消' })}
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: '确认' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: '取消' })}
           >
             <Button key="delete.button">
-              <FormattedMessage id="page.title.delete" defaultMessage="删除" />
+              <FormattedMessage id="pages.title.delete" defaultMessage="删除" />
             </Button>
           </Popconfirm>
         </Access>,
@@ -211,14 +211,14 @@ const UserList: React.FC = () => {
     if (id === 'create') {
       await postUsers(params);
       message.success(
-        intl.formatMessage({ id: 'page.message.create.success', defaultMessage: '创建成功' }),
+        intl.formatMessage({ id: 'pages.message.create.success', defaultMessage: '创建成功' }),
       );
       history.push('/users');
       return;
     }
     await putUsersId({ id }, params);
     message.success(
-      intl.formatMessage({ id: 'page.message.edit.success', defaultMessage: '修改成功' }),
+      intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: '修改成功' }),
     );
     history.push('/users');
   };
@@ -240,8 +240,7 @@ const UserList: React.FC = () => {
           <Access key="/users/create">
             <Button type="primary" key="create">
               <Link type="primary" key="primary" to="/users/control/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,

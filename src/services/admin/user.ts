@@ -3,7 +3,7 @@
 import { request } from '@umijs/max';
 
 /** 重置密码 重置密码 PUT /admin/api/user/${param0}/password-reset */
-export async function putUserUserIdPasswordReset(
+export async function putUserUserIDPasswordReset(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.putUserUserIDPasswordResetParams,
   body: API.PasswordResetRequest,
@@ -36,9 +36,9 @@ export async function postUserFakeCaptcha(
   });
 }
 
-/** 登录 登录 POST /admin/api/user/login/account */
-export async function postUserLoginAccount(body: API.UserLogin, options?: { [key: string]: any }) {
-  return request<API.LoginResponse>('/admin/api/user/login/account', {
+/** 登录 登录 POST /admin/api/user/login */
+export async function postUserLogin(body: API.UserLogin, options?: { [key: string]: any }) {
+  return request<API.LoginResponse>('/admin/api/user/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

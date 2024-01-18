@@ -17,8 +17,8 @@ import {
   ProFormSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message } from 'antd';
+import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 
 const TaskList: React.FC = () => {
@@ -307,8 +307,7 @@ const TaskList: React.FC = () => {
           <Access key="/task/create">
             <Button type="primary" key="create">
               <Link type="primary" key="primary" to="/task/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,

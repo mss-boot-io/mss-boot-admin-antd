@@ -1,11 +1,4 @@
 import { Access } from '@/components/MssBoot/Access';
-import {
-  deleteOptionsId,
-  getOptions,
-  getOptionsId,
-  postOptions,
-  putOptionsId,
-} from '@/services/admin/option';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
@@ -25,17 +18,24 @@ import { FormattedMessage, history, Link, useParams } from '@umijs/max';
 import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 // @ts-ignore
+import {
+  deleteTenantsId,
+  getTenants,
+  getTenantsId,
+  postTenants,
+  putTenantsId,
+} from '@/services/admin/tenant';
 import { v4 as uuidv4 } from 'uuid';
 
-const Option: React.FC = () => {
+const Tenant: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const { id } = useParams();
   const [showDetail, setShowDetail] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<API.Option>();
+  const [currentRow, setCurrentRow] = useState<API.Tenant>();
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
 
-  const columnsTable: ProColumns<API.OptionItem>[] = [
+  const columnsTable: ProColumns<API.TenantDomain>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -43,8 +43,8 @@ const Option: React.FC = () => {
       hideInTable: true,
     },
     {
-      title: '标签',
-      dataIndex: 'label',
+      title: '名称',
+      dataIndex: 'name',
       formItemProps: () => {
         return {
           rules: [{ required: true, message: '此项为必填项' }],
@@ -52,67 +52,12 @@ const Option: React.FC = () => {
       },
     },
     {
-      title: '键',
-      dataIndex: 'key',
+      title: '域名',
+      dataIndex: 'domain',
       formItemProps: () => {
         return {
           rules: [{ required: true, message: '此项为必填项' }],
         };
-      },
-    },
-    {
-      title: '值',
-      dataIndex: 'value',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true, message: '此项为必填项' }],
-        };
-      },
-    },
-    {
-      title: '颜色',
-      dataIndex: 'color',
-      valueEnum: {
-        red: {
-          text: '红色',
-          status: 'red',
-          color: 'red',
-        },
-        green: {
-          text: '绿色',
-          status: 'green',
-          color: 'green',
-        },
-        yellow: {
-          text: '黄色',
-          status: 'yellow',
-          color: 'yellow',
-        },
-        orange: {
-          text: '橙色',
-          status: 'orange',
-          color: 'orange',
-        },
-        blue: {
-          text: '蓝色',
-          status: 'blue',
-          color: 'blue',
-        },
-        purple: {
-          text: '紫色',
-          status: 'purple',
-          color: 'purple',
-        },
-        cyan: {
-          text: '青色',
-          status: 'cyan',
-          color: 'cyan',
-        },
-        volcano: {
-          text: '火山色',
-          status: 'volcano',
-          color: 'volcano',
-        },
       },
     },
     {
@@ -130,7 +75,7 @@ const Option: React.FC = () => {
         <Button
           key="delete"
           onClick={async () => {
-            const tableDataSource = formRef.current?.getFieldValue('items') as API.OptionItem[];
+            const tableDataSource = formRef.current?.getFieldValue('domains') as API.TenantDomain[];
             formRef.current?.setFieldsValue({
               items: tableDataSource.filter((item) => item.id !== record.id),
             });
@@ -142,7 +87,7 @@ const Option: React.FC = () => {
     },
   ];
 
-  const columns: ProColumns<API.Option>[] = [
+  const columns: ProColumns<API.Tenant>[] = [
     {
       title: 'id',
       dataIndex: 'id',
@@ -171,8 +116,8 @@ const Option: React.FC = () => {
       },
     },
     {
-      title: '选项',
-      dataIndex: 'items',
+      title: '域名',
+      dataIndex: 'domains',
       hideInTable: true,
       search: false,
       renderText(text) {
@@ -180,12 +125,9 @@ const Option: React.FC = () => {
           <List
             bordered
             dataSource={text}
-            renderItem={(item: API.OptionItem) => (
+            renderItem={(item: API.TenantDomain) => (
               <List.Item>
-                <Typography.Text mark>
-                  {item.label}[{item.key}]
-                </Typography.Text>
-                : {item.value}
+                <Typography.Text mark>{item.name}</Typography.Text>: {item.domain}
               </List.Item>
             )}
           />
@@ -193,16 +135,16 @@ const Option: React.FC = () => {
       },
       renderFormItem() {
         return (
-          <EditableProTable<API.OptionItem>
+          <EditableProTable<API.TenantDomain>
             rowKey="id"
             scroll={{
               x: 960,
             }}
             formRef={formRef}
             // editableFormRef={schema.formRef}
-            headerTitle="选项列表"
+            headerTitle="域名列表"
             maxLength={1000}
-            name="items"
+            name="domains"
             controlled={false}
             // @ts-ignore
             recordCreatorProps={{
@@ -226,6 +168,31 @@ const Option: React.FC = () => {
       },
     },
     {
+      title: '过期时间',
+      sorter: true,
+      dataIndex: 'expire',
+      search: false,
+      valueType: 'dateTime',
+      // hideInForm: true,
+    },
+    {
+      title: '管理员用户名',
+      dataIndex: 'username',
+      search: false,
+      hideInTable: true,
+      hideInDescriptions: true,
+      hideInForm: id !== undefined && id !== 'create',
+    },
+    {
+      title: '管理员密码',
+      dataIndex: 'password',
+      search: false,
+      hideInTable: true,
+      hideInDescriptions: true,
+      hideInForm: id !== undefined && id !== 'create',
+      valueType: 'password',
+    },
+    {
       title: '备注',
       search: false,
       dataIndex: 'remark',
@@ -239,24 +206,25 @@ const Option: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Access key="/option/edit">
-          <Link to={`/option/${record.id}`}>
+        <Access key="/tenant/edit">
+          <Link to={`/tenant/${record.id}`}>
             <Button key="edit">编辑</Button>
           </Link>
         </Access>,
-        <Access key="/option/delete">
+        <Access key="/tenant/delete">
           <Popconfirm
+            disabled={record.default}
             key="delete"
             title="删除"
             description="你确定要删除吗?"
             onConfirm={async () => {
-              const res = await deleteOptionsId({ id: record.id! });
+              const res = await deleteTenantsId({ id: record.id! });
               if (!res) {
                 message.success('删除成功');
                 actionRef.current?.reload();
@@ -265,7 +233,9 @@ const Option: React.FC = () => {
             okText="确定"
             cancelText="再想想"
           >
-            <Button key="delete.button">删除</Button>
+            <Button disabled={record.default} key="delete.button">
+              删除
+            </Button>
           </Popconfirm>
         </Access>,
       ],
@@ -277,20 +247,20 @@ const Option: React.FC = () => {
       return;
     }
     if (id === 'create') {
-      await postOptions(params);
+      await postTenants(params);
       message.success('创建成功');
-      history.push('/option');
+      history.push('/tenant');
       return;
     }
-    await putOptionsId({ id }, params);
+    await putTenantsId({ id }, params);
     message.success('修改成功');
-    history.push('/option');
+    history.push('/tenant');
   };
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Option, API.getOptionsParams>
-        headerTitle="选项列表"
+      <ProTable<API.Tenant, API.getTenantsParams>
+        headerTitle="租户列表"
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
@@ -298,9 +268,9 @@ const Option: React.FC = () => {
         type={id ? 'form' : 'table'}
         onSubmit={id ? onSubmit : undefined}
         toolBarRender={() => [
-          <Access key="/option/create">
+          <Access key="/tenant/create">
             <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/option/create">
+              <Link type="primary" key="primary" to="/tenant/create">
                 <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
@@ -310,13 +280,13 @@ const Option: React.FC = () => {
           id && id !== 'create'
             ? {
                 request: async () => {
-                  const res = await getOptionsId({ id });
+                  const res = await getTenantsId({ id, preloads: ['Domains'] });
                   return res;
                 },
               }
             : undefined
         }
-        request={getOptions}
+        request={getTenants}
         columns={columns}
       />
 
@@ -330,7 +300,7 @@ const Option: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.Option>
+          <ProDescriptions<API.Tenant>
             column={1}
             title={currentRow?.name}
             request={async () => ({
@@ -339,7 +309,7 @@ const Option: React.FC = () => {
             params={{
               id: currentRow?.id,
             }}
-            columns={columns as ProDescriptionsItemProps<API.Option>[]}
+            columns={columns as ProDescriptionsItemProps<API.Tenant>[]}
           />
         )}
       </Drawer>
@@ -347,4 +317,4 @@ const Option: React.FC = () => {
   );
 };
 
-export default Option;
+export default Tenant;

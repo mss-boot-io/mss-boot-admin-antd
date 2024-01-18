@@ -127,12 +127,12 @@ const Index: React.FC = () => {
               onClick={async () => {
                 await putNoticeReadId({ id: record.id! });
                 message.success(
-                  intl.formatMessage({ id: 'page.title.notice.read', defaultMessage: '已读' }),
+                  intl.formatMessage({ id: 'pages.title.notice.read', defaultMessage: '已读' }),
                 );
                 actionRef.current?.reload();
               }}
             >
-              <FormattedMessage id="page.title.notice.read" defaultMessage="标为已读" />
+              <FormattedMessage id="pages.title.notice.read" defaultMessage="标为已读" />
             </Button>
           </Access>
         ),
@@ -153,8 +153,7 @@ const Index: React.FC = () => {
           <Access key="/notice/create">
             <Link to="/notice/create" key="create">
               <Button type="primary" key="create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Button>
             </Link>
           </Access>,

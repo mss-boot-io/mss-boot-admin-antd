@@ -13,6 +13,10 @@ declare namespace API {
     updatedAt?: string;
   };
 
+  type AppConfigControlRequest = {
+    data: Record<string, any>;
+  };
+
   type BaseRule = {
     id?: string;
     len?: number;
@@ -88,6 +92,11 @@ declare namespace API {
     id: string;
   };
 
+  type deleteTenantsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type deleteUsersIdParams = {
     /** id */
     id: string;
@@ -148,6 +157,11 @@ declare namespace API {
     page?: number;
     /** pageSize */
     pageSize?: number;
+  };
+
+  type getAppConfigsGroupParams = {
+    /** group */
+    group: string;
   };
 
   type GetAuthorizeResponse = {
@@ -307,6 +321,11 @@ declare namespace API {
     remark?: string;
   };
 
+  type getStatisticsNameParams = {
+    /** name */
+    name: string;
+  };
+
   type getSystemConfigsIdParams = {
     /** id */
     id: string;
@@ -373,6 +392,26 @@ declare namespace API {
     accessToken?: string;
   };
 
+  type getTenantsIdParams = {
+    /** id */
+    id: string;
+    /** preloads */
+    preloads?: string[];
+  };
+
+  type getTenantsParams = {
+    /** page */
+    page?: number;
+    /** pageSize */
+    pageSize?: number;
+    /** id */
+    id?: string;
+    /** name */
+    name?: string;
+    /** status */
+    status?: string;
+  };
+
   type getUsersIdParams = {
     /** id */
     id: string;
@@ -421,6 +460,8 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     /** Statue 状态 */
     status?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -497,6 +538,8 @@ Path 路由 */
     status?: string;
     /** Target 新页面打开 */
     target?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
     /** Type 菜单类型 */
     type?: string;
     /** UpdatedAt update time */
@@ -509,6 +552,7 @@ Path 路由 */
   };
 
   type Model = {
+    auth?: boolean;
     /** CreatedAt create time */
     createdAt?: string;
     description?: string;
@@ -517,6 +561,7 @@ Path 路由 */
     hardDeleted?: boolean;
     /** ID primary key */
     id?: string;
+    multiTenant?: boolean;
     name?: string;
     path?: string;
     tableName?: string;
@@ -541,6 +586,8 @@ Path 路由 */
     key?: string;
     read?: boolean;
     status?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
     title?: string;
     type?: string;
     /** UpdatedAt update time */
@@ -561,6 +608,8 @@ Path 路由 */
     remark?: string;
     /** Status 状态 */
     status?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -593,6 +642,11 @@ Path 路由 */
   type putApisIdParams = {
     /** id */
     id: string;
+  };
+
+  type putAppConfigsGroupParams = {
+    /** group */
+    group: string;
   };
 
   type putFieldsIdParams = {
@@ -650,6 +704,11 @@ Path 路由 */
     id: string;
   };
 
+  type putTenantsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type putUsersIdParams = {
     /** id */
     id: string;
@@ -682,12 +741,25 @@ Path 路由 */
     root?: boolean;
     /** Status 状态 */
     status?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
 
   type SetAuthorizeRequest = {
     paths?: string[];
+  };
+
+  type StatisticsGetResponse = {
+    items?: StatisticsItem[];
+    name?: string;
+    type?: string;
+  };
+
+  type StatisticsItem = {
+    scales?: number;
+    time?: string;
   };
 
   type SystemConfig = {
@@ -730,6 +802,8 @@ Path 路由 */
     spec?: string;
     /** Status 状态 */
     status?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
     timeout?: number;
     /** UpdatedAt update time */
     updatedAt?: string;
@@ -768,6 +842,37 @@ Path 路由 */
     branch?: string;
     path?: string;
     source: string;
+  };
+
+  type Tenant = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    default?: boolean;
+    domains?: TenantDomain[];
+    email?: string;
+    expire?: string;
+    /** ID primary key */
+    id?: string;
+    name?: string;
+    password?: string;
+    remark?: string;
+    /** Status 状态 */
+    status?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+    username?: string;
+  };
+
+  type TenantDomain = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    domain?: string;
+    /** ID primary key */
+    id?: string;
+    name?: string;
+    tenantId?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
   };
 
   type UpdateAuthorizeRequest = {
@@ -827,6 +932,8 @@ Path 路由 */
     /** Status 状态 */
     status?: string;
     tags?: string[];
+    /** TenantID tenant id */
+    tenantID?: string;
     title?: string;
     type?: string;
     /** UpdatedAt update time */
@@ -868,6 +975,8 @@ Path 路由 */
     preferred_username?: string;
     profile?: string;
     sub?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
     user_id?: string;

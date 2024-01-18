@@ -2,10 +2,7 @@ import { GridContent, PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 import { Menu } from 'antd';
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import BaseView from './components/base';
-import BindingView from './components/binding';
-import NotificationView from './components/notification';
-import SecurityView from './components/security';
+import Base from './components/base';
 import styles from './style.less';
 
 const { Item } = Menu;
@@ -24,18 +21,7 @@ const Settings: React.FC = () => {
   const intl = useIntl();
   const menuMap: Record<string, React.ReactNode> = {
     base: intl.formatMessage({ id: 'pages.base.settings.title', defaultMessage: 'Basic Settings' }),
-    security: intl.formatMessage({
-      id: 'pages.security.settings.title',
-      defaultMessage: 'Security Settings',
-    }),
-    binding: intl.formatMessage({
-      id: 'pages.binding.settings.title',
-      defaultMessage: 'Account Binding',
-    }),
-    notification: intl.formatMessage({
-      id: 'pages.notification.settings.title',
-      defaultMessage: 'New Message Notification',
-    }),
+    user: intl.formatMessage({ id: 'pages.user.settings.title', defaultMessage: 'User Settings' }),
   };
 
   const [initConfig, setInitConfig] = useState<SettingsState>({
@@ -79,13 +65,13 @@ const Settings: React.FC = () => {
     const { selectKey } = initConfig;
     switch (selectKey) {
       case 'base':
-        return <BaseView />;
+        return <Base />;
       case 'security':
-        return <SecurityView />;
+        return <></>;
       case 'binding':
-        return <BindingView />;
+        return <></>;
       case 'notification':
-        return <NotificationView />;
+        return <></>;
       default:
         return null;
     }
@@ -94,7 +80,7 @@ const Settings: React.FC = () => {
   return (
     <PageContainer
       title={intl.formatMessage({
-        id: 'pages.account.settings.title',
+        id: 'pages.application.settings.title',
         defaultMessage: 'Personal Settings',
       })}
     >

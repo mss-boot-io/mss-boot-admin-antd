@@ -289,8 +289,7 @@ const TableList: React.FC = () => {
           <Access key="/menu/create">
             <Link to="/menu/create" key="create">
               <Button type="primary" key="create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Button>
             </Link>
           </Access>,
