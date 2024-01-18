@@ -1,18 +1,4 @@
 import { Access } from '@/components/MssBoot/Access';
-import { idRender } from '@/util/columnOptions';
-import { indexTitle } from '@/util/indexTitle';
-import { PlusOutlined } from '@ant-design/icons';
-import {
-  ActionType,
-  EditableProTable,
-  ProColumns,
-  ProDescriptionsItemProps,
-  ProFormInstance,
-} from '@ant-design/pro-components';
-import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
 import {
   deleteFieldsId,
   getFields,
@@ -20,6 +6,22 @@ import {
   postFields,
   putFieldsId,
 } from '@/services/admin/field';
+import { idRender } from '@/util/columnOptions';
+import { indexTitle } from '@/util/indexTitle';
+import { PlusOutlined } from '@ant-design/icons';
+import {
+  ActionType,
+  EditableProTable,
+  PageContainer,
+  ProColumns,
+  ProDescriptions,
+  ProDescriptionsItemProps,
+  ProFormInstance,
+  ProTable,
+} from '@ant-design/pro-components';
+import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { Button, Drawer, message, Popconfirm } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 
@@ -443,9 +445,8 @@ const Field: React.FC = () => {
         toolBarRender={() => [
           <Access key="/field/create">
             <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/field/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+              <Link type="primary" key="primary" to={`/field/${modelID}/create`}>
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,

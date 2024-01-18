@@ -21,8 +21,8 @@ import {
   ProDescriptions,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history } from '@umijs/max';
-import { Button, Drawer, List, Popconfirm, Typography, message } from 'antd';
+import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
@@ -261,8 +261,7 @@ const Language: React.FC = () => {
           <Access key="/language/create">
             <Button type="primary" key="create">
               <Link type="primary" key="primary" to="/language/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,

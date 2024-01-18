@@ -1,16 +1,19 @@
 import { Access } from '@/components/MssBoot/Access';
+import { addOption } from '@/util/addOption';
+import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   ActionType,
+  PageContainer,
   ProColumns,
+  ProDescriptions,
   ProDescriptionsItemProps,
   ProFormInstance,
-  PageContainer,
-  ProDescriptions,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history, useLocation, useIntl } from '@umijs/max';
+import { FormattedMessage, history, Link, useIntl, useLocation, useParams } from '@umijs/max';
+import { useRequest } from 'ahooks';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import {
@@ -20,9 +23,6 @@ import {
   listVirtualModels,
   updateVirtualModel,
 } from './service/virtual';
-import { useRequest } from 'ahooks';
-import { addOption } from '@/util/addOption';
-import { idRender } from '@/util/columnOptions';
 
 const Virtual: React.FC = () => {
   /**
@@ -96,7 +96,10 @@ const Virtual: React.FC = () => {
         // @ts-ignore
         API.listVirtualModelsParams
       >
-        headerTitle={`${data.name}列表`}
+        headerTitle={intl.formatMessage({
+          id: `pages.${data.name}.list.title`,
+          defaultMessage: `${data.name} List`,
+        })}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"

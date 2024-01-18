@@ -11,8 +11,8 @@ import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message } from 'antd';
+import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 
 const SystemConfig: React.FC = () => {
@@ -144,8 +144,7 @@ const SystemConfig: React.FC = () => {
           <Access key="/system-config/create">
             <Button type="primary" key="create">
               <Link type="primary" key="primary" to="/system-config/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,

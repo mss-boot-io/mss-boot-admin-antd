@@ -1,4 +1,5 @@
 import { Access } from '@/components/MssBoot/Access';
+import { getMenus } from '@/services/admin/menu';
 import {
   deleteModelsId,
   getModels,
@@ -9,26 +10,23 @@ import {
 } from '@/services/admin/model';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { menuTransferTree } from '@/util/menuTransferTree';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   ActionType,
+  DrawerForm,
+  PageContainer,
   ProColumns,
+  ProDescriptions,
   ProDescriptionsItemProps,
   ProFormInstance,
   ProFormText,
-} from '@ant-design/pro-components';
-import {
-  PageContainer,
-  ProDescriptions,
-  ProTable,
-  DrawerForm,
   ProFormTreeSelect,
+  ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useParams, history, useIntl } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message, Form } from 'antd';
+import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max';
+import { Button, Drawer, Form, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
-import { menuTransferTree } from '@/util/menuTransferTree';
-import { getMenus } from '@/services/admin/menu';
 
 const Model: React.FC = () => {
   /**
@@ -79,6 +77,16 @@ const Model: React.FC = () => {
     {
       title: '硬删除',
       dataIndex: 'hardDeleted',
+      valueType: 'switch',
+    },
+    {
+      title: '需要认证',
+      dataIndex: 'auth',
+      valueType: 'switch',
+    },
+    {
+      title: '多租户',
+      dataIndex: 'multiTenant',
       valueType: 'switch',
     },
     {
@@ -167,8 +175,7 @@ const Model: React.FC = () => {
           <Access key="/model/create">
             <Button type="primary" key="create">
               <Link type="primary" key="primary" to="/model/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,

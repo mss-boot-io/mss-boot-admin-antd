@@ -1,24 +1,24 @@
+import { Access } from '@/components/MssBoot/Access';
+import Auth from '@/components/MssBoot/Auth';
+import { getMenuTree } from '@/services/admin/menu';
+import {
+  deleteRolesId,
+  getRoleAuthorizeRoleID,
+  getRoles,
+  getRolesId,
+  postRoleAuthorizeRoleID,
+  postRoles,
+  putRolesId,
+} from '@/services/admin/role';
+import { idRender, statusOptions } from '@/util/columnOptions';
+import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useIntl, useParams, history } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message } from 'antd';
-import React, { useRef, useState } from 'react';
-import Auth from '@/components/MssBoot/Auth';
+import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max';
+import { Button, Drawer, message, Popconfirm } from 'antd';
 import { DataNode } from 'antd/es/tree';
-import {
-  deleteRolesId,
-  getRoleAuthorizeRoleId,
-  postRoleAuthorizeRoleId,
-  getRoles,
-  postRoles,
-  putRolesId,
-  getRolesId,
-} from '@/services/admin/role';
-import { getMenuTree } from '@/services/admin/menu';
-import { Access } from '@/components/MssBoot/Access';
-import { indexTitle } from '@/util/indexTitle';
-import { idRender, statusOptions } from '@/util/columnOptions';
+import React, { useRef, useState } from 'react';
 
 const TableList: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
@@ -94,12 +94,12 @@ const TableList: React.FC = () => {
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Access key="/menu/edit">
+        <Access key="/role/edit">
           <Button key="edit">
             <Link to={`/role/${record.id}`}>编辑</Link>
           </Button>
         </Access>,
-        <Access key="/menu/auth">
+        <Access key="/role/auth">
           <Button
             key="auth"
             disabled={record.root}
@@ -111,7 +111,7 @@ const TableList: React.FC = () => {
             授权
           </Button>
         </Access>,
-        <Access key="/menu/delete">
+        <Access key="/role/delete">
           <Popconfirm
             key="delete"
             title="删除角色"
@@ -154,7 +154,7 @@ const TableList: React.FC = () => {
       console.log(transfer(data));
       setTreeData(transfer(data));
       //get checkedKeys
-      const checkedRes = await getRoleAuthorizeRoleId({
+      const checkedRes = await getRoleAuthorizeRoleID({
         roleID: currentRow?.id ?? '',
       });
       if (checkedRes) {
@@ -199,11 +199,10 @@ const TableList: React.FC = () => {
         type={id ? 'form' : 'table'}
         onSubmit={id ? onSubmit : undefined}
         toolBarRender={() => [
-          <Access key="/menu/create">
+          <Access key="/role/create">
             <Button type="primary" key="create">
               <Link type="primary" key="primary" to="/role/create">
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
           </Access>,
@@ -256,7 +255,7 @@ const TableList: React.FC = () => {
             paths.push(value.toString());
           });
 
-          const res = await postRoleAuthorizeRoleId(
+          const res = await postRoleAuthorizeRoleID(
             {
               roleID: currentRow?.id ?? '',
             },

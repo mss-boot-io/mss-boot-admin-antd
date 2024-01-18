@@ -100,4 +100,12 @@ export default {
   'pages.column.name.title': 'Name',
   'pages.message.username.rule.pattern':
     'Username can only contain letters, numbers, and underscores',
+  'pages.app.config.title': 'Application Config',
+  'pages.account.settings.title': 'Personal Settings',
+  'pages.base.settings.title': 'Basic Settings',
+  'pages.security.settings.title': 'Security Settings',
+  'pages.binding.settings.title': 'Account Binding',
+  'pages.notification.settings.title': 'New Message Notification',
+  'pages.user.settings.title': 'User Settings',
+  'pages.application.settings.title': 'Application Settings',
 };

@@ -1,4 +1,6 @@
 import Footer from '@/components/Footer';
+import { getGithubGetLoginUrl } from '@/services/admin/generator';
+import { postUserFakeCaptcha, postUserLogin } from '@/services/admin/user';
 import { GithubOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import {
   LoginForm,
@@ -7,13 +9,11 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { FormattedMessage, history, SelectLang, useIntl, useModel, Helmet } from '@umijs/max';
+import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
-import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
-import { getGithubGetLoginUrl } from '@/services/admin/generator';
-import { postUserFakeCaptcha, postUserLoginAccount } from '@/services/admin/user';
+import Settings from '../../../../config/defaultSettings';
 
 function randToken(): string {
   const buffer = new Uint8Array(28);
@@ -158,7 +158,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.UserLogin) => {
     try {
       // 登录
-      const msg = await postUserLoginAccount({ ...values, type });
+      const msg = await postUserLogin({ ...values, type });
       if (msg.code === 200 && msg.token) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
