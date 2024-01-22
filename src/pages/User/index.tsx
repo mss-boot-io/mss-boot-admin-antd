@@ -150,7 +150,7 @@ const UserList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -159,14 +159,14 @@ const UserList: React.FC = () => {
         <Access key="/users/edit">
           <Link to={`/users/control/${record.id}`}>
             <Button key="edit">
-              <FormattedMessage id="pages.title.edit" defaultMessage="编辑" />
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
             </Button>
           </Link>
         </Access>,
         <Access key="/users/password-reset">
           <Link to={`/users/password-reset/${record.id}/`}>
             <Button key="passwordReset">
-              <FormattedMessage id="pages.title.password.reset" defaultMessage="重置密码" />
+              <FormattedMessage id="pages.title.password.reset" defaultMessage="ResetPassword" />
             </Button>
           </Link>
         </Access>,
@@ -175,11 +175,11 @@ const UserList: React.FC = () => {
             key="delete"
             title={intl.formatMessage({
               id: 'pages.title.delete.confirm',
-              defaultMessage: '确认删除',
+              defaultMessage: 'Confirm Delete',
             })}
             description={intl.formatMessage({
               id: 'pages.description.delete.confirm',
-              defaultMessage: '确认删除该记录吗？',
+              defaultMessage: 'Are you sure to delete this record?',
             })}
             onConfirm={async () => {
               await deleteUsersId({ id: record.id! });
@@ -187,16 +187,16 @@ const UserList: React.FC = () => {
                 .success(
                   intl.formatMessage({
                     id: 'pages.message.delete.success',
-                    defaultMessage: '删除成功',
+                    defaultMessage: 'Delete successfully!',
                   }),
                 )
                 .then(() => actionRef.current?.reload());
             }}
-            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: '确认' })}
-            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: '取消' })}
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
             <Button key="delete.button">
-              <FormattedMessage id="pages.title.delete" defaultMessage="删除" />
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
             </Button>
           </Popconfirm>
         </Access>,
@@ -211,14 +211,20 @@ const UserList: React.FC = () => {
     if (id === 'create') {
       await postUsers(params);
       message.success(
-        intl.formatMessage({ id: 'pages.message.create.success', defaultMessage: '创建成功' }),
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
       );
       history.push('/users');
       return;
     }
     await putUsersId({ id }, params);
     message.success(
-      intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: '修改成功' }),
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
     );
     history.push('/users');
   };
@@ -228,7 +234,10 @@ const UserList: React.FC = () => {
   ) : (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.User, API.Page>
-        headerTitle={intl.formatMessage({ id: 'pages.title.list', defaultMessage: '列表' })}
+        headerTitle={intl.formatMessage({
+          id: 'pages.user.list.title',
+          defaultMessage: 'User List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={{

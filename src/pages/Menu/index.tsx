@@ -169,7 +169,7 @@ const TableList: React.FC = () => {
       valueType: 'dateTime',
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -177,7 +177,9 @@ const TableList: React.FC = () => {
       render: (_, record) => [
         <Access key="/menu/edit">
           <Link to={`/menu/${record.id}`} key="edit">
-            <Button>编辑</Button>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
           </Link>
         </Access>,
         <Access key="/menu/bind-api">
@@ -189,23 +191,37 @@ const TableList: React.FC = () => {
               setAuthModalOpen(true);
             }}
           >
-            绑定API
+            <FormattedMessage id="pages.user.binding.api" defaultMessage="Bingding API" />
           </Button>
         </Access>,
         <Access key="/menu/delete">
           <Popconfirm
             key="delete"
-            title="删除菜单"
-            description="你确定要删除这个菜单吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             onConfirm={async () => {
               await deleteMenusId({ id: record.id! });
-              message.success('删除成功');
-              actionRef.current?.reload();
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
-            <Button>删除</Button>
+            <Button key="delete.button">
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
+            </Button>
           </Popconfirm>
         </Access>,
       ],
@@ -252,12 +268,22 @@ const TableList: React.FC = () => {
     }
     if (id === 'create') {
       await postMenus(params);
-      message.success('提交成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/menu');
       return;
     }
     await putMenusId({ id }, params);
-    message.success('提交成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/menu');
   };
 
@@ -274,7 +300,10 @@ const TableList: React.FC = () => {
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Menu, API.getMenusParams>
-        headerTitle="角色列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.menu.list.title',
+          defaultMessage: 'Menu List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={{

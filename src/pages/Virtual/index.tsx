@@ -78,12 +78,22 @@ const Virtual: React.FC = () => {
 
     if (id === 'create') {
       await createVirtualModel({ key }, params);
-      message.success('创建成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push(getListPath(pathname));
       return;
     }
     await updateVirtualModel({ id, key }, params);
-    message.success('更新成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push(getListPath(pathname));
   };
 

@@ -13,16 +13,14 @@ import {
 } from '@ant-design/pro-components';
 import { FormattedMessage, Link, useIntl, useParams, useSearchParams } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const Index: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.Notice>();
-
   const { id } = useParams();
-
   const [searchParams] = useSearchParams();
 
   /**
@@ -112,7 +110,7 @@ const Index: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -126,13 +124,17 @@ const Index: React.FC = () => {
             <Button
               onClick={async () => {
                 await putNoticeReadId({ id: record.id! });
-                message.success(
-                  intl.formatMessage({ id: 'pages.title.notice.read', defaultMessage: '已读' }),
-                );
-                actionRef.current?.reload();
+                message
+                  .success(
+                    intl.formatMessage({
+                      id: 'pages.title.notice.read',
+                      defaultMessage: 'Mark as read',
+                    }),
+                  )
+                  .then(() => actionRef.current?.reload());
               }}
             >
-              <FormattedMessage id="pages.title.notice.read" defaultMessage="标为已读" />
+              <FormattedMessage id="pages.title.notice.read" defaultMessage="Mark as read" />
             </Button>
           </Access>
         ),
@@ -143,7 +145,10 @@ const Index: React.FC = () => {
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Notice, API.getNoticesParams>
-        headerTitle="通知列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.notice.list.title',
+          defaultMessage: 'Notice List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={{

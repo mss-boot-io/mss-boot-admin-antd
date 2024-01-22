@@ -74,6 +74,7 @@ export default {
   'pages.options.status.enabled': '启用',
   'pages.options.status.disabled': '禁用',
   'pages.options.status.locked': '锁定',
+  'pages.options.list.title': '字典列表',
   'pages.title.password.reset': '重置密码',
   'pages.title.delete.confirm': '确认删除',
   'pages.title.ok': '好的',

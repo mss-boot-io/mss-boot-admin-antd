@@ -90,7 +90,7 @@ const Model: React.FC = () => {
       valueType: 'switch',
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -98,12 +98,16 @@ const Model: React.FC = () => {
       render: (_, record) => [
         <Access key="/model/edit">
           <Link to={`/model/${record.id}`}>
-            <Button key="edit">编辑</Button>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
           </Link>
         </Access>,
         <Access key="/model/field">
           <Link to={`/field/${record.id}`}>
-            <Button key="field">字段</Button>
+            <Button key="field">
+              <FormattedMessage id="pages.model.field.title" defaultMessage="Field" />
+            </Button>
           </Link>
         </Access>,
         <Access key="/model/generate-data">
@@ -114,25 +118,37 @@ const Model: React.FC = () => {
             }}
             disabled={record.generatedData}
           >
-            生成数据
+            <FormattedMessage id="pages.model.generate.data.title" defaultMessage="Generate Data" />
           </Button>
         </Access>,
         <Access key="/model/delete">
           <Popconfirm
             key="delete"
-            title="删除"
-            description="你确定要删除吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             onConfirm={async () => {
-              const res = await deleteModelsId({ id: record.id! });
-              if (!res) {
-                message.success('删除成功');
-                actionRef.current?.reload();
-              }
+              await deleteModelsId({ id: record.id! });
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
-            <Button key="delete.button">删除</Button>
+            <Button key="delete.button">
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
+            </Button>
           </Popconfirm>
         </Access>,
       ],
@@ -145,12 +161,22 @@ const Model: React.FC = () => {
     }
     if (id === 'create') {
       await postModels(params);
-      message.success('创建成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/model');
       return;
     }
     await putModelsId({ id }, params);
-    message.success('修改成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/model');
   };
 
@@ -164,7 +190,10 @@ const Model: React.FC = () => {
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Model, API.getModelsParams>
-        headerTitle="模型列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.model.list.title',
+          defaultMessage: 'Model List',
+        })}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"

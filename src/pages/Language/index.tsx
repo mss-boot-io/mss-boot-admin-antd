@@ -21,7 +21,7 @@ import {
   ProDescriptions,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max';
 import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 // @ts-ignore
@@ -34,6 +34,7 @@ const Language: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.Language>();
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
+  const intl = useIntl();
 
   const columnsTable: ProColumns<API.LanguageDefine>[] = [
     {
@@ -199,7 +200,7 @@ const Language: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -207,25 +208,39 @@ const Language: React.FC = () => {
       render: (_, record) => [
         <Access key="/language/edit">
           <Link to={`/language/${record.id}`}>
-            <Button key="edit">编辑</Button>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
           </Link>
         </Access>,
         <Access key="/language/delete">
           <Popconfirm
             key="delete"
-            title="删除语言"
-            description="你确定要删除这个语言吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             onConfirm={async () => {
-              const res = await deleteLanguagesId({ id: record.id! });
-              if (!res) {
-                message.success('删除成功');
-                actionRef.current?.reload();
-              }
+              await deleteLanguagesId({ id: record.id! });
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
-            <Button key="delete.button">删除</Button>
+            <Button key="delete.button">
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
+            </Button>
           </Popconfirm>
         </Access>,
       ],
@@ -238,19 +253,32 @@ const Language: React.FC = () => {
     }
     if (id === 'create') {
       await postLanguages(params);
-      message.success('创建成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/language');
       return;
     }
     await putLanguagesId({ id }, params);
-    message.success('修改成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/language');
   };
 
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Language, API.Page>
-        headerTitle="语言列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.language.list.title',
+          defaultMessage: 'Language List',
+        })}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"
