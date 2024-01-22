@@ -21,11 +21,12 @@ import {
   ProDescriptions,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { FormattedMessage, useIntl, history, Link, useParams } from '@umijs/max';
 import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Option: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -34,89 +35,94 @@ const Option: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.Option>();
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  const intl = useIntl();
 
   const columnsTable: ProColumns<API.OptionItem>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       hideInTable: true,
     },
     {
-      title: '标签',
+      title: fieldIntl(intl, 'label'),
       dataIndex: 'label',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '键',
+      title: fieldIntl(intl, 'key'),
       dataIndex: 'key',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '值',
+      title: fieldIntl(intl, 'value'),
       dataIndex: 'value',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '颜色',
+      title: fieldIntl(intl, 'color'),
       dataIndex: 'color',
       valueEnum: {
         red: {
-          text: '红色',
+          text: fieldIntl(intl, 'options.red'),
           status: 'red',
           color: 'red',
         },
         green: {
-          text: '绿色',
+          text: fieldIntl(intl, 'options.green'),
           status: 'green',
           color: 'green',
         },
         yellow: {
-          text: '黄色',
+          text: fieldIntl(intl, 'options.yellow'),
           status: 'yellow',
           color: 'yellow',
         },
         orange: {
-          text: '橙色',
+          text: fieldIntl(intl, 'options.orange'),
           status: 'orange',
           color: 'orange',
         },
         blue: {
-          text: '蓝色',
+          text: fieldIntl(intl, 'options.blue'),
           status: 'blue',
           color: 'blue',
         },
         purple: {
-          text: '紫色',
+          text: fieldIntl(intl, 'options.purple'),
           status: 'purple',
           color: 'purple',
         },
         cyan: {
-          text: '青色',
+          text: fieldIntl(intl, 'options.cyan'),
           status: 'cyan',
           color: 'cyan',
         },
         volcano: {
-          text: '火山色',
+          text: fieldIntl(intl, 'options.volcano'),
           status: 'volcano',
           color: 'volcano',
         },
       },
     },
     {
-      title: '操作',
+      title: <FormattedMessage id="pages.title.option" />,
       valueType: 'option',
       render: (text, record, _, action) => [
         <Button
@@ -125,7 +131,7 @@ const Option: React.FC = () => {
             action?.startEditable?.(record.id!);
           }}
         >
-          编辑
+          <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
         </Button>,
         <Button
           key="delete"
@@ -136,7 +142,7 @@ const Option: React.FC = () => {
             });
           }}
         >
-          删除
+          <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
         </Button>,
       ],
     },
@@ -144,7 +150,7 @@ const Option: React.FC = () => {
 
   const columns: ProColumns<API.Option>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       search: false,
@@ -153,25 +159,25 @@ const Option: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: {
         enabled: {
-          text: '启用',
+          text: fieldIntl(intl, 'options.enabled'),
           status: 'enabled',
         },
-        disbaled: {
-          text: '禁用',
+        disabled: {
+          text: fieldIntl(intl, 'options.disabled'),
           status: 'disabled',
         },
       },
     },
     {
-      title: '选项',
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'items',
       hideInTable: true,
       search: false,
@@ -200,7 +206,7 @@ const Option: React.FC = () => {
             }}
             formRef={formRef}
             // editableFormRef={schema.formRef}
-            headerTitle="选项列表"
+            headerTitle={intl.formatMessage({ id: 'pages.option.dictionary.list' })}
             maxLength={1000}
             name="items"
             controlled={false}
@@ -226,12 +232,12 @@ const Option: React.FC = () => {
       },
     },
     {
-      title: '备注',
+      title: fieldIntl(intl, 'remark'),
       search: false,
       dataIndex: 'remark',
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -239,7 +245,7 @@ const Option: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -247,25 +253,39 @@ const Option: React.FC = () => {
       render: (_, record) => [
         <Access key="/option/edit">
           <Link to={`/option/${record.id}`}>
-            <Button key="edit">编辑</Button>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
           </Link>
         </Access>,
         <Access key="/option/delete">
           <Popconfirm
             key="delete"
-            title="删除"
-            description="你确定要删除吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             onConfirm={async () => {
-              const res = await deleteOptionsId({ id: record.id! });
-              if (!res) {
-                message.success('删除成功');
-                actionRef.current?.reload();
-              }
+              await deleteOptionsId({ id: record.id! });
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
-            <Button key="delete.button">删除</Button>
+            <Button key="delete.button">
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
+            </Button>
           </Popconfirm>
         </Access>,
       ],
@@ -278,19 +298,32 @@ const Option: React.FC = () => {
     }
     if (id === 'create') {
       await postOptions(params);
-      message.success('创建成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/option');
       return;
     }
     await putOptionsId({ id }, params);
-    message.success('修改成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/option');
   };
 
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Option, API.getOptionsParams>
-        headerTitle="选项列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.options.list.title',
+          defaultMessage: 'Options List',
+        })}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"

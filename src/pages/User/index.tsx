@@ -10,6 +10,7 @@ import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-compon
 import { FormattedMessage, history, Link, useIntl, useParams, useRequest } from '@umijs/max';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const UserList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -28,7 +29,7 @@ const UserList: React.FC = () => {
 
   const columns: ProColumns<API.User>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -36,21 +37,21 @@ const UserList: React.FC = () => {
       },
     },
     {
-      title: '角色',
+      title: fieldIntl(intl, 'roleID'),
       dataIndex: 'roleID',
       search: false,
       valueType: 'select',
       valueEnum: toOptions(roleOptions),
     },
     {
-      title: '头像',
+      title: fieldIntl(intl, 'avatar'),
       dataIndex: 'avatar',
       search: false,
       valueType: 'avatar',
       hideInForm: true,
     },
     {
-      title: '用户名',
+      title: fieldIntl(intl, 'username'),
       dataIndex: 'username',
       formItemProps: {
         rules: [
@@ -68,21 +69,18 @@ const UserList: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '邮箱',
+      title: fieldIntl(intl, 'email'),
       dataIndex: 'email',
       formItemProps: {
-        rules: [
-          { required: true, message: '请输入邮箱' },
-          { type: 'email', message: '请输入正确的邮箱' },
-        ],
+        rules: [{ required: true }, { type: 'email' }],
       },
     },
     {
-      title: '密码',
+      title: fieldIntl(intl, 'password'),
       dataIndex: 'password',
       search: false,
       hideInTable: true,
@@ -90,16 +88,28 @@ const UserList: React.FC = () => {
       valueType: 'password',
       formItemProps: {
         rules: [
-          { required: true, message: '请输入密码' },
-          { min: 8, message: '密码至少8位' },
-          { max: 20, message: '密码最多20位' },
-          { pattern: /[a-zA-Z]/, message: '密码必须包含字母' },
-          { pattern: /[0-9]/, message: '密码必须包含数字' },
+          { required: true },
+          { min: 8 },
+          { max: 20 },
+          {
+            pattern: /[a-zA-Z]/,
+            message: intl.formatMessage({
+              id: 'pages.message.password.rule.pattern.letters',
+              defaultMessage: 'The password must contain letters',
+            }),
+          },
+          {
+            pattern: /[0-9]/,
+            message: intl.formatMessage({
+              id: 'pages.message.password.rule.pattern.numbers',
+              defaultMessage: 'The password must contain numbers',
+            }),
+          },
         ],
       },
     },
     {
-      title: '确认密码',
+      title: fieldIntl(intl, 'confirmPassword'),
       dataIndex: 'confirmPassword',
       search: false,
       hideInTable: true,
@@ -109,21 +119,31 @@ const UserList: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请确认密码',
+            message: intl.formatMessage({
+              id: 'pages.message.password.confirm.required',
+              defaultMessage: 'Please confirm your password!',
+            }),
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(new Error('两次密码不一致'));
+              return Promise.reject(
+                new Error(
+                  intl.formatMessage({
+                    id: 'pages.message.password.confirm.failed',
+                    defaultMessage: 'The two passwords that you entered do not match!',
+                  }),
+                ),
+              );
             },
           }),
         ],
       },
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: statusOptions,
     },
@@ -142,7 +162,7 @@ const UserList: React.FC = () => {
     //   },
     // },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -150,7 +170,7 @@ const UserList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -159,14 +179,14 @@ const UserList: React.FC = () => {
         <Access key="/users/edit">
           <Link to={`/users/control/${record.id}`}>
             <Button key="edit">
-              <FormattedMessage id="pages.title.edit" defaultMessage="编辑" />
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
             </Button>
           </Link>
         </Access>,
         <Access key="/users/password-reset">
           <Link to={`/users/password-reset/${record.id}/`}>
             <Button key="passwordReset">
-              <FormattedMessage id="pages.title.password.reset" defaultMessage="重置密码" />
+              <FormattedMessage id="pages.title.password.reset" defaultMessage="ResetPassword" />
             </Button>
           </Link>
         </Access>,
@@ -175,11 +195,11 @@ const UserList: React.FC = () => {
             key="delete"
             title={intl.formatMessage({
               id: 'pages.title.delete.confirm',
-              defaultMessage: '确认删除',
+              defaultMessage: 'Confirm Delete',
             })}
             description={intl.formatMessage({
               id: 'pages.description.delete.confirm',
-              defaultMessage: '确认删除该记录吗？',
+              defaultMessage: 'Are you sure to delete this record?',
             })}
             onConfirm={async () => {
               await deleteUsersId({ id: record.id! });
@@ -187,16 +207,16 @@ const UserList: React.FC = () => {
                 .success(
                   intl.formatMessage({
                     id: 'pages.message.delete.success',
-                    defaultMessage: '删除成功',
+                    defaultMessage: 'Delete successfully!',
                   }),
                 )
                 .then(() => actionRef.current?.reload());
             }}
-            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: '确认' })}
-            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: '取消' })}
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
             <Button key="delete.button">
-              <FormattedMessage id="pages.title.delete" defaultMessage="删除" />
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
             </Button>
           </Popconfirm>
         </Access>,
@@ -211,14 +231,20 @@ const UserList: React.FC = () => {
     if (id === 'create') {
       await postUsers(params);
       message.success(
-        intl.formatMessage({ id: 'pages.message.create.success', defaultMessage: '创建成功' }),
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
       );
       history.push('/users');
       return;
     }
     await putUsersId({ id }, params);
     message.success(
-      intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: '修改成功' }),
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
     );
     history.push('/users');
   };
@@ -228,7 +254,10 @@ const UserList: React.FC = () => {
   ) : (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.User, API.Page>
-        headerTitle={intl.formatMessage({ id: 'pages.title.list', defaultMessage: '列表' })}
+        headerTitle={intl.formatMessage({
+          id: 'pages.user.list.title',
+          defaultMessage: 'User List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={{

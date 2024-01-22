@@ -19,6 +19,7 @@ import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max'
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const TableList: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
@@ -41,7 +42,7 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.Role>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -49,38 +50,38 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '描述',
+      title: fieldIntl(intl, 'remark'),
       search: false,
       dataIndex: 'remark',
       valueType: 'textarea',
     },
     {
-      title: 'root权限',
+      title: fieldIntl(intl, 'root'),
       dataIndex: 'root',
       search: false,
       hideInForm: true,
       valueEnum: {
         false: {
-          text: '否',
-          status: 'fasle',
+          text: fieldIntl(intl, 'options.false'),
+          status: 'false',
         },
         true: {
-          text: '是',
+          text: fieldIntl(intl, 'options.true'),
           status: 'true',
         },
       },
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: statusOptions,
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -88,16 +89,18 @@ const TableList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
         <Access key="/role/edit">
-          <Button key="edit">
-            <Link to={`/role/${record.id}`}>编辑</Link>
-          </Button>
+          <Link to={`/role/${record.id}`}>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
+          </Link>
         </Access>,
         <Access key="/role/auth">
           <Button
@@ -108,27 +111,37 @@ const TableList: React.FC = () => {
               setCurrentRow(record);
             }}
           >
-            授权
+            <FormattedMessage id="pages.role.auth.title" defaultMessage="Auth" />
           </Button>
         </Access>,
         <Access key="/role/delete">
           <Popconfirm
             key="delete"
-            title="删除角色"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             disabled={record.root}
-            description="你确定要删除这个角色吗?"
             onConfirm={async () => {
-              const res = await deleteRolesId({ id: record.id! });
-              if (!res) {
-                message.success('删除成功');
-                actionRef.current?.reload();
-              }
+              await deleteRolesId({ id: record.id! });
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
             <Button disabled={record.root} key="delete.button">
-              删除
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
             </Button>
           </Popconfirm>
         </Access>,
@@ -151,7 +164,6 @@ const TableList: React.FC = () => {
   const onOpenChange = async (e: boolean) => {
     if (e) {
       const data = await getMenuTree();
-      console.log(transfer(data));
       setTreeData(transfer(data));
       //get checkedKeys
       const checkedRes = await getRoleAuthorizeRoleID({
@@ -164,10 +176,8 @@ const TableList: React.FC = () => {
         });
         setCheckedKeys(checkedKeys);
       }
-      console.log('onOpenChange0');
       return;
     }
-    console.log('onOpenChange1');
     setTreeData([]);
     setAuthModalOpen(e);
   };
@@ -178,19 +188,32 @@ const TableList: React.FC = () => {
     }
     if (id === 'create') {
       await postRoles(params);
-      message.success('创建成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/role');
       return;
     }
     await putRolesId({ id }, params);
-    message.success('修改成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/role');
   };
 
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Role, API.Page>
-        headerTitle="角色列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.role.list.title',
+          defaultMessage: 'Role List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -247,7 +270,7 @@ const TableList: React.FC = () => {
 
       <DrawerForm
         onOpenChange={onOpenChange}
-        title="授权"
+        title={intl.formatMessage({ id: 'pages.role.auth.title' })}
         open={authModalOpen}
         onFinish={async () => {
           const paths: string[] = [];
@@ -255,7 +278,7 @@ const TableList: React.FC = () => {
             paths.push(value.toString());
           });
 
-          const res = await postRoleAuthorizeRoleID(
+          await postRoleAuthorizeRoleID(
             {
               roleID: currentRow?.id ?? '',
             },
@@ -263,12 +286,7 @@ const TableList: React.FC = () => {
               paths,
             },
           );
-          if (!res) {
-            message.success('提交成功');
-            return true;
-          }
-          message.error('提交失败');
-          return false;
+          message.success(intl.formatMessage({ id: 'pages.role.auth.success' }));
         }}
       >
         <Auth values={treeData} setCheckedKeys={setCheckedKeys} checkedKeys={checkedKeys} />

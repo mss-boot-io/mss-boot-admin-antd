@@ -14,7 +14,7 @@ import {
   ProDescriptions,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max';
 import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 // @ts-ignore
@@ -25,7 +25,9 @@ import {
   postTenants,
   putTenantsId,
 } from '@/services/admin/tenant';
+// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Tenant: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -34,34 +36,35 @@ const Tenant: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.Tenant>();
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
+  const intl = useIntl();
 
   const columnsTable: ProColumns<API.TenantDomain>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       hideInTable: true,
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '域名',
+      title: fieldIntl(intl, 'domain'),
       dataIndex: 'domain',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '操作',
+      title: <FormattedMessage id="pages.title.option" />,
       valueType: 'option',
       render: (text, record, _, action) => [
         <Button
@@ -70,7 +73,7 @@ const Tenant: React.FC = () => {
             action?.startEditable?.(record.id!);
           }}
         >
-          编辑
+          <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
         </Button>,
         <Button
           key="delete"
@@ -81,7 +84,7 @@ const Tenant: React.FC = () => {
             });
           }}
         >
-          删除
+          <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
         </Button>,
       ],
     },
@@ -89,7 +92,7 @@ const Tenant: React.FC = () => {
 
   const columns: ProColumns<API.Tenant>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       search: false,
@@ -98,25 +101,25 @@ const Tenant: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: {
         enabled: {
-          text: '启用',
+          text: fieldIntl(intl, 'options.enabled'),
           status: 'enabled',
         },
-        disbaled: {
-          text: '禁用',
+        disabled: {
+          text: fieldIntl(intl, 'options.disabled'),
           status: 'disabled',
         },
       },
     },
     {
-      title: '域名',
+      title: fieldIntl(intl, 'domains'),
       dataIndex: 'domains',
       hideInTable: true,
       search: false,
@@ -142,7 +145,7 @@ const Tenant: React.FC = () => {
             }}
             formRef={formRef}
             // editableFormRef={schema.formRef}
-            headerTitle="域名列表"
+            headerTitle={intl.formatMessage({ id: 'pages.tenant.domain.list' })}
             maxLength={1000}
             name="domains"
             controlled={false}
@@ -168,7 +171,7 @@ const Tenant: React.FC = () => {
       },
     },
     {
-      title: '过期时间',
+      title: fieldIntl(intl, 'expire'),
       sorter: true,
       dataIndex: 'expire',
       search: false,
@@ -176,7 +179,7 @@ const Tenant: React.FC = () => {
       // hideInForm: true,
     },
     {
-      title: '管理员用户名',
+      title: fieldIntl(intl, 'username'),
       dataIndex: 'username',
       search: false,
       hideInTable: true,
@@ -184,7 +187,7 @@ const Tenant: React.FC = () => {
       hideInForm: id !== undefined && id !== 'create',
     },
     {
-      title: '管理员密码',
+      title: fieldIntl(intl, 'password'),
       dataIndex: 'password',
       search: false,
       hideInTable: true,
@@ -193,12 +196,12 @@ const Tenant: React.FC = () => {
       valueType: 'password',
     },
     {
-      title: '备注',
+      title: fieldIntl(intl, 'remark'),
       search: false,
       dataIndex: 'remark',
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -206,7 +209,7 @@ const Tenant: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.title.option" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -214,27 +217,39 @@ const Tenant: React.FC = () => {
       render: (_, record) => [
         <Access key="/tenant/edit">
           <Link to={`/tenant/${record.id}`}>
-            <Button key="edit">编辑</Button>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
           </Link>
         </Access>,
         <Access key="/tenant/delete">
           <Popconfirm
             disabled={record.default}
             key="delete"
-            title="删除"
-            description="你确定要删除吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             onConfirm={async () => {
-              const res = await deleteTenantsId({ id: record.id! });
-              if (!res) {
-                message.success('删除成功');
-                actionRef.current?.reload();
-              }
+              await deleteTenantsId({ id: record.id! });
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
             <Button disabled={record.default} key="delete.button">
-              删除
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
             </Button>
           </Popconfirm>
         </Access>,
@@ -248,19 +263,32 @@ const Tenant: React.FC = () => {
     }
     if (id === 'create') {
       await postTenants(params);
-      message.success('创建成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/tenant');
       return;
     }
     await putTenantsId({ id }, params);
-    message.success('修改成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/tenant');
   };
 
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Tenant, API.getTenantsParams>
-        headerTitle="租户列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.tenant.list.title',
+          defaultMessage: 'Tenant List',
+        })}
         actionRef={actionRef}
         formRef={formRef}
         rowKey="id"

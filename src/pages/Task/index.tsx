@@ -17,9 +17,10 @@ import {
   ProFormSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, history, Link, useParams } from '@umijs/max';
+import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const TaskList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -29,10 +30,11 @@ const TaskList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.Role>();
   const { id } = useParams();
+  const intl = useIntl();
 
   const columns: ProColumns<API.Task>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -40,30 +42,25 @@ const TaskList: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: 'cron表达式',
+      title: fieldIntl(intl, 'spec'),
       dataIndex: 'spec',
       hideInTable: true,
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: 'cron表达式为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
     },
     {
-      title: '描述',
+      title: fieldIntl(intl, 'remark'),
       dataIndex: 'remark',
       search: false,
       valueType: 'textarea',
     },
     {
-      title: '协议',
+      title: fieldIntl(intl, 'protocol'),
       dataIndex: 'protocol',
       hideInTable: true,
       renderFormItem() {
@@ -95,29 +92,19 @@ const TaskList: React.FC = () => {
         );
       },
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '协议为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
     },
     {
-      title: '调用地址',
+      title: fieldIntl(intl, 'endpoint'),
       dataIndex: 'endpoint',
       hideInTable: true,
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '调用地址为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
     },
     {
-      title: '调用方法',
+      title: fieldIntl(intl, 'method'),
       dataIndex: 'method',
       hideInTable: !needMethod,
       renderFormItem() {
@@ -146,57 +133,47 @@ const TaskList: React.FC = () => {
               setMustBody(value === 'POST' || value === 'PUT');
             }}
             name="method"
-            placeholder="请选择http调用方法"
+            placeholder={fieldIntl(intl, 'method.placeholder')}
           />
         );
       },
     },
     {
-      title: '请求体',
+      title: fieldIntl(intl, 'body'),
       dataIndex: 'body',
       hideInTable: true,
       hideInForm: !needBody,
       valueType: 'jsonCode',
       formItemProps: {
-        rules: [
-          {
-            required: mustBody,
-            message: '请求体为必填项',
-          },
-        ],
+        rules: [{ required: mustBody }],
       },
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '状态为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
       valueEnum: {
         enabled: {
-          text: '启用',
+          text: fieldIntl(intl, 'options.enabled'),
           color: 'green',
           status: 'enabled',
         },
         disabled: {
-          text: '禁用',
+          text: fieldIntl(intl, 'options.disabled'),
           color: 'red',
           status: 'disabled',
         },
         locked: {
-          text: '锁定',
+          text: fieldIntl(intl, 'options.locked'),
           color: 'yellow',
           status: 'locked',
         },
       },
     },
     {
-      title: '上次执行时间',
+      title: fieldIntl(intl, 'checkedAt'),
       sorter: false,
       dataIndex: 'checkedAt',
       search: false,
@@ -204,7 +181,7 @@ const TaskList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -212,7 +189,7 @@ const TaskList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -223,46 +200,70 @@ const TaskList: React.FC = () => {
             key="operate"
             onClick={async () => {
               if (record.status === 'enabled') {
-                const res = await getTaskOperateId({ id: record.id!, operate: 'stop' });
-                if (!res) {
-                  message.success('停止成功');
-                  actionRef.current?.reload();
-                }
+                await getTaskOperateId({ id: record.id!, operate: 'stop' });
+                message
+                  .success(
+                    intl.formatMessage({
+                      id: 'pages.message.stop.success',
+                      defaultMessage: 'Stop successfully!',
+                    }),
+                  )
+                  .then(() => actionRef.current?.reload());
               }
               if (!record.status || record.status === '' || record.status === 'disabled') {
-                const res = await getTaskOperateId({ id: record.id!, operate: 'start' });
-                if (!res) {
-                  message.success('启动成功');
-                  actionRef.current?.reload();
-                }
+                await getTaskOperateId({ id: record.id!, operate: 'start' });
+                message
+                  .success(
+                    intl.formatMessage({
+                      id: 'pages.message.start.success',
+                      defaultMessage: 'Start successfully!',
+                    }),
+                  )
+                  .then(() => actionRef.current?.reload());
                 return;
               }
             }}
           >
-            {record.status === 'enabled' ? '停止' : '启动'}
+            {record.status === 'enabled'
+              ? intl.formatMessage({ id: 'pages.task.stop.title' })
+              : intl.formatMessage({ id: 'pages.task.start.title' })}
           </Button>
         </Access>,
         <Access key="/task/edit">
-          <Button key="edit">
-            <Link to={`/task/${record.id}`}>编辑</Link>
-          </Button>
+          <Link to={`/task/${record.id}`}>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
+          </Link>
         </Access>,
         <Access key="/task/delete">
           <Popconfirm
             key="delete"
-            title="删除任务"
-            description="你确定要删除这个任务吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             onConfirm={async () => {
-              const res = await deleteTasksId({ id: record.id! });
-              if (!res) {
-                message.success('删除成功');
-                actionRef.current?.reload();
-              }
+              await deleteTasksId({ id: record.id! });
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
-            <Button key="delete.button">删除</Button>
+            <Button key="delete.button">
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
+            </Button>
           </Popconfirm>
         </Access>,
       ],
@@ -275,12 +276,22 @@ const TaskList: React.FC = () => {
     }
     if (id === 'create') {
       await postTasks(params);
-      message.success('提交成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/task');
       return;
     }
     await putTasksId({ id }, params);
-    message.success('提交成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/task');
   };
 
@@ -291,7 +302,10 @@ const TaskList: React.FC = () => {
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Task, API.Page>
-        headerTitle="任务列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.task.list.title',
+          defaultMessage: 'Options List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -299,10 +313,6 @@ const TaskList: React.FC = () => {
         }}
         type={id ? 'form' : 'table'}
         onSubmit={id ? onSubmit : undefined}
-        onChange={(e) => {
-          console.log('1231231');
-          console.log(e);
-        }}
         toolBarRender={() => [
           <Access key="/task/create">
             <Button type="primary" key="create">

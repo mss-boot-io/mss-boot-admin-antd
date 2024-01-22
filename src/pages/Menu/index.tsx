@@ -20,6 +20,7 @@ import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max'
 import { Button, Drawer, message, Popconfirm, TreeSelect } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useEffect, useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -44,7 +45,7 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.Menu>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -52,7 +53,7 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '父级',
+      title: fieldIntl(intl, 'parentID'),
       search: false,
       hideInTable: true,
       dataIndex: 'parentID',
@@ -62,7 +63,7 @@ const TableList: React.FC = () => {
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder="请选择父级"
+            placeholder={fieldIntl(intl, 'parent.placeholder')}
             allowClear
             treeDefaultExpandAll
             // onChange={onChange}
@@ -72,42 +73,37 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '类型',
+      title: fieldIntl(intl, 'type'),
       dataIndex: 'type',
       search: false,
       valueEnum: {
         DIRECTORY: {
-          text: '目录',
+          text: fieldIntl(intl, 'options.directory'),
           color: 'blue',
           status: 'DIRECTORY',
         },
         MENU: {
-          text: '菜单',
+          text: fieldIntl(intl, 'options.menu'),
           color: 'green',
           status: 'MENU',
         },
         COMPONENT: {
-          text: '组件',
+          text: fieldIntl(intl, 'options.component'),
           color: 'yellow',
           status: 'COMPONENT',
         },
         API: {
-          text: '接口',
+          text: fieldIntl(intl, 'options.api'),
           color: 'red',
           status: 'API',
         },
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '名称为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
       render: (dom) => {
         return intl.formatMessage({ id: `menu.${dom}` });
@@ -115,53 +111,53 @@ const TableList: React.FC = () => {
     },
 
     {
-      title: '路径',
+      title: fieldIntl(intl, 'path'),
       search: false,
       dataIndex: 'path',
       // valueType: 'textarea',
     },
     {
-      title: '隐藏',
+      title: fieldIntl(intl, 'hideInMenu'),
       dataIndex: 'hideInMenu',
       search: false,
       valueType: 'switch',
       valueEnum: {
         false: {
-          text: '否',
-          status: 'fasle',
+          text: fieldIntl(intl, 'options.false'),
+          status: 'false',
         },
         true: {
-          text: '是',
+          text: fieldIntl(intl, 'options.true'),
           status: 'true',
         },
       },
     },
     {
-      title: '排序',
+      title: fieldIntl(intl, 'sort'),
       dataIndex: 'sort',
       search: false,
       valueType: 'digit',
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: {
         enabled: {
-          text: '启用',
+          text: fieldIntl(intl, 'options.enabled'),
           status: 'enabled',
         },
         disabled: {
-          text: '禁用',
+          text: fieldIntl(intl, 'options.disabled'),
           status: 'disabled',
         },
         locked: {
-          text: '锁定',
+          text: fieldIntl(intl, 'options.locked'),
           status: 'locked',
         },
       },
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -169,7 +165,7 @@ const TableList: React.FC = () => {
       valueType: 'dateTime',
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
@@ -177,7 +173,9 @@ const TableList: React.FC = () => {
       render: (_, record) => [
         <Access key="/menu/edit">
           <Link to={`/menu/${record.id}`} key="edit">
-            <Button>编辑</Button>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
           </Link>
         </Access>,
         <Access key="/menu/bind-api">
@@ -189,23 +187,37 @@ const TableList: React.FC = () => {
               setAuthModalOpen(true);
             }}
           >
-            绑定API
+            <FormattedMessage id="pages.user.binding.api" defaultMessage="Bingding API" />
           </Button>
         </Access>,
         <Access key="/menu/delete">
           <Popconfirm
             key="delete"
-            title="删除菜单"
-            description="你确定要删除这个菜单吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             onConfirm={async () => {
               await deleteMenusId({ id: record.id! });
-              message.success('删除成功');
-              actionRef.current?.reload();
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
-            <Button>删除</Button>
+            <Button key="delete.button">
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
+            </Button>
           </Popconfirm>
         </Access>,
       ],
@@ -252,12 +264,22 @@ const TableList: React.FC = () => {
     }
     if (id === 'create') {
       await postMenus(params);
-      message.success('提交成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/menu');
       return;
     }
     await putMenusId({ id }, params);
-    message.success('提交成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/menu');
   };
 
@@ -274,7 +296,10 @@ const TableList: React.FC = () => {
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Menu, API.getMenusParams>
-        headerTitle="角色列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.menu.list.title',
+          defaultMessage: 'Menu List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -346,16 +371,12 @@ const TableList: React.FC = () => {
             paths.push(value.toString());
           });
 
-          const res = await postMenuBindApi({
+          await postMenuBindApi({
             menuID: currentRow?.id ?? '',
             paths,
           });
-          if (!res) {
-            message.success('提交成功');
-            return true;
-          }
-          message.error('提交失败');
-          return false;
+          message.success(intl.formatMessage({ id: 'pages.menu.binding.api.success' }));
+          return true;
         }}
       >
         <Auth values={treeData} setCheckedKeys={setCheckedKeys} checkedKeys={checkedKeys} />

@@ -14,16 +14,19 @@ import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-compon
 import { FormattedMessage, history, Link, useParams } from '@umijs/max';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
+import { useIntl } from '@@/exports';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const SystemConfig: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const { id } = useParams();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.SystemConfig>();
+  const intl = useIntl();
 
   const columns: ProColumns<API.SystemConfig>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       search: false,
@@ -32,11 +35,11 @@ const SystemConfig: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '格式',
+      title: fieldIntl(intl, 'ext'),
       dataIndex: 'ext',
       search: false,
       valueEnum: {
@@ -51,20 +54,20 @@ const SystemConfig: React.FC = () => {
       },
     },
     {
-      title: '内容',
+      title: fieldIntl(intl, 'content'),
       dataIndex: 'content',
       search: false,
       hideInTable: true,
       valueType: 'code',
     },
     {
-      title: '备注',
+      title: fieldIntl(intl, 'remark'),
       dataIndex: 'remark',
       search: false,
       valueType: 'textarea',
     },
     {
-      title: '创建时间',
+      title: fieldIntl(intl, 'createdAt'),
       sorter: true,
       dataIndex: 'createdAt',
       search: false,
@@ -72,7 +75,7 @@ const SystemConfig: React.FC = () => {
       valueType: 'dateTime',
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -80,35 +83,47 @@ const SystemConfig: React.FC = () => {
       valueType: 'dateTime',
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
         <Access key="/system-config/edit">
-          <Button key="edit">
-            <Link to={`/system-config/${record.id}`}>编辑</Link>
-          </Button>
+          <Link to={`/system-config/${record.id}`}>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
+          </Link>
         </Access>,
         <Access key="/system-config/delete">
           <Popconfirm
             key="delete"
-            title="删除语言"
-            description="你确定要删除这个语言吗?"
+            title={intl.formatMessage({
+              id: 'pages.title.delete.confirm',
+              defaultMessage: 'Confirm Delete',
+            })}
+            description={intl.formatMessage({
+              id: 'pages.description.delete.confirm',
+              defaultMessage: 'Are you sure to delete this record?',
+            })}
             disabled={record.isBuiltIn}
             onConfirm={async () => {
-              const res = await deleteSystemConfigsId({ id: record.id! });
-              if (!res) {
-                message.success('删除成功');
-                actionRef.current?.reload();
-              }
+              await deleteSystemConfigsId({ id: record.id! });
+              message
+                .success(
+                  intl.formatMessage({
+                    id: 'pages.message.delete.success',
+                    defaultMessage: 'Delete successfully!',
+                  }),
+                )
+                .then(() => actionRef.current?.reload());
             }}
-            okText="确定"
-            cancelText="再想想"
+            okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
+            cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
             <Button disabled={record.isBuiltIn} key="delete.button">
-              删除
+              <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
             </Button>
           </Popconfirm>
         </Access>,
@@ -122,19 +137,32 @@ const SystemConfig: React.FC = () => {
     }
     if (id === 'create') {
       await postSystemConfigs(params);
-      message.success('创建成功');
+      message.success(
+        intl.formatMessage({
+          id: 'pages.message.create.success',
+          defaultMessage: 'Create successfully!',
+        }),
+      );
       history.push('/system-config');
       return;
     }
     await putSystemConfigsId({ id }, params);
-    message.success('修改成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.update.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
     history.push('/system-config');
   };
 
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.SystemConfig, API.Page>
-        headerTitle="配置列表"
+        headerTitle={intl.formatMessage({
+          id: 'pages.system.config.list.title',
+          defaultMessage: 'System Config List',
+        })}
         actionRef={actionRef}
         rowKey="id"
         search={false}
