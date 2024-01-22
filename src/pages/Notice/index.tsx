@@ -14,6 +14,7 @@ import {
 import { FormattedMessage, Link, useIntl, useParams, useSearchParams } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Index: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -31,7 +32,7 @@ const Index: React.FC = () => {
 
   const columns: ProColumns<API.Notice>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -39,72 +40,72 @@ const Index: React.FC = () => {
       },
     },
     {
-      title: '标题',
+      title: fieldIntl(intl, 'title'),
       dataIndex: 'title',
       ellipsis: true,
       copyable: true,
     },
     {
-      title: '类型',
+      title: fieldIntl(intl, 'type'),
       dataIndex: 'type',
       width: '5%',
       valueEnum: {
         notification: {
-          text: '通知',
+          text: fieldIntl(intl, 'options.notification'),
           color: 'red',
           status: 'notification',
         },
         message: {
-          text: '消息',
+          text: fieldIntl(intl, 'options.message'),
           color: 'blue',
           status: 'message',
         },
         event: {
-          text: '待办',
+          text: fieldIntl(intl, 'options.event'),
           color: 'gold',
           status: 'event',
         },
       },
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       width: '5%',
       valueEnum: {
         urgent: {
-          text: '紧急',
+          text: fieldIntl(intl, 'options.urgent'),
           color: 'red',
           status: 'urgent',
         },
         doing: {
-          text: '正在做',
+          text: fieldIntl(intl, 'options.doing'),
           color: 'green',
           status: 'doing',
         },
         processing: {
-          text: '进行中',
+          text: fieldIntl(intl, 'options.processing'),
           color: 'blue',
           status: 'processing',
         },
         todo: {
-          text: '未开始',
+          text: fieldIntl(intl, 'options.todo'),
           color: 'gold',
           status: 'todo',
         },
       },
     },
     {
-      title: '日期',
+      title: fieldIntl(intl, 'datetime'),
       dataIndex: 'datetime',
       valueType: 'dateTime',
     },
     {
-      title: '内容',
+      title: fieldIntl(intl, 'description'),
       dataIndex: 'description',
       ellipsis: true,
     },
     {
-      title: '通知时间',
+      title: fieldIntl(intl, 'sendTime'),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,

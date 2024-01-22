@@ -19,6 +19,7 @@ import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max'
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const TableList: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
@@ -41,7 +42,7 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.Role>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -49,38 +50,38 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '描述',
+      title: fieldIntl(intl, 'remark'),
       search: false,
       dataIndex: 'remark',
       valueType: 'textarea',
     },
     {
-      title: 'root权限',
+      title: fieldIntl(intl, 'root'),
       dataIndex: 'root',
       search: false,
       hideInForm: true,
       valueEnum: {
         false: {
-          text: '否',
-          status: 'fasle',
+          text: fieldIntl(intl, 'options.false'),
+          status: 'false',
         },
         true: {
-          text: '是',
+          text: fieldIntl(intl, 'options.true'),
           status: 'true',
         },
       },
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: statusOptions,
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
@@ -110,7 +111,7 @@ const TableList: React.FC = () => {
               setCurrentRow(record);
             }}
           >
-            授权
+            <FormattedMessage id="pages.role.auth.title" defaultMessage="Auth" />
           </Button>
         </Access>,
         <Access key="/role/delete">
@@ -163,7 +164,6 @@ const TableList: React.FC = () => {
   const onOpenChange = async (e: boolean) => {
     if (e) {
       const data = await getMenuTree();
-      console.log(transfer(data));
       setTreeData(transfer(data));
       //get checkedKeys
       const checkedRes = await getRoleAuthorizeRoleID({
@@ -176,10 +176,8 @@ const TableList: React.FC = () => {
         });
         setCheckedKeys(checkedKeys);
       }
-      console.log('onOpenChange0');
       return;
     }
-    console.log('onOpenChange1');
     setTreeData([]);
     setAuthModalOpen(e);
   };
@@ -272,7 +270,7 @@ const TableList: React.FC = () => {
 
       <DrawerForm
         onOpenChange={onOpenChange}
-        title="授权"
+        title={intl.formatMessage({ id: 'pages.role.auth.title' })}
         open={authModalOpen}
         onFinish={async () => {
           const paths: string[] = [];
@@ -280,7 +278,7 @@ const TableList: React.FC = () => {
             paths.push(value.toString());
           });
 
-          const res = await postRoleAuthorizeRoleID(
+          await postRoleAuthorizeRoleID(
             {
               roleID: currentRow?.id ?? '',
             },
@@ -288,12 +286,7 @@ const TableList: React.FC = () => {
               paths,
             },
           );
-          if (!res) {
-            message.success('提交成功');
-            return true;
-          }
-          message.error('提交失败');
-          return false;
+          message.success(intl.formatMessage({ id: 'pages.role.auth.success' }));
         }}
       >
         <Auth values={treeData} setCheckedKeys={setCheckedKeys} checkedKeys={checkedKeys} />

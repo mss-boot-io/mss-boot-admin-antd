@@ -15,6 +15,7 @@ import { FormattedMessage, history, Link, useParams } from '@umijs/max';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 import { useIntl } from '@@/exports';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const SystemConfig: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -25,7 +26,7 @@ const SystemConfig: React.FC = () => {
 
   const columns: ProColumns<API.SystemConfig>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       search: false,
@@ -34,11 +35,11 @@ const SystemConfig: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '格式',
+      title: fieldIntl(intl, 'ext'),
       dataIndex: 'ext',
       search: false,
       valueEnum: {
@@ -53,20 +54,20 @@ const SystemConfig: React.FC = () => {
       },
     },
     {
-      title: '内容',
+      title: fieldIntl(intl, 'content'),
       dataIndex: 'content',
       search: false,
       hideInTable: true,
       valueType: 'code',
     },
     {
-      title: '备注',
+      title: fieldIntl(intl, 'remark'),
       dataIndex: 'remark',
       search: false,
       valueType: 'textarea',
     },
     {
-      title: '创建时间',
+      title: fieldIntl(intl, 'createdAt'),
       sorter: true,
       dataIndex: 'createdAt',
       search: false,
@@ -74,7 +75,7 @@ const SystemConfig: React.FC = () => {
       valueType: 'dateTime',
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,

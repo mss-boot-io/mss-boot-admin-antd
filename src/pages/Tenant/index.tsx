@@ -27,6 +27,7 @@ import {
 } from '@/services/admin/tenant';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Tenant: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -39,31 +40,31 @@ const Tenant: React.FC = () => {
 
   const columnsTable: ProColumns<API.TenantDomain>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       hideInTable: true,
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '域名',
+      title: fieldIntl(intl, 'domain'),
       dataIndex: 'domain',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '操作',
+      title: <FormattedMessage id="pages.title.option" />,
       valueType: 'option',
       render: (text, record, _, action) => [
         <Button
@@ -72,7 +73,7 @@ const Tenant: React.FC = () => {
             action?.startEditable?.(record.id!);
           }}
         >
-          编辑
+          <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
         </Button>,
         <Button
           key="delete"
@@ -83,7 +84,7 @@ const Tenant: React.FC = () => {
             });
           }}
         >
-          删除
+          <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
         </Button>,
       ],
     },
@@ -91,7 +92,7 @@ const Tenant: React.FC = () => {
 
   const columns: ProColumns<API.Tenant>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       search: false,
@@ -100,25 +101,25 @@ const Tenant: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: {
         enabled: {
-          text: '启用',
+          text: fieldIntl(intl, 'options.enabled'),
           status: 'enabled',
         },
-        disbaled: {
-          text: '禁用',
+        disabled: {
+          text: fieldIntl(intl, 'options.disabled'),
           status: 'disabled',
         },
       },
     },
     {
-      title: '域名',
+      title: fieldIntl(intl, 'domains'),
       dataIndex: 'domains',
       hideInTable: true,
       search: false,
@@ -144,7 +145,7 @@ const Tenant: React.FC = () => {
             }}
             formRef={formRef}
             // editableFormRef={schema.formRef}
-            headerTitle="域名列表"
+            headerTitle={intl.formatMessage({ id: 'pages.tenant.domain.list' })}
             maxLength={1000}
             name="domains"
             controlled={false}
@@ -170,7 +171,7 @@ const Tenant: React.FC = () => {
       },
     },
     {
-      title: '过期时间',
+      title: fieldIntl(intl, 'expire'),
       sorter: true,
       dataIndex: 'expire',
       search: false,
@@ -178,7 +179,7 @@ const Tenant: React.FC = () => {
       // hideInForm: true,
     },
     {
-      title: '管理员用户名',
+      title: fieldIntl(intl, 'username'),
       dataIndex: 'username',
       search: false,
       hideInTable: true,
@@ -186,7 +187,7 @@ const Tenant: React.FC = () => {
       hideInForm: id !== undefined && id !== 'create',
     },
     {
-      title: '管理员密码',
+      title: fieldIntl(intl, 'password'),
       dataIndex: 'password',
       search: false,
       hideInTable: true,
@@ -195,12 +196,12 @@ const Tenant: React.FC = () => {
       valueType: 'password',
     },
     {
-      title: '备注',
+      title: fieldIntl(intl, 'remark'),
       search: false,
       dataIndex: 'remark',
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,

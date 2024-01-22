@@ -10,6 +10,7 @@ import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-compon
 import { FormattedMessage, history, Link, useIntl, useParams, useRequest } from '@umijs/max';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const UserList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -28,7 +29,7 @@ const UserList: React.FC = () => {
 
   const columns: ProColumns<API.User>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -36,21 +37,21 @@ const UserList: React.FC = () => {
       },
     },
     {
-      title: '角色',
+      title: fieldIntl(intl, 'roleID'),
       dataIndex: 'roleID',
       search: false,
       valueType: 'select',
       valueEnum: toOptions(roleOptions),
     },
     {
-      title: '头像',
+      title: fieldIntl(intl, 'avatar'),
       dataIndex: 'avatar',
       search: false,
       valueType: 'avatar',
       hideInForm: true,
     },
     {
-      title: '用户名',
+      title: fieldIntl(intl, 'username'),
       dataIndex: 'username',
       formItemProps: {
         rules: [
@@ -68,21 +69,18 @@ const UserList: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '邮箱',
+      title: fieldIntl(intl, 'email'),
       dataIndex: 'email',
       formItemProps: {
-        rules: [
-          { required: true, message: '请输入邮箱' },
-          { type: 'email', message: '请输入正确的邮箱' },
-        ],
+        rules: [{ required: true }, { type: 'email' }],
       },
     },
     {
-      title: '密码',
+      title: fieldIntl(intl, 'password'),
       dataIndex: 'password',
       search: false,
       hideInTable: true,
@@ -90,16 +88,28 @@ const UserList: React.FC = () => {
       valueType: 'password',
       formItemProps: {
         rules: [
-          { required: true, message: '请输入密码' },
-          { min: 8, message: '密码至少8位' },
-          { max: 20, message: '密码最多20位' },
-          { pattern: /[a-zA-Z]/, message: '密码必须包含字母' },
-          { pattern: /[0-9]/, message: '密码必须包含数字' },
+          { required: true },
+          { min: 8 },
+          { max: 20 },
+          {
+            pattern: /[a-zA-Z]/,
+            message: intl.formatMessage({
+              id: 'pages.message.password.rule.pattern.letters',
+              defaultMessage: 'The password must contain letters',
+            }),
+          },
+          {
+            pattern: /[0-9]/,
+            message: intl.formatMessage({
+              id: 'pages.message.password.rule.pattern.numbers',
+              defaultMessage: 'The password must contain numbers',
+            }),
+          },
         ],
       },
     },
     {
-      title: '确认密码',
+      title: fieldIntl(intl, 'confirmPassword'),
       dataIndex: 'confirmPassword',
       search: false,
       hideInTable: true,
@@ -109,21 +119,31 @@ const UserList: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请确认密码',
+            message: intl.formatMessage({
+              id: 'pages.message.password.confirm.required',
+              defaultMessage: 'Please confirm your password!',
+            }),
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(new Error('两次密码不一致'));
+              return Promise.reject(
+                new Error(
+                  intl.formatMessage({
+                    id: 'pages.message.password.confirm.failed',
+                    defaultMessage: 'The two passwords that you entered do not match!',
+                  }),
+                ),
+              );
             },
           }),
         ],
       },
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: statusOptions,
     },
@@ -142,7 +162,7 @@ const UserList: React.FC = () => {
     //   },
     // },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,

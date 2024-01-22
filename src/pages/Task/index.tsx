@@ -20,6 +20,7 @@ import {
 import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const TaskList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -33,7 +34,7 @@ const TaskList: React.FC = () => {
 
   const columns: ProColumns<API.Task>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       render: (dom, entity) => {
@@ -41,30 +42,25 @@ const TaskList: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: 'cron表达式',
+      title: fieldIntl(intl, 'spec'),
       dataIndex: 'spec',
       hideInTable: true,
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: 'cron表达式为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
     },
     {
-      title: '描述',
+      title: fieldIntl(intl, 'remark'),
       dataIndex: 'remark',
       search: false,
       valueType: 'textarea',
     },
     {
-      title: '协议',
+      title: fieldIntl(intl, 'protocol'),
       dataIndex: 'protocol',
       hideInTable: true,
       renderFormItem() {
@@ -96,29 +92,19 @@ const TaskList: React.FC = () => {
         );
       },
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '协议为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
     },
     {
-      title: '调用地址',
+      title: fieldIntl(intl, 'endpoint'),
       dataIndex: 'endpoint',
       hideInTable: true,
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '调用地址为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
     },
     {
-      title: '调用方法',
+      title: fieldIntl(intl, 'method'),
       dataIndex: 'method',
       hideInTable: !needMethod,
       renderFormItem() {
@@ -147,57 +133,47 @@ const TaskList: React.FC = () => {
               setMustBody(value === 'POST' || value === 'PUT');
             }}
             name="method"
-            placeholder="请选择http调用方法"
+            placeholder={fieldIntl(intl, 'method.placeholder')}
           />
         );
       },
     },
     {
-      title: '请求体',
+      title: fieldIntl(intl, 'body'),
       dataIndex: 'body',
       hideInTable: true,
       hideInForm: !needBody,
       valueType: 'jsonCode',
       formItemProps: {
-        rules: [
-          {
-            required: mustBody,
-            message: '请求体为必填项',
-          },
-        ],
+        rules: [{ required: mustBody }],
       },
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '状态为必填项',
-          },
-        ],
+        rules: [{ required: true }],
       },
       valueEnum: {
         enabled: {
-          text: '启用',
+          text: fieldIntl(intl, 'options.enabled'),
           color: 'green',
           status: 'enabled',
         },
         disabled: {
-          text: '禁用',
+          text: fieldIntl(intl, 'options.disabled'),
           color: 'red',
           status: 'disabled',
         },
         locked: {
-          text: '锁定',
+          text: fieldIntl(intl, 'options.locked'),
           color: 'yellow',
           status: 'locked',
         },
       },
     },
     {
-      title: '上次执行时间',
+      title: fieldIntl(intl, 'checkedAt'),
       sorter: false,
       dataIndex: 'checkedAt',
       search: false,
@@ -205,7 +181,7 @@ const TaskList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,

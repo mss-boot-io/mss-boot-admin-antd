@@ -26,6 +26,7 @@ import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Language: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -38,43 +39,43 @@ const Language: React.FC = () => {
 
   const columnsTable: ProColumns<API.LanguageDefine>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       hideInTable: true,
     },
     {
-      title: '分组',
+      title: fieldIntl(intl, 'group'),
       dataIndex: 'group',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
       width: '30%',
     },
     {
-      title: '键',
+      title: fieldIntl(intl, 'key'),
       dataIndex: 'key',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
       width: '30%',
     },
     {
-      title: '值',
+      title: fieldIntl(intl, 'value'),
       dataIndex: 'value',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
       width: '30%',
     },
     {
-      title: '操作',
+      title: <FormattedMessage id="pages.title.option" />,
       valueType: 'option',
       width: 200,
       render: (text, record, _, action) => [
@@ -84,7 +85,7 @@ const Language: React.FC = () => {
             action?.startEditable?.(record.id!);
           }}
         >
-          编辑
+          <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
         </Button>,
         <Button
           key="delete"
@@ -97,7 +98,7 @@ const Language: React.FC = () => {
             });
           }}
         >
-          删除
+          <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
         </Button>,
       ],
     },
@@ -105,7 +106,7 @@ const Language: React.FC = () => {
 
   const columns: ProColumns<API.Language>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       search: false,
@@ -114,25 +115,25 @@ const Language: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
     },
     {
-      title: '状态',
+      title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
       valueEnum: {
         1: {
-          text: '启用',
+          text: fieldIntl(intl, 'options.enabled'),
           status: '1',
         },
         2: {
-          text: '禁用',
+          text: fieldIntl(intl, 'options.disabled'),
           status: '2',
         },
       },
     },
     {
-      title: '定义',
+      title: fieldIntl(intl, 'language.defines'),
       dataIndex: 'defines',
       hideInTable: true,
       search: false,
@@ -161,7 +162,7 @@ const Language: React.FC = () => {
             }}
             formRef={formRef}
             // editableFormRef={schema.formRef}
-            headerTitle="语言内容"
+            headerTitle={fieldIntl(intl, 'language.defines')}
             maxLength={1000}
             name="defines"
             controlled={false}
@@ -187,12 +188,12 @@ const Language: React.FC = () => {
       },
     },
     {
-      title: '备注',
+      title: fieldIntl(intl, 'remark'),
       search: false,
       dataIndex: 'remark',
     },
     {
-      title: '上次修改时间',
+      title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,

@@ -24,6 +24,7 @@ import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Field: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -37,109 +38,109 @@ const Field: React.FC = () => {
 
   const columnsTable: ProColumns<API.BaseRule>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       hideInTable: true,
     },
     {
-      title: '必填',
+      title: fieldIntl(intl, 'required'),
       dataIndex: 'required',
       valueType: 'switch',
     },
     {
       dataIndex: 'message',
-      title: '错误信息',
+      title: fieldIntl(intl, 'message'),
     },
     {
       dataIndex: 'pattern',
-      title: '正则表达式',
+      title: fieldIntl(intl, 'pattern'),
     },
     {
       dataIndex: 'type',
-      title: '类型',
+      title: fieldIntl(intl, 'type'),
       valueEnum: {
         string: {
-          text: '字符串',
+          text: fieldIntl(intl, 'options.string'),
           status: 'string',
         },
         number: {
-          text: '数字',
+          text: fieldIntl(intl, 'options.number'),
           status: 'number',
         },
         boolean: {
-          text: '布尔值',
+          text: fieldIntl(intl, 'options.boolean'),
           status: 'boolean',
         },
         method: {
-          text: '方法',
+          text: fieldIntl(intl, 'options.method'),
           status: 'method',
         },
         regexp: {
-          text: '正则表达式',
+          text: fieldIntl(intl, 'options.regexp'),
           status: 'regexp',
         },
         integer: {
-          text: '整数',
+          text: fieldIntl(intl, 'options.integer'),
           status: 'integer',
         },
         float: {
-          text: '浮点数',
+          text: fieldIntl(intl, 'options.float'),
           status: 'float',
         },
         array: {
-          text: '数组',
+          text: fieldIntl(intl, 'options.array'),
           status: 'array',
         },
         object: {
-          text: '对象',
+          text: fieldIntl(intl, 'options.object'),
           status: 'object',
         },
         enum: {
-          text: '枚举',
+          text: fieldIntl(intl, 'options.enum'),
           status: 'enum',
         },
         date: {
-          text: '日期',
+          text: fieldIntl(intl, 'options.date'),
           status: 'date',
         },
         url: {
-          text: 'url',
+          text: fieldIntl(intl, 'options.url'),
           status: 'url',
         },
         hex: {
-          text: 'hex',
+          text: fieldIntl(intl, 'options.hex'),
           status: 'hex',
         },
         email: {
-          text: 'email',
+          text: fieldIntl(intl, 'options.email'),
           status: 'email',
         },
       },
     },
     {
       dataIndex: 'min',
-      title: '最小值',
+      title: fieldIntl(intl, 'min'),
     },
     {
       dataIndex: 'max',
-      title: '最大值',
+      title: fieldIntl(intl, 'max'),
     },
     {
       dataIndex: 'len',
-      title: '长度',
+      title: fieldIntl(intl, 'len'),
     },
     {
       dataIndex: 'warningOnly',
-      title: '警告',
+      title: fieldIntl(intl, 'warningOnly'),
     },
     {
       dataIndex: 'whitespace',
-      title: '空格',
+      title: fieldIntl(intl, 'whitespace'),
     },
     {
       dataIndex: 'validateTrigger',
-      title: '触发器',
+      title: fieldIntl(intl, 'validateTrigger'),
       valueEnum: {
         onChange: {
           text: 'onChange',
@@ -166,7 +167,7 @@ const Field: React.FC = () => {
             action?.startEditable?.(record.id!);
           }}
         >
-          编辑
+          <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
         </Button>,
         <Button
           key="delete"
@@ -177,7 +178,7 @@ const Field: React.FC = () => {
             });
           }}
         >
-          删除
+          <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
         </Button>,
       ],
     },
@@ -185,7 +186,7 @@ const Field: React.FC = () => {
 
   const columns: ProColumns<API.Field>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       // hideInTable: true,
@@ -194,155 +195,155 @@ const Field: React.FC = () => {
       },
     },
     {
-      title: '模型ID',
+      title: fieldIntl(intl, 'modelID'),
       dataIndex: 'modelID',
       hideInForm: true,
       hideInTable: true,
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: 'json标签',
+      title: fieldIntl(intl, 'jsonTag'),
       dataIndex: 'jsonTag',
     },
     {
-      title: '标签',
+      title: fieldIntl(intl, 'label'),
       dataIndex: 'label',
     },
     {
-      title: '数据类型',
+      title: fieldIntl(intl, 'type'),
       dataIndex: 'type',
       valueEnum: {
         string: {
-          text: '字符串',
+          text: fieldIntl(intl, 'options.string'),
           status: 'string',
         },
         float: {
-          text: '浮点数',
+          text: fieldIntl(intl, 'options.float'),
           status: 'float',
         },
         int: {
-          text: '整数',
+          text: fieldIntl(intl, 'options.int'),
           status: 'int',
         },
         uint: {
-          text: '无符号整数',
+          text: fieldIntl(intl, 'options.uint'),
           status: 'uint',
         },
         bool: {
-          text: '布尔值',
+          text: fieldIntl(intl, 'options.bool'),
           status: 'bool',
         },
         time: {
-          text: '时间',
+          text: fieldIntl(intl, 'options.time'),
           status: 'time',
         },
         bytes: {
-          text: '字节',
+          text: fieldIntl(intl, 'options.bytes'),
           status: 'bytes',
         },
       },
     },
     {
-      title: '长度',
+      title: fieldIntl(intl, 'size'),
       dataIndex: 'size',
       valueType: 'digit',
     },
     {
-      title: '主键',
+      title: fieldIntl(intl, 'primaryKey'),
       dataIndex: 'primaryKey',
     },
     {
-      title: '唯一键',
+      title: fieldIntl(intl, 'uniqueKey'),
       dataIndex: 'uniqueKey',
     },
     {
-      title: '索引',
+      title: fieldIntl(intl, 'index'),
       dataIndex: 'index',
     },
     {
-      title: '默认值',
+      title: fieldIntl(intl, 'default'),
       dataIndex: 'default',
     },
     {
-      title: '注释',
+      title: fieldIntl(intl, 'comment'),
       dataIndex: 'comment',
     },
     {
-      title: '搜索类型',
+      title: fieldIntl(intl, 'search'),
       dataIndex: 'search',
       valueEnum: {
         exact: {
-          text: '精确匹配',
+          text: fieldIntl(intl, 'options.exact'),
           status: 'exact',
         },
         contains: {
-          text: '包含',
+          text: fieldIntl(intl, 'options.contains'),
           status: 'contains',
         },
         gt: {
-          text: '大于',
+          text: fieldIntl(intl, 'options.gt'),
           status: 'gt',
         },
         lt: {
-          text: '小于',
+          text: fieldIntl(intl, 'options.lt'),
           status: 'lt',
         },
         startswith: {
-          text: '前缀',
+          text: fieldIntl(intl, 'options.startswith'),
           status: 'startswith',
         },
         endswith: {
-          text: '后缀',
+          text: fieldIntl(intl, 'options.endswith'),
           status: 'endswith',
         },
         in: {
-          text: '在',
+          text: fieldIntl(intl, 'options.in'),
           status: 'in',
         },
         isnull: {
-          text: '为空',
+          text: fieldIntl(intl, 'options.isnull'),
           status: 'isnull',
         },
         order: {
-          text: '排序',
+          text: fieldIntl(intl, 'options.order'),
           status: 'order',
         },
       },
     },
     {
-      title: '非空',
+      title: fieldIntl(intl, 'notNull'),
       dataIndex: 'notNull',
       valueType: 'switch',
       search: false,
     },
     {
-      title: '表单中隐藏',
+      title: fieldIntl(intl, 'hideInForm'),
       dataIndex: 'hideInForm',
       valueType: 'switch',
       search: false,
     },
     {
-      title: '表格中隐藏',
+      title: fieldIntl(intl, 'hideInTable'),
       dataIndex: 'hideInTable',
       valueType: 'switch',
       search: false,
     },
     {
-      title: '详情中隐藏',
+      title: fieldIntl(intl, 'hideInDescriptions'),
       dataIndex: 'hideInDescriptions',
       valueType: 'switch',
       search: false,
     },
     {
-      title: '验证规则',
+      title: fieldIntl(intl, 'rules'),
       dataIndex: 'rules',
       hideInTable: true,
       search: false,
@@ -352,7 +353,7 @@ const Field: React.FC = () => {
             rowKey="id"
             scroll={{ x: 960 }}
             formRef={formRef}
-            headerTitle="验证规则"
+            headerTitle={fieldIntl(intl, 'rules')}
             maxLength={10}
             name="rules"
             controlled={false}

@@ -27,6 +27,7 @@ import {
 import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max';
 import { Button, Drawer, Form, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Model: React.FC = () => {
   /**
@@ -45,7 +46,7 @@ const Model: React.FC = () => {
 
   const columns: ProColumns<API.Model>[] = [
     {
-      title: 'id',
+      title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
       // hideInTable: true,
@@ -54,38 +55,38 @@ const Model: React.FC = () => {
       },
     },
     {
-      title: '名称',
+      title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true }],
         };
       },
     },
     {
-      title: '表名',
+      title: fieldIntl(intl, 'table'),
       dataIndex: 'table',
     },
     {
-      title: 'path路径',
+      title: fieldIntl(intl, 'path'),
       dataIndex: 'path',
     },
     {
-      title: '描述',
+      title: fieldIntl(intl, 'description'),
       dataIndex: 'description',
     },
     {
-      title: '硬删除',
+      title: fieldIntl(intl, 'hardDeleted'),
       dataIndex: 'hardDeleted',
       valueType: 'switch',
     },
     {
-      title: '需要认证',
+      title: fieldIntl(intl, 'auth'),
       dataIndex: 'auth',
       valueType: 'switch',
     },
     {
-      title: '多租户',
+      title: fieldIntl(intl, 'multiTenant'),
       dataIndex: 'multiTenant',
       valueType: 'switch',
     },
@@ -247,15 +248,16 @@ const Model: React.FC = () => {
         )}
       </Drawer>
       <DrawerForm<API.ModelGenerateDataRequest>
-        title="选择父级"
+        title={intl.formatMessage({ id: 'pages.model.parent.select' })}
         width={600}
         form={generateDataForm}
         open={openSelectMenu}
         onOpenChange={onOpenChange}
         onFinish={async (e) => {
           await putModelGenerateData(e);
-          message.success('生成成功');
-          actionRef.current?.reload();
+          message
+            .success(intl.formatMessage({ id: 'pages.model.generate.data.success' }))
+            .then(() => actionRef.current?.reload());
           setOpenSelectMenu(false);
         }}
       >
@@ -264,7 +266,7 @@ const Model: React.FC = () => {
           name="menuParentID"
           allowClear
           width="xl"
-          placeholder="请选择父级"
+          placeholder={intl.formatMessage({ id: 'pages.model.parent.placeholder' })}
           request={async () => {
             const res = await getMenus({ pageSize: 1000 });
             // @ts-ignore
