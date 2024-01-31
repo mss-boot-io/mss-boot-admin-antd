@@ -90,7 +90,7 @@ const Virtual: React.FC = () => {
     await updateVirtualModel({ id, key }, params);
     message.success(
       intl.formatMessage({
-        id: 'pages.message.update.success',
+        id: 'pages.message.edit.success',
         defaultMessage: 'Update successfully!',
       }),
     );

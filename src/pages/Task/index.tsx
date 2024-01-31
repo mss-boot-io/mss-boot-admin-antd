@@ -288,7 +288,7 @@ const TaskList: React.FC = () => {
     await putTasksId({ id }, params);
     message.success(
       intl.formatMessage({
-        id: 'pages.message.update.success',
+        id: 'pages.message.edit.success',
         defaultMessage: 'Update successfully!',
       }),
     );

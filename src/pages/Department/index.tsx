@@ -1,37 +1,29 @@
 import { Access } from '@/components/MssBoot/Access';
-import Auth from '@/components/MssBoot/Auth';
-import { getMenuTree } from '@/services/admin/menu';
-import {
-  deleteRolesId,
-  getRoleAuthorizeRoleId,
-  getRoles,
-  getRolesId,
-  postRoleAuthorizeRoleId,
-  postRoles,
-  putRolesId,
-} from '@/services/admin/role';
-import { idRender, statusOptions } from '@/util/columnOptions';
+import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max';
-import { Button, Drawer, message, Popconfirm } from 'antd';
+import { Button, Drawer, message, Popconfirm, TreeSelect } from 'antd';
 import { DataNode } from 'antd/es/tree';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
+import {
+  deleteDepartmentsId,
+  getDepartments,
+  getDepartmentsId,
+  postDepartments,
+  putDepartmentsId,
+} from '@/services/admin/department';
+import { statusOptions } from '@/util/statusOptions';
 
 const TableList: React.FC = () => {
-  const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
-
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.Role>();
-  const [treeData, setTreeData] = useState<DataNode[]>([]);
-
-  const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
-
+  const [list, setList] = useState<[]>([]);
   const { id } = useParams();
 
   /**
@@ -40,53 +32,102 @@ const TableList: React.FC = () => {
    * */
   const intl = useIntl();
 
-  const columns: ProColumns<API.Role>[] = [
+  const columns: ProColumns<API.Department>[] = [
     {
       title: fieldIntl(intl, 'id'),
       dataIndex: 'id',
       hideInForm: true,
+      search: false,
       render: (dom, entity) => {
         return idRender(dom, entity, setCurrentRow, setShowDetail);
       },
     },
     {
+      title: fieldIntl(intl, 'parentID'),
+      search: false,
+      hideInTable: true,
+      dataIndex: 'parentID',
+      renderFormItem: () => {
+        return (
+          <TreeSelect
+            showSearch
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            placeholder={fieldIntl(intl, 'parent.placeholder')}
+            allowClear
+            treeDefaultExpandAll
+            // onChange={onChange}
+            treeData={list}
+          />
+        );
+      },
+    },
+    {
       title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
-    },
-    {
-      title: fieldIntl(intl, 'remark'),
-      search: false,
-      dataIndex: 'remark',
-      valueType: 'textarea',
-    },
-    {
-      title: fieldIntl(intl, 'root'),
-      dataIndex: 'root',
-      search: false,
-      hideInForm: true,
-      valueEnum: {
-        false: {
-          text: fieldIntl(intl, 'options.false'),
-          status: 'false',
-        },
-        true: {
-          text: fieldIntl(intl, 'options.true'),
-          status: 'true',
-        },
+      formItemProps: {
+        rules: [{ required: true }],
       },
+    },
+    {
+      title: fieldIntl(intl, 'code'),
+      dataIndex: 'code',
+      formItemProps: {
+        rules: [{ required: true }],
+      },
+    },
+    {
+      title: fieldIntl(intl, 'leaderID'),
+      dataIndex: 'leaderID',
+    },
+    {
+      title: fieldIntl(intl, 'phone'),
+      search: false,
+      dataIndex: 'phone',
+      formItemProps: {
+        rules: [
+          {
+            pattern: /^1\d{10}$/,
+            message: (
+              <FormattedMessage
+                id="pages.login.phoneNumber.invalid"
+                defaultMessage="The phone number is in the wrong format!"
+              />
+            ),
+          },
+        ],
+      },
+    },
+    {
+      title: fieldIntl(intl, 'email'),
+      dataIndex: 'email',
+      search: false,
+      formItemProps: {
+        rules: [
+          {
+            type: 'email',
+          },
+        ],
+      },
+    },
+    {
+      title: fieldIntl(intl, 'sort'),
+      dataIndex: 'sort',
+      search: false,
+      valueType: 'digit',
     },
     {
       title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
-      valueEnum: statusOptions,
+      valueEnum: statusOptions(intl),
     },
     {
       title: fieldIntl(intl, 'updatedAt'),
       sorter: true,
       dataIndex: 'updatedAt',
       search: false,
-      valueType: 'dateTime',
       hideInForm: true,
+      valueType: 'dateTime',
     },
     {
       title: <FormattedMessage id="pages.title.option" />,
@@ -95,26 +136,14 @@ const TableList: React.FC = () => {
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Access key="/role/edit">
-          <Link to={`/role/${record.id}`}>
+        <Access key="/department/edit">
+          <Link to={`/department/${record.id}`} key="edit">
             <Button key="edit">
               <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
             </Button>
           </Link>
         </Access>,
-        <Access key="/role/auth">
-          <Button
-            key="auth"
-            disabled={record.root}
-            onClick={() => {
-              setAuthModalOpen(true);
-              setCurrentRow(record);
-            }}
-          >
-            <FormattedMessage id="pages.role.auth.title" defaultMessage="Auth" />
-          </Button>
-        </Access>,
-        <Access key="/role/delete">
+        <Access key="/department/delete">
           <Popconfirm
             key="delete"
             title={intl.formatMessage({
@@ -125,9 +154,8 @@ const TableList: React.FC = () => {
               id: 'pages.description.delete.confirm',
               defaultMessage: 'Are you sure to delete this record?',
             })}
-            disabled={record.root}
             onConfirm={async () => {
-              await deleteRolesId({ id: record.id! });
+              await deleteDepartmentsId({ id: record.id! });
               message
                 .success(
                   intl.formatMessage({
@@ -140,7 +168,7 @@ const TableList: React.FC = () => {
             okText={intl.formatMessage({ id: 'pages.title.ok', defaultMessage: 'OK' })}
             cancelText={intl.formatMessage({ id: 'pages.title.cancel', defaultMessage: 'Cancel' })}
           >
-            <Button disabled={record.root} key="delete.button">
+            <Button key="delete.button">
               <FormattedMessage id="pages.title.delete" defaultMessage="Delete" />
             </Button>
           </Popconfirm>
@@ -149,37 +177,17 @@ const TableList: React.FC = () => {
     },
   ];
 
-  const transfer = (data: API.Menu[]): DataNode[] => {
+  const transferTree = (data: API.Department[], self: string): DataNode[] => {
     // @ts-ignore
     return data.map((item) => {
       return {
-        title: intl.formatMessage({ id: `menu.${item.name}` }),
-        key: item.path,
+        title: item.name,
+        value: item.id,
+        disabled: item.id === self,
         // @ts-ignore
-        children: item.children ? transfer(item.children) : null,
+        children: item.children ? transferTree(item.children) : null,
       };
     });
-  };
-
-  const onOpenChange = async (e: boolean) => {
-    if (e) {
-      const data = await getMenuTree();
-      setTreeData(transfer(data));
-      //get checkedKeys
-      const checkedRes = await getRoleAuthorizeRoleId({
-        roleID: currentRow?.id ?? '',
-      });
-      if (checkedRes) {
-        const checkedKeys: React.Key[] = [];
-        checkedRes.paths?.forEach((value) => {
-          checkedKeys.push(value);
-        });
-        setCheckedKeys(checkedKeys);
-      }
-      return;
-    }
-    setTreeData([]);
-    setAuthModalOpen(e);
   };
 
   const onSubmit = async (params: any) => {
@@ -187,32 +195,41 @@ const TableList: React.FC = () => {
       return;
     }
     if (id === 'create') {
-      await postRoles(params);
+      await postDepartments(params);
       message.success(
         intl.formatMessage({
           id: 'pages.message.create.success',
           defaultMessage: 'Create successfully!',
         }),
       );
-      history.push('/role');
+      history.push('/department');
       return;
     }
-    await putRolesId({ id }, params);
+    await putDepartmentsId({ id }, params);
     message.success(
       intl.formatMessage({
         id: 'pages.message.edit.success',
         defaultMessage: 'Update successfully!',
       }),
     );
-    history.push('/role');
+    history.push('/department');
   };
+
+  useEffect(() => {
+    if (id) {
+      getDepartments({ pageSize: 1000, parentID: '' }).then((res) => {
+        // @ts-ignore
+        setList(transferTree(res.data!, id));
+      });
+    }
+  }, [id]);
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Role, API.Page>
+      <ProTable<API.Department, API.getDepartmentsParams>
         headerTitle={intl.formatMessage({
-          id: 'pages.role.list.title',
-          defaultMessage: 'Role List',
+          id: 'pages.department.list.title',
+          defaultMessage: 'Department List',
         })}
         actionRef={actionRef}
         rowKey="id"
@@ -222,28 +239,29 @@ const TableList: React.FC = () => {
         type={id ? 'form' : 'table'}
         onSubmit={id ? onSubmit : undefined}
         toolBarRender={() => [
-          <Access key="/role/create">
-            <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/role/create">
+          <Access key="/department/create">
+            <Link to="/department/create" key="create">
+              <Button type="primary" key="create">
                 <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Access>,
         ]}
         form={
           id && id !== 'create'
             ? {
                 request: async () => {
-                  const res = await getRolesId({ id });
+                  const res = await getDepartmentsId({ id });
                   return res;
                 },
               }
             : undefined
         }
-        // @ts-ignore
-        request={getRoles}
+        request={getDepartments}
+        params={{ parentID: '' }}
         columns={columns}
       />
+
       <Drawer
         width={600}
         open={showDetail}
@@ -254,43 +272,24 @@ const TableList: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.Role>
+          <ProDescriptions<API.Department>
             column={2}
             title={currentRow?.name}
-            request={async () => ({
-              data: currentRow || {},
-            })}
+            request={async (params) => {
+              // @ts-ignore
+              const res = await getDepartmentsId(params);
+              res.name = currentRow?.name;
+              return {
+                data: res,
+              };
+            }}
             params={{
               id: currentRow?.id,
             }}
-            columns={columns as ProDescriptionsItemProps<API.Role>[]}
+            columns={columns as ProDescriptionsItemProps<API.Menu>[]}
           />
         )}
       </Drawer>
-
-      <DrawerForm
-        onOpenChange={onOpenChange}
-        title={intl.formatMessage({ id: 'pages.role.auth.title' })}
-        open={authModalOpen}
-        onFinish={async () => {
-          const paths: string[] = [];
-          checkedKeys.forEach((value) => {
-            paths.push(value.toString());
-          });
-
-          await postRoleAuthorizeRoleId(
-            {
-              roleID: currentRow?.id ?? '',
-            },
-            {
-              paths,
-            },
-          );
-          message.success(intl.formatMessage({ id: 'pages.role.auth.success' }));
-        }}
-      >
-        <Auth values={treeData} setCheckedKeys={setCheckedKeys} checkedKeys={checkedKeys} />
-      </DrawerForm>
     </PageContainer>
   );
 };

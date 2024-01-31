@@ -276,7 +276,7 @@ const TableList: React.FC = () => {
     await putMenusId({ id }, params);
     message.success(
       intl.formatMessage({
-        id: 'pages.message.update.success',
+        id: 'pages.message.edit.success',
         defaultMessage: 'Update successfully!',
       }),
     );
@@ -285,7 +285,7 @@ const TableList: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      getMenus({ pageSize: 1000, type: 'MENU' }).then((res) => {
+      getMenus({ pageSize: 1000, type: ['MENU'], show: true }).then((res) => {
         console.log(res);
         // @ts-ignore
         setList(transferTree(res.data!));
