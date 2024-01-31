@@ -310,7 +310,7 @@ const Option: React.FC = () => {
     await putOptionsId({ id }, params);
     message.success(
       intl.formatMessage({
-        id: 'pages.message.update.success',
+        id: 'pages.message.edit.success',
         defaultMessage: 'Update successfully!',
       }),
     );

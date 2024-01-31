@@ -1,4 +1,4 @@
-import { ProSchemaValueEnumMap } from '@ant-design/pro-components';
+import { ProSchemaValueEnumObj } from '@ant-design/pro-components';
 
 interface IOptions {
   id?: string;
@@ -6,10 +6,10 @@ interface IOptions {
 }
 
 // 将数组转换为ProSchemaValueEnumMap
-export const toOptions = (data?: IOptions[]): ProSchemaValueEnumMap => {
+export const toOptions = (data?: IOptions[]): ProSchemaValueEnumObj => {
   console.log(data);
   // @ts-ignore
-  let options: ProSchemaValueEnumMap = {};
+  let options: ProSchemaValueEnumObj = {};
   if (!data) return options;
   // @ts-ignore
   data.forEach((item) => {

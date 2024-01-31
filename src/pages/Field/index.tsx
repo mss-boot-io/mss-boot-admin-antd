@@ -444,7 +444,7 @@ const Field: React.FC = () => {
     await putFieldsId({ id }, params);
     message.success(
       intl.formatMessage({
-        id: 'pages.message.update.success',
+        id: 'pages.message.edit.success',
         defaultMessage: 'Update successfully!',
       }),
     );

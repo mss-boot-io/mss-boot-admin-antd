@@ -31,6 +31,14 @@ export default [
     component: './Welcome',
   },
   {
+    path: '/analysis',
+    component: './Welcome',
+  },
+  {
+    path: '/workplace',
+    component: './Welcome',
+  },
+  {
     path: '/generator',
     icon: 'smile',
     component: './Generator',
@@ -101,6 +109,38 @@ export default [
         path: '/role/:id',
         hideInMenu: true,
         component: './Role',
+      },
+    ],
+  },
+  {
+    icon: 'table',
+    path: '/department',
+    routes: [
+      {
+        path: '/department',
+        hideInMenu: true,
+        component: './Department',
+      },
+      {
+        path: '/department/:id',
+        hideInMenu: true,
+        component: './Department',
+      },
+    ],
+  },
+  {
+    icon: 'table',
+    path: '/post',
+    routes: [
+      {
+        path: '/post',
+        hideInMenu: true,
+        component: './Post',
+      },
+      {
+        path: '/post/:id',
+        hideInMenu: true,
+        component: './Post',
       },
     ],
   },
@@ -246,7 +286,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/workplace',
   },
   {
     path: '*',

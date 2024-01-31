@@ -47,6 +47,11 @@ declare namespace API {
     id: string;
   };
 
+  type deleteDepartmentsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type deleteFieldsIdParams = {
     /** id */
     id: string;
@@ -77,6 +82,11 @@ declare namespace API {
     id: string;
   };
 
+  type deletePostsIdParams = {
+    /** id */
+    id: string;
+  };
+
   type deleteRolesIdParams = {
     /** id */
     id: string;
@@ -100,6 +110,33 @@ declare namespace API {
   type deleteUsersIdParams = {
     /** id */
     id: string;
+  };
+
+  type Department = {
+    /** Code 部门编码 */
+    code?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** Email 邮箱 */
+    email?: string;
+    /** ID primary key */
+    id?: string;
+    /** LeaderID 部分负责人ID */
+    leaderID?: string;
+    /** Name 部门名称 */
+    name?: string;
+    /** ParentID 父级id */
+    parentID?: string;
+    /** Phone 联系电话 */
+    phone?: string;
+    /** Sort 排序 */
+    sort?: number;
+    /** Status 状态 */
+    status?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
   };
 
   type FakeCaptchaRequest = {
@@ -169,6 +206,24 @@ declare namespace API {
     roleID?: string;
   };
 
+  type getDepartmentsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getDepartmentsParams = {
+    /** 部门名称 */
+    name?: string;
+    /** 父级部门ID */
+    parentID?: string;
+    /** 状态 */
+    status?: string;
+    /** 页码 */
+    page?: number;
+    /** 每页条数 */
+    pageSize?: number;
+  };
+
   type getDocumentationKeyParams = {
     /** key */
     key: string;
@@ -233,10 +288,12 @@ declare namespace API {
     name?: string;
     /** status */
     status?: string;
+    /** show */
+    show?: boolean;
     /** parentID */
     parentID?: string;
     /** type */
-    type?: string;
+    type?: string[];
     /** page */
     page?: number;
     /** pageSize */
@@ -293,6 +350,24 @@ declare namespace API {
     /** page */
     page?: number;
     /** pageSize */
+    pageSize?: number;
+  };
+
+  type getPostsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type getPostsParams = {
+    /** 岗位名称 */
+    name?: string;
+    /** 父级岗位ID */
+    parentID?: string;
+    /** 状态 */
+    status?: string;
+    /** 页码 */
+    page?: number;
+    /** 每页条数 */
     pageSize?: number;
   };
 
@@ -526,9 +601,7 @@ The Type method returns either this or "Bearer", the default. */
     navTheme?: string;
     /** ParentID 父级id */
     parentID?: string;
-    /** // Title 菜单标题
-Title string `json:"title" gorm:"column:title;comment:菜单标题;type:varchar(255);not null"`
-Path 路由 */
+    /** Path 路由 */
     path?: string;
     /** Permission 菜单权限 */
     permission?: string;
@@ -634,6 +707,31 @@ Path 路由 */
     userID: string;
   };
 
+  type Post = {
+    /** Code 岗位编码 */
+    code?: string;
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** DataScope 数据权限 */
+    dataScope?: string;
+    /** DeptIDSArr 部门id数组 */
+    deptIDS?: string[];
+    /** ID primary key */
+    id?: string;
+    /** Name 岗位名称 */
+    name?: string;
+    /** ParentID 父级id */
+    parentID?: string;
+    /** Sort 排序 */
+    sort?: number;
+    /** Status 状态 */
+    status?: string;
+    /** TenantID tenant id */
+    tenantID?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
   type postRoleAuthorizeRoleIDParams = {
     /** roleID */
     roleID: string;
@@ -647,6 +745,11 @@ Path 路由 */
   type putAppConfigsGroupParams = {
     /** group */
     group: string;
+  };
+
+  type putDepartmentsIdParams = {
+    /** id */
+    id: string;
   };
 
   type putFieldsIdParams = {
@@ -685,6 +788,11 @@ Path 路由 */
   };
 
   type putOptionsIdParams = {
+    /** id */
+    id: string;
+  };
+
+  type putPostsIdParams = {
     /** id */
     id: string;
   };
@@ -916,6 +1024,7 @@ Path 路由 */
     country?: string;
     /** CreatedAt create time */
     createdAt?: string;
+    department?: Department;
     email?: string;
     group?: string;
     /** ID primary key */
@@ -925,6 +1034,7 @@ Path 路由 */
     password?: string;
     permissions?: Record<string, any>;
     phone?: string;
+    post?: Post;
     profile?: string;
     province?: string;
     role?: Role;
@@ -942,9 +1052,11 @@ Path 路由 */
   };
 
   type UserLogin = {
+    department?: Department;
     email?: string;
     oauth2?: UserOAuth2[];
     password?: string;
+    post?: Post;
     role?: Role;
     /** Status 状态 */
     status?: string;
