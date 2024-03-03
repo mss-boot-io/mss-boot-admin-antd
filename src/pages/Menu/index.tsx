@@ -285,7 +285,7 @@ const TableList: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      getMenus({ pageSize: 1000, type: ['MENU'], show: true }).then((res) => {
+      getMenus({ pageSize: 1000, type: ['DIRECTORY'], show: true }).then((res) => {
         console.log(res);
         // @ts-ignore
         setList(transferTree(res.data!));

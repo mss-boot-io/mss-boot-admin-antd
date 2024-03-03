@@ -3,6 +3,7 @@ import { useIntl } from '@umijs/max';
 import { Menu } from 'antd';
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import Base from './components/base';
+import Security from './components/security';
 import styles from './style.less';
 
 const { Item } = Menu;
@@ -21,7 +22,10 @@ const Settings: React.FC = () => {
   const intl = useIntl();
   const menuMap: Record<string, React.ReactNode> = {
     base: intl.formatMessage({ id: 'pages.base.settings.title', defaultMessage: 'Basic Settings' }),
-    user: intl.formatMessage({ id: 'pages.user.settings.title', defaultMessage: 'User Settings' }),
+    security: intl.formatMessage({
+      id: 'pages.security.settings.title',
+      defaultMessage: 'Security Settings',
+    }),
   };
 
   const [initConfig, setInitConfig] = useState<SettingsState>({
@@ -67,7 +71,7 @@ const Settings: React.FC = () => {
       case 'base':
         return <Base />;
       case 'security':
-        return <></>;
+        return <Security />;
       case 'binding':
         return <></>;
       case 'notification':

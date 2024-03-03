@@ -30,7 +30,7 @@ export default {
   'app.settings.security.phone-description': 'Bound phone',
   'app.settings.security.question': 'Security Question',
   'app.settings.security.question-description':
-    'The security question is not set, and the security policy can effectively protect the account security',
+    'The security.tsx question is not set, and the security.tsx policy can effectively protect the account security.tsx',
   'app.settings.security.email': 'Backup Email',
   'app.settings.security.email-description': 'Bound Email',
   'app.settings.security.mfa': 'MFA Device',
