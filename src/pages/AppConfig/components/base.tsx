@@ -57,7 +57,7 @@ const Base: React.FC = () => {
       form={{
         request: async () => getAppConfigsGroup({ group: 'base' }),
       }}
-    ></ProTable>
+    />
   );
 };
 
