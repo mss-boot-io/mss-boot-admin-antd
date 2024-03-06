@@ -8,7 +8,7 @@ export async function getGithubCallback(
   params: API.getGithubCallbackParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.GithubToken>('/admin/api/github/callback', {
+  return request<API.OauthToken>('/admin/api/github/callback', {
     method: 'GET',
     params: {
       ...params,

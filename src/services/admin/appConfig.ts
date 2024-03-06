@@ -34,3 +34,19 @@ export async function putAppConfigsGroup(
     ...(options || {}),
   });
 }
+
+/** 获取应用配置(无需认证) 获取应用配置(无需认证) GET /admin/api/app-configs/no-auth-profile */
+export async function getAppConfigsNoAuthProfile(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/admin/api/app-configs/no-auth-profile', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 获取应用配置 获取应用配置 GET /admin/api/app-configs/profile */
+export async function getAppConfigsProfile(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/admin/api/app-configs/profile', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

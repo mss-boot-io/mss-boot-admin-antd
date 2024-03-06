@@ -13,6 +13,30 @@ declare namespace API {
     updatedAt?: string;
   };
 
+  type AppConfig = {
+    /** Auth 是否需要认证 如果为true，只有登录后才会返回 */
+    auth?: boolean;
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** Group 分组 */
+    group: string;
+    /** ID primary key */
+    id?: string;
+    /** Name 名称 */
+    name: string;
+    /** TenantID tenant id */
+    tenantID?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+    /** Value 值 */
+    value?: string;
+  };
+
+  type AppConfigControlItem = {
+    auth?: boolean;
+    value?: any;
+  };
+
   type AppConfigControlRequest = {
     data: Record<string, any>;
   };
@@ -271,6 +295,13 @@ declare namespace API {
     pageSize?: number;
   };
 
+  type getLarkCallbackParams = {
+    /** code */
+    code: string;
+    /** state */
+    state: string;
+  };
+
   type getMenuApiIdParams = {
     /** id */
     id: string;
@@ -487,6 +518,11 @@ declare namespace API {
     status?: string;
   };
 
+  type getUserConfigsGroupParams = {
+    /** group */
+    group: string;
+  };
+
   type getUsersIdParams = {
     /** id */
     id: string;
@@ -501,25 +537,6 @@ declare namespace API {
     id?: string;
     /** name */
     name?: string;
-  };
-
-  type GithubToken = {
-    /** AccessToken is the token that authorizes and authenticates
-the requests. */
-    accessToken?: string;
-    /** Expiry is the optional expiration time of the access token.
-
-If zero, TokenSource implementations will reuse the same
-token forever and RefreshToken or equivalent
-mechanisms for that TokenSource will not be used. */
-    expiry?: string;
-    /** RefreshToken is a token that's used by the application
-(as opposed to the user) to refresh the access token
-if it expires. */
-    refreshToken?: string;
-    /** TokenType is the type of token.
-The Type method returns either this or "Bearer", the default. */
-    tokenType?: string;
   };
 
   type Language = {
@@ -666,6 +683,26 @@ The Type method returns either this or "Bearer", the default. */
     /** UpdatedAt update time */
     updatedAt?: string;
     userID?: string;
+  };
+
+  type OauthToken = {
+    /** AccessToken is the token that authorizes and authenticates
+the requests. */
+    accessToken?: string;
+    /** Expiry is the optional expiration time of the access token.
+
+If zero, TokenSource implementations will reuse the same
+token forever and RefreshToken or equivalent
+mechanisms for that TokenSource will not be used. */
+    expiry?: string;
+    refreshExpiry?: string;
+    /** RefreshToken is a token that's used by the application
+(as opposed to the user) to refresh the access token
+if it expires. */
+    refreshToken?: string;
+    /** TokenType is the type of token.
+The Type method returns either this or "Bearer", the default. */
+    tokenType?: string;
   };
 
   type Option = {
@@ -815,6 +852,11 @@ The Type method returns either this or "Bearer", the default. */
   type putTenantsIdParams = {
     /** id */
     id: string;
+  };
+
+  type putUserConfigsGroupParams = {
+    /** group */
+    group: string;
   };
 
   type putUsersIdParams = {
@@ -1051,6 +1093,10 @@ The Type method returns either this or "Bearer", the default. */
     username?: string;
   };
 
+  type UserConfigControlRequest = {
+    data: Record<string, any>;
+  };
+
   type UserLogin = {
     department?: Department;
     email?: string;
@@ -1071,6 +1117,7 @@ The Type method returns either this or "Bearer", the default. */
     createdAt?: string;
     email?: string;
     email_verified?: boolean;
+    employee_no?: string;
     family_name?: string;
     gender?: string;
     given_name?: string;
@@ -1089,6 +1136,7 @@ The Type method returns either this or "Bearer", the default. */
     sub?: string;
     /** TenantID tenant id */
     tenantID?: string;
+    unionID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
     user_id?: string;

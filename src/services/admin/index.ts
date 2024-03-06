@@ -9,6 +9,7 @@ import * as virtual from './virtual';
 import * as field from './field';
 import * as generator from './generator';
 import * as language from './language';
+import * as lark from './lark';
 import * as menu from './menu';
 import * as model from './model';
 import * as notice from './notice';
@@ -19,6 +20,7 @@ import * as statistics from './statistics';
 import * as systemConfig from './systemConfig';
 import * as task from './task';
 import * as tenant from './tenant';
+import * as userConfig from './userConfig';
 import * as user from './user';
 export default {
   api,
@@ -28,6 +30,7 @@ export default {
   field,
   generator,
   language,
+  lark,
   menu,
   model,
   notice,
@@ -38,5 +41,6 @@ export default {
   systemConfig,
   task,
   tenant,
+  userConfig,
   user,
 };

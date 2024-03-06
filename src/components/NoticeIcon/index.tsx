@@ -84,6 +84,9 @@ const NoticeIconView: React.FC = () => {
     );
   };
   useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      return;
+    }
     getNoticeUnread().then((data) => {
       setNotices(data || []);
       setNoticeData(getNoticeData(data || []));
