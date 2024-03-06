@@ -23,6 +23,10 @@ export default [
         path: '/user/github-callback',
         component: './User/Github/callback.tsx',
       },
+      {
+        path: '/user/lark-callback',
+        component: './User/Lark/callback.tsx',
+      },
     ],
   },
   {

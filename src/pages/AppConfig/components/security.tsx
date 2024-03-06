@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { useIntl } from '@umijs/max';
 import { message } from 'antd';
 import { getAppConfigsGroup, putAppConfigsGroup } from '@/services/admin/appConfig';
+import AppConfigItem from '@/components/MssBoot/AppConfigItem';
 const Security: React.FC = () => {
   /**
    * @en-US International configuration
@@ -13,67 +14,49 @@ const Security: React.FC = () => {
   const formRef = useRef<ProFormInstance>();
 
   const [github, setGithub] = React.useState(false);
+  const [lark, setLark] = React.useState(false);
 
   const columns: ProColumns<any>[] = [
     {
       title: 'jwt颁发者',
-      dataIndex: 'jwtRealm',
+      dataIndex: ['jwtRealm', 'value'],
       valueType: 'text',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
-      },
     },
     {
       title: 'jwt密钥',
       dataIndex: 'jwtKey',
       valueType: 'text',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
+      renderFormItem: (schema) => {
+        // @ts-ignore
+        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
       },
     },
     {
       title: 'jwt过期时间(小时)',
-      dataIndex: 'jwtTimeout',
+      dataIndex: ['jwtTimeout', 'value'],
       valueType: 'digit',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }, { type: 'number', min: 1 }],
-        };
-      },
     },
     {
       title: 'jwt刷新时间(月)',
-      dataIndex: 'jwtMaxRefresh',
+      dataIndex: ['jwtMaxRefresh', 'value'],
       valueType: 'digit',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }, { type: 'number', min: 1 }],
-        };
-      },
     },
     {
       title: '身份密钥',
       dataIndex: 'jwtIdentityKey',
       valueType: 'text',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
+      renderFormItem: (schema) => {
+        // @ts-ignore
+        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
       },
     },
     {
       title: 'github登录',
-      dataIndex: 'githubEnabled',
+      dataIndex: ['githubEnabled', 'value'],
       valueType: 'switch',
       renderFormItem() {
         return (
           <ProFormSwitch
-            // checkedChildren="开"
-            // unCheckedChildren="关"
             // @ts-ignore
             onChange={(value) => {
               setGithub(value);
@@ -84,7 +67,7 @@ const Security: React.FC = () => {
     },
     {
       title: 'github client id',
-      dataIndex: 'githubClientId',
+      dataIndex: ['githubClientId', 'value'],
       hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
@@ -98,15 +81,14 @@ const Security: React.FC = () => {
       dataIndex: 'githubClientSecret',
       hideInForm: !github,
       valueType: 'text',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
+      renderFormItem: (schema) => {
+        // @ts-ignore
+        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
       },
     },
     {
       title: 'github redirect uri',
-      dataIndex: 'githubRedirectUri',
+      dataIndex: ['githubRedirectURI', 'value'],
       hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
@@ -117,29 +99,7 @@ const Security: React.FC = () => {
     },
     {
       title: 'github scope',
-      dataIndex: 'githubScope',
-      hideInForm: !github,
-      valueType: 'text',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
-      },
-    },
-    {
-      title: 'github auth url',
-      dataIndex: 'githubAuthURL',
-      hideInForm: !github,
-      valueType: 'text',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
-      },
-    },
-    {
-      title: 'github token url',
-      dataIndex: 'githubTokenURL',
+      dataIndex: ['githubScope', 'value'],
       hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
@@ -150,13 +110,62 @@ const Security: React.FC = () => {
     },
     {
       title: 'github allow group',
-      dataIndex: 'githubAllowGroup',
+      dataIndex: ['githubAllowGroup', 'value'],
       valueType: 'text',
       hideInForm: !github,
+    },
+    {
+      title: 'lark登录',
+      dataIndex: ['larkEnabled', 'value'],
+      valueType: 'switch',
+      renderFormItem() {
+        return (
+          <ProFormSwitch
+            // @ts-ignore
+            onChange={(value) => {
+              setLark(value);
+            }}
+          />
+        );
+      },
+    },
+    {
+      title: 'lark app id',
+      dataIndex: ['larkAppId', 'value'],
+      hideInForm: !lark,
+      valueType: 'text',
+      formItemProps: () => {
+        return {
+          rules: [{ required: true }],
+        };
+      },
+    },
+    {
+      title: 'lark app secret',
+      dataIndex: 'larkAppSecret',
+      hideInForm: !lark,
+      valueType: 'text',
+      renderFormItem: (schema) => {
+        // @ts-ignore
+        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
+      },
+    },
+    {
+      title: 'lark redirect uri',
+      dataIndex: ['larkRedirectURI', 'value'],
+      hideInForm: !lark,
+      valueType: 'text',
+      formItemProps: () => {
+        return {
+          rules: [{ required: true }],
+        };
+      },
     },
   ];
 
   const onSubmit = async (params: Record<string, any>) => {
+    params.githubEnabled = { value: github };
+    params.larkEnabled = { value: lark };
     await putAppConfigsGroup({ group: 'security' }, { data: params });
     message.success(
       intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: 'Update Success!' }),
@@ -170,7 +179,12 @@ const Security: React.FC = () => {
       columns={columns}
       onSubmit={onSubmit}
       form={{
-        request: async () => getAppConfigsGroup({ group: 'security' }),
+        request: async () => {
+          const res = await getAppConfigsGroup({ group: 'security' });
+          setGithub(res.githubEnabled.value);
+          setLark(res.larkEnabled.value);
+          return res;
+        },
       }}
     />
   );

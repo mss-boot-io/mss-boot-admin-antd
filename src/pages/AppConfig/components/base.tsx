@@ -16,7 +16,7 @@ const Base: React.FC = () => {
   const columns: ProColumns<any>[] = [
     {
       title: '网站名称',
-      dataIndex: 'websiteName',
+      dataIndex: ['websiteName', 'value'],
       formItemProps: () => {
         return {
           rules: [{ required: true, message: '此项为必填项' }],
@@ -25,7 +25,7 @@ const Base: React.FC = () => {
     },
     {
       title: '网站logo',
-      dataIndex: 'websiteLogo',
+      dataIndex: ['websiteLogo', 'value'],
       valueType: 'avatar',
       renderFormItem: () => {
         return <Upload />;
@@ -33,11 +33,11 @@ const Base: React.FC = () => {
     },
     {
       title: '备案编号',
-      dataIndex: 'websiteRecordNumber',
+      dataIndex: ['websiteRecordNumber', 'value'],
     },
     {
       title: '版权所有',
-      dataIndex: 'websiteCopyRight',
+      dataIndex: ['websiteCopyRight', 'value'],
     },
   ];
 

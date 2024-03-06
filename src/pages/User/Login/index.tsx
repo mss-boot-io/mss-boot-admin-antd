@@ -1,5 +1,4 @@
 import Footer from '@/components/Footer';
-import { getGithubGetLoginUrl } from '@/services/admin/generator';
 import { postUserFakeCaptcha, postUserLogin } from '@/services/admin/user';
 import { GithubOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import {
@@ -10,7 +9,7 @@ import {
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, message, Tabs } from 'antd';
+import { Alert, message, Tabs, Avatar } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
@@ -27,6 +26,8 @@ export type ActionIconsFormProps = {
 };
 
 const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
+  const { initialState } = useModel('@@initialState');
+  const scopes = initialState?.appConfig?.security?.githubScope.replace(/,/g, '+');
   const langClassName = useEmotionCss(({ token }) => {
     return {
       marginLeft: '8px',
@@ -43,46 +44,80 @@ const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
 
   return (
     <>
-      <GithubOutlined
-        key="GithubOutlined"
-        className={langClassName}
-        onClick={async () => {
-          localStorage.removeItem('login.type');
-          localStorage.removeItem('github.token');
-          localStorage.removeItem('token');
-          localStorage.removeItem('github.state');
-          const state = 'ghs_' + randToken();
-          localStorage.setItem('github.state', state);
-          const loginURL = await getGithubGetLoginUrl({ state: state });
-          console.log(loginURL);
-          const w = window.open('about:blank');
-          // @ts-ignore
-          w.location.href = loginURL;
-          const intervalId = setInterval(() => {
-            console.log('interval');
-            const loginType = localStorage.getItem('login.type');
-            const token = localStorage.getItem('token');
-            console.log(token, loginType);
-            if (token && loginType === 'github') {
-              clearInterval(intervalId);
-              try {
-                props.fetchUserInfo();
-              } catch (e) {
-                message.error('登录失败，请重试！');
-                return;
-              } finally {
-                console.log('login ok');
-                //登录成功跳转
-                const urlParams = new URL(window.location.href).searchParams;
-                console.log(urlParams.get('redirect'));
-                setTimeout(() => {
-                  history.push(urlParams.get('redirect') || '/');
-                }, 1000);
+      {initialState?.appConfig?.security?.githubEnabled === 'true' && (
+        <GithubOutlined
+          key="GithubOutlined"
+          className={langClassName}
+          onClick={async () => {
+            localStorage.removeItem('login.type');
+            localStorage.removeItem('github.token');
+            localStorage.removeItem('token');
+            localStorage.removeItem('github.state');
+            const state = 'ghs_' + randToken();
+            localStorage.setItem('github.state', state);
+            const loginURL = `https://github.com/login/oauth/authorize?client_id=${initialState?.appConfig?.security?.githubClientId}&response_type=code&scope=${scopes}&state=${state}`;
+            const w = window.open('about:blank');
+            // @ts-ignore
+            w.location.href = loginURL;
+            const intervalId = setInterval(() => {
+              const loginType = localStorage.getItem('login.type');
+              const token = localStorage.getItem('token');
+              if (token && loginType === 'github') {
+                clearInterval(intervalId);
+                try {
+                  props.fetchUserInfo();
+                } catch (e) {
+                  message.error('登录失败，请重试！');
+                  return;
+                } finally {
+                  //登录成功跳转
+                  const urlParams = new URL(window.location.href).searchParams;
+                  setTimeout(() => {
+                    history.push(urlParams.get('redirect') || '/');
+                  }, 1000);
+                }
               }
-            }
-          }, 1000);
-        }}
-      />
+            }, 1000);
+          }}
+        />
+      )}
+      {initialState?.appConfig?.security?.larkEnabled === 'true' && (
+        <a
+          onClick={async () => {
+            localStorage.removeItem('login.type');
+            localStorage.removeItem('lark.token');
+            localStorage.removeItem('token');
+            localStorage.removeItem('lark.state');
+            const state = 'lark' + randToken();
+            localStorage.setItem('lark.state', state);
+            const loginURL = `https://open.larksuite.com/open-apis/authen/v1/index?redirect_uri=${initialState?.appConfig?.security?.larkRedirectURI}&app_id=${initialState?.appConfig?.security?.larkAppId}&state=${state}`;
+            const w = window.open('about:blank');
+            // @ts-ignore
+            w.location.href = loginURL;
+            const intervalId = setInterval(() => {
+              const loginType = localStorage.getItem('login.type');
+              const token = localStorage.getItem('token');
+              if (token && loginType === 'lark') {
+                clearInterval(intervalId);
+                try {
+                  props.fetchUserInfo();
+                } catch (e) {
+                  message.error('登录失败，请重试！');
+                  return;
+                } finally {
+                  //登录成功跳转
+                  const urlParams = new URL(window.location.href).searchParams;
+                  setTimeout(() => {
+                    history.push(urlParams.get('redirect') || '/');
+                  }, 1000);
+                }
+              }
+            }, 1000);
+          }}
+        >
+          <Avatar src="https://sf16-scmcdn2-va.larksuitecdn.com/lark/open/doc/frontend/favicon-logo.svg" />
+        </a>
+      )}
     </>
   );
 };
@@ -265,7 +300,6 @@ const Login: React.FC = () => {
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
                 })}
                 rules={[
                   {
@@ -287,7 +321,6 @@ const Login: React.FC = () => {
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design',
                 })}
                 rules={[
                   {

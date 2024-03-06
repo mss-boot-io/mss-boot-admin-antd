@@ -16,16 +16,18 @@ import { MenuDataItem } from '@ant-design/pro-components';
 import { getLanguages } from './services/admin/language';
 import NoticeIconView from './components/NoticeIcon';
 import HeaderSearch from './components/HeaderSearch';
+import { getAppConfigsNoAuthProfile } from '@/services/admin/appConfig';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-const callbackPath = ['/user/github-callback'];
+const callbackPath = ['/user/github-callback', '/user/lark-callback'];
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
+  appConfig?: Record<string, Record<string, string>>;
   currentUser?: API.User;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.User | undefined>;
@@ -62,17 +64,21 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+
   // 如果不是登录页面，执行
   const { location } = history;
+  const appConfig = await getAppConfigsNoAuthProfile();
   if (location.pathname !== loginPath && !callbackPath.includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
+      appConfig,
       fetchUserInfo,
       currentUser,
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }
   return {
+    appConfig,
     fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,
   };
