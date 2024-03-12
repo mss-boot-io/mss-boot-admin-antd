@@ -15,7 +15,7 @@ const Auth: React.FC<AuthFormProps> = (props) => {
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
   const onExpand = (expandedKeysValue: React.Key[]) => {
-    console.log('onExpand', expandedKeysValue);
+    // console.log('onExpand', expandedKeysValue);
     // if not set autoExpandParent to false, if children expanded, parent can not collapse.
     // or, you can remove all expanded children keys.
     setExpandedKeys(expandedKeysValue);
@@ -23,12 +23,12 @@ const Auth: React.FC<AuthFormProps> = (props) => {
   };
 
   const onCheck = (checkedKeysValue: React.Key[]) => {
-    console.log('onCheck', checkedKeysValue);
+    // console.log('onCheck', checkedKeysValue);
     props.setCheckedKeys(checkedKeysValue);
   };
 
-  const onSelect = (selectedKeysValue: React.Key[], info: any) => {
-    console.log('onSelect', info);
+  const onSelect = (selectedKeysValue: React.Key[]) => {
+    // console.log('onSelect', info);
     setSelectedKeys(selectedKeysValue);
   };
 

@@ -8,18 +8,59 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, Link, useIntl, useParams, useRequest } from '@umijs/max';
-import { Button, Drawer, message, Popconfirm } from 'antd';
-import React, { useRef, useState } from 'react';
+import { Button, Drawer, message, Popconfirm, TreeSelect } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
+import { getDepartments } from '@/services/admin/department';
+import { getPosts } from '@/services/admin/post';
+import { DataNode } from 'antd/es/tree';
 
 const UserList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.Role>();
   const { id } = useParams();
+  const [deptOptions, setDeptOptions] = useState<[]>([]);
+  const [postOptions, setPostOptions] = useState<[]>([]);
+
+  const transferTree = (data: API.Post[] | API.Department, self: string): DataNode[] => {
+    // @ts-ignore
+    return data.map((item) => {
+      return {
+        title: item.name,
+        value: item.id,
+        disabled: item.id === self,
+        // @ts-ignore
+        children: item.children ? transferTree(item.children) : null,
+      };
+    });
+  };
+
+  const getLabel = (data: DataNode[], key: string): string => {
+    let label = '';
+    data.forEach((item) => {
+      // @ts-ignore
+      if (item.value === key) {
+        label = item.title as string;
+      } else if (item.children) {
+        label = getLabel(item.children, key);
+      }
+    });
+    return label;
+  };
   const { data: roleOptions, loading } = useRequest(() => {
     return getRoles({ pageSize: 1000 });
   });
+  useEffect(() => {
+    getPosts({ pageSize: 1000, parentID: '' }).then((res) => {
+      // @ts-ignore
+      setPostOptions(transferTree(res.data!, id));
+    });
+    getDepartments({ pageSize: 1000, parentID: '' }).then((res) => {
+      // @ts-ignore
+      setDeptOptions(transferTree(res.data!, id));
+    });
+  }, []);
 
   /**
    * @en-US International configuration
@@ -42,6 +83,45 @@ const UserList: React.FC = () => {
       search: false,
       valueType: 'select',
       valueEnum: toOptions(roleOptions),
+    },
+    {
+      title: fieldIntl(intl, 'department'),
+      dataIndex: 'departmentID',
+      valueType: 'select',
+      renderText: (val) => getLabel(deptOptions, val),
+      renderFormItem: () => {
+        return (
+          <TreeSelect
+            showSearch
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            placeholder={fieldIntl(intl, 'parent.placeholder')}
+            allowClear
+            treeDefaultExpandAll
+            // onChange={onChange}
+            treeData={deptOptions}
+          />
+        );
+      },
+    },
+    {
+      title: fieldIntl(intl, 'post'),
+      dataIndex: 'postID',
+      renderText: (val) => getLabel(postOptions, val),
+      renderFormItem: () => {
+        return (
+          <TreeSelect
+            showSearch
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            placeholder={fieldIntl(intl, 'parent.placeholder')}
+            allowClear
+            treeDefaultExpandAll
+            // onChange={onChange}
+            treeData={postOptions}
+          />
+        );
+      },
     },
     {
       title: fieldIntl(intl, 'avatar'),
@@ -88,7 +168,6 @@ const UserList: React.FC = () => {
       valueType: 'password',
       formItemProps: {
         rules: [
-          { required: true },
           { min: 8 },
           { max: 20 },
           {
@@ -117,13 +196,6 @@ const UserList: React.FC = () => {
       hideInDescriptions: true,
       formItemProps: {
         rules: [
-          {
-            required: true,
-            message: intl.formatMessage({
-              id: 'pages.message.password.confirm.required',
-              defaultMessage: 'Please confirm your password!',
-            }),
-          },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
@@ -299,7 +371,7 @@ const UserList: React.FC = () => {
       >
         {currentRow?.name && (
           <ProDescriptions<API.User>
-            column={2}
+            column={1}
             title={currentRow?.name}
             request={async (params) => {
               // @ts-ignore

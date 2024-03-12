@@ -1,4 +1,4 @@
-import { ProColumns, ProFormInstance, ProFormSwitch, ProTable } from '@ant-design/pro-components';
+import { ProColumns, ProFormInstance, ProTable } from '@ant-design/pro-components';
 import React, { useRef } from 'react';
 import { useIntl } from '@umijs/max';
 import { message } from 'antd';
@@ -54,16 +54,6 @@ const Security: React.FC = () => {
       title: 'github登录',
       dataIndex: ['githubEnabled', 'value'],
       valueType: 'switch',
-      renderFormItem() {
-        return (
-          <ProFormSwitch
-            // @ts-ignore
-            onChange={(value) => {
-              setGithub(value);
-            }}
-          />
-        );
-      },
     },
     {
       title: 'github client id',
@@ -118,16 +108,6 @@ const Security: React.FC = () => {
       title: 'lark登录',
       dataIndex: ['larkEnabled', 'value'],
       valueType: 'switch',
-      renderFormItem() {
-        return (
-          <ProFormSwitch
-            // @ts-ignore
-            onChange={(value) => {
-              setLark(value);
-            }}
-          />
-        );
-      },
     },
     {
       title: 'lark app id',
@@ -184,6 +164,14 @@ const Security: React.FC = () => {
           setGithub(res.githubEnabled.value);
           setLark(res.larkEnabled.value);
           return res;
+        },
+        onValuesChange: (values) => {
+          if (values.larkEnabled !== undefined) {
+            setLark(values.larkEnabled.value);
+          }
+          if (values.githubEnabled !== undefined) {
+            setGithub(values.githubEnabled.value);
+          }
         },
       }}
     />
