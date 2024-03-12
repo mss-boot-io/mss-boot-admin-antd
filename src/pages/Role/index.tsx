@@ -154,7 +154,7 @@ const TableList: React.FC = () => {
     return data.map((item) => {
       return {
         title: intl.formatMessage({ id: `menu.${item.name}` }),
-        key: item.path,
+        key: item.path === '/' ? item.name : item.path,
         // @ts-ignore
         children: item.children ? transfer(item.children) : null,
       };

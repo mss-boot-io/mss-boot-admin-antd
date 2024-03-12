@@ -84,9 +84,6 @@ const TaskList: React.FC = () => {
                 label: 'grpcs',
               },
             ]}
-            onChange={(value) => {
-              setNeedMethod(value === 'http' || value === 'https');
-            }}
             name="protocol"
           />
         );
@@ -128,10 +125,6 @@ const TaskList: React.FC = () => {
                 label: 'DELETE',
               },
             ]}
-            onChange={(value) => {
-              setNeedBody(value !== 'GET');
-              setMustBody(value === 'POST' || value === 'PUT');
-            }}
             name="method"
             placeholder={fieldIntl(intl, 'method.placeholder')}
           />
@@ -295,8 +288,14 @@ const TaskList: React.FC = () => {
     history.push('/task');
   };
 
-  const onChange = (e: any) => {
-    console.log(e);
+  const onValuesChange = (values: API.Task) => {
+    if (values.protocol !== undefined) {
+      setNeedMethod(values.protocol === 'http' || values.protocol === 'https');
+    }
+    if (values.method !== undefined) {
+      setNeedBody(values.method !== 'GET');
+      setMustBody(values.method === 'POST' || values.method === 'PUT');
+    }
   };
 
   return (
@@ -330,9 +329,9 @@ const TaskList: React.FC = () => {
                   setNeedBody(res.method !== 'GET');
                   return res;
                 },
-                onChange,
+                onValuesChange,
               }
-            : { onChange }
+            : { onValuesChange }
         }
         request={getTasks}
         columns={columns}
