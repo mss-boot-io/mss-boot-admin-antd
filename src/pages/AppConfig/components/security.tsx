@@ -18,39 +18,6 @@ const Security: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: 'jwt颁发者',
-      dataIndex: ['jwtRealm', 'value'],
-      valueType: 'text',
-    },
-    {
-      title: 'jwt密钥',
-      dataIndex: 'jwtKey',
-      valueType: 'text',
-      renderFormItem: (schema) => {
-        // @ts-ignore
-        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
-      },
-    },
-    {
-      title: 'jwt过期时间(小时)',
-      dataIndex: ['jwtTimeout', 'value'],
-      valueType: 'digit',
-    },
-    {
-      title: 'jwt刷新时间(月)',
-      dataIndex: ['jwtMaxRefresh', 'value'],
-      valueType: 'digit',
-    },
-    {
-      title: '身份密钥',
-      dataIndex: 'jwtIdentityKey',
-      valueType: 'text',
-      renderFormItem: (schema) => {
-        // @ts-ignore
-        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
-      },
-    },
-    {
       title: 'github登录',
       dataIndex: ['githubEnabled', 'value'],
       valueType: 'switch',
