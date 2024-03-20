@@ -19,7 +19,7 @@ import {
   ProFormInstance,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max';
+import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
@@ -430,6 +430,7 @@ const Field: React.FC = () => {
     if (!id) {
       return;
     }
+    params.modelID = modelID;
     if (id === 'create') {
       await postFields(params);
       message.success(
@@ -483,10 +484,7 @@ const Field: React.FC = () => {
         form={
           id && id !== 'create'
             ? {
-                request: async () => {
-                  const res = await getFieldsId({ id });
-                  return res;
-                },
+                request: async () => await getFieldsId({ id }),
               }
             : undefined
         }

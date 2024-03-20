@@ -269,11 +269,16 @@ const Login: React.FC = () => {
             autoLogin: true,
           }}
           actions={[
-            <FormattedMessage
-              key="loginWith"
-              id="pages.login.loginWith"
-              defaultMessage="其他登录方式"
-            />,
+            initialState?.appConfig?.security?.githubEnabled ||
+            initialState?.appConfig?.security?.larkEnabled ? (
+              <FormattedMessage
+                key="loginWith"
+                id="pages.login.loginWith"
+                defaultMessage="其他登录方式"
+              />
+            ) : (
+              ''
+            ),
             <ActionIcons fetchUserInfo={fetchUserInfo} key="icons" />,
           ]}
           onFinish={async (values) => {
