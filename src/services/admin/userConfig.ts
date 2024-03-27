@@ -34,3 +34,11 @@ export async function putUserConfigsGroup(
     ...(options || {}),
   });
 }
+
+/** 用户配置 用户配置 GET /admin/api/user-configs/profile */
+export async function getUserConfigsProfile(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/admin/api/user-configs/profile', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

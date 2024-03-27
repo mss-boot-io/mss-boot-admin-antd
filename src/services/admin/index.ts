@@ -5,13 +5,13 @@
 import * as api from './api';
 import * as appConfig from './appConfig';
 import * as department from './department';
-import * as virtual from './virtual';
 import * as field from './field';
 import * as generator from './generator';
 import * as language from './language';
 import * as lark from './lark';
 import * as menu from './menu';
 import * as model from './model';
+import * as monitor from './monitor';
 import * as notice from './notice';
 import * as option from './option';
 import * as post from './post';
@@ -20,8 +20,9 @@ import * as statistics from './statistics';
 import * as systemConfig from './systemConfig';
 import * as task from './task';
 import * as tenant from './tenant';
-import * as userConfig from './userConfig';
 import * as user from './user';
+import * as userConfig from './userConfig';
+import * as virtual from './virtual';
 export default {
   api,
   appConfig,
@@ -33,6 +34,7 @@ export default {
   lark,
   menu,
   model,
+  monitor,
   notice,
   option,
   post,
