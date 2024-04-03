@@ -290,16 +290,16 @@ export default [
       },
     ],
   },
-  {
-    path: '/monitor',
-    routes: [
-      {
-        path: '/monitor',
-        hideInMenu: true,
-        component: './Monitor',
-      },
-    ],
-  },
+  // {
+  //   path: '/monitor',
+  //   routes: [
+  //     {
+  //       path: '/monitor',
+  //       hideInMenu: true,
+  //       component: './Monitor',
+  //     },
+  //   ],
+  // },
   {
     path: '/',
     redirect: '/workplace',
