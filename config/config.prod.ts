@@ -2,7 +2,6 @@
 import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
-  esbuildMinifyIIFE: true,
   define: {
     API_URL: 'https://admin-api.mss-boot-io.top',
   },
