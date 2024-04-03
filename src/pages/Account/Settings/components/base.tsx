@@ -1,6 +1,4 @@
-import React, { useRef, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Upload, message } from 'antd';
 import {
   ProColumns,
   ProFormDependency,
@@ -8,13 +6,15 @@ import {
   ProFormSelect,
   ProTable,
 } from '@ant-design/pro-components';
+import { Button, message, Upload } from 'antd';
+import React, { useRef, useState } from 'react';
 
-import styles from './BaseView.less';
 import { getUserUserInfo, putUserUserInfo } from '@/services/admin/user';
-import { useRequest } from 'ahooks';
-import { province } from '../geographic/province';
-import { city } from '../geographic/city';
 import { request, useIntl } from '@umijs/max';
+import { useRequest } from 'ahooks';
+import { city } from '../geographic/city';
+import { province } from '../geographic/province';
+import styles from './BaseView.less';
 
 // 头像组件 方便以后独立，增加裁剪之类的功能
 const AvatarView = ({ avatar, setAvatar }: { avatar: string; setAvatar: any }) => (
@@ -126,7 +126,6 @@ const BaseView: React.FC = () => {
       width: 'md',
       formItemProps: {
         rules: [
-          { required: true },
           { min: 8 },
           { max: 20 },
           {
@@ -153,7 +152,6 @@ const BaseView: React.FC = () => {
       width: 'md',
       formItemProps: {
         rules: [
-          { required: true },
           { min: 8 },
           { max: 20 },
           {

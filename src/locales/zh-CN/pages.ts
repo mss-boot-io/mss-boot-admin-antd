@@ -93,6 +93,7 @@ export default {
   'pages.account.settings.title': '个人设置',
   'pages.base.settings.title': '基本设置',
   'pages.security.settings.title': '安全设置',
+  'pages.storage.settings.title': '存储设置',
   'pages.binding.settings.title': '账号绑定',
   'pages.notification.settings.title': '新消息通知',
   'pages.user.settings.title': '用户设置',
