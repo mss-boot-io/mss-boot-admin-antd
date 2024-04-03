@@ -30,10 +30,10 @@
     "start": "cross-env UMI_ENV=dev max dev",
     "start:alpha": "cross-env REACT_APP_ENV=alpha MOCK=none UMI_ENV=alpha max dev",
     "start:beta": "cross-env REACT_APP_ENV=beta MOCK=none UMI_ENV=beta max dev",
+    "start:prod": "cross-env REACT_APP_ENV=prod MOCK=none UMI_ENV=prod max dev",
     "start:dev": "cross-env REACT_APP_ENV=dev MOCK=none UMI_ENV=dev max dev",
     "start:no-mock": "cross-env MOCK=none UMI_ENV=dev max dev",
     "start:pre": "cross-env REACT_APP_ENV=pre UMI_ENV=dev max dev",
-    "start:prod": "cross-env REACT_APP_ENV=prod MOCK=none UMI_ENV=prod max dev",
     "start:test": "cross-env REACT_APP_ENV=test MOCK=none UMI_ENV=dev max dev",
     "test": "jest",
     "test:coverage": "npm run jest -- --coverage",
@@ -52,7 +52,6 @@
     "not ie <= 10"
   ],
   "dependencies": {
-    "@ant-design/charts": "^2.0.3",
     "@ant-design/icons": "^4.8.0",
     "@ant-design/pro-components": "^2.3.57",
     "@ant-design/use-emotion-css": "1.0.4",

@@ -143,6 +143,7 @@ export default defineConfig({
   mfsu: {
     strategy: 'normal',
   },
+  esbuildMinifyIIFE: true,
   requestRecord: {},
   define: {
     API_URL: '',
