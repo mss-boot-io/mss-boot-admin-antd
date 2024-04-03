@@ -143,6 +143,8 @@ export default {
   'pages.department.list.title': 'Department List',
   'pages.post.list.title': 'Post List',
   /****************** field ******************/
+  'pages.fields.post': 'post',
+  'pages.fields.department': 'department',
   'pages.fields.leaderID': 'leader',
   'pages.fields.dataScope': 'data scope',
   'pages.fields.email': 'email',

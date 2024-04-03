@@ -1,4 +1,4 @@
-import { ProColumns, ProFormInstance, ProFormSwitch, ProTable } from '@ant-design/pro-components';
+import { ProColumns, ProFormInstance, ProTable } from '@ant-design/pro-components';
 import React, { useRef } from 'react';
 import { useIntl } from '@umijs/max';
 import { message } from 'antd';
@@ -18,52 +18,9 @@ const Security: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: 'jwt颁发者',
-      dataIndex: ['jwtRealm', 'value'],
-      valueType: 'text',
-    },
-    {
-      title: 'jwt密钥',
-      dataIndex: 'jwtKey',
-      valueType: 'text',
-      renderFormItem: (schema) => {
-        // @ts-ignore
-        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
-      },
-    },
-    {
-      title: 'jwt过期时间(小时)',
-      dataIndex: ['jwtTimeout', 'value'],
-      valueType: 'digit',
-    },
-    {
-      title: 'jwt刷新时间(月)',
-      dataIndex: ['jwtMaxRefresh', 'value'],
-      valueType: 'digit',
-    },
-    {
-      title: '身份密钥',
-      dataIndex: 'jwtIdentityKey',
-      valueType: 'text',
-      renderFormItem: (schema) => {
-        // @ts-ignore
-        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
-      },
-    },
-    {
       title: 'github登录',
       dataIndex: ['githubEnabled', 'value'],
       valueType: 'switch',
-      renderFormItem() {
-        return (
-          <ProFormSwitch
-            // @ts-ignore
-            onChange={(value) => {
-              setGithub(value);
-            }}
-          />
-        );
-      },
     },
     {
       title: 'github client id',
@@ -118,16 +75,6 @@ const Security: React.FC = () => {
       title: 'lark登录',
       dataIndex: ['larkEnabled', 'value'],
       valueType: 'switch',
-      renderFormItem() {
-        return (
-          <ProFormSwitch
-            // @ts-ignore
-            onChange={(value) => {
-              setLark(value);
-            }}
-          />
-        );
-      },
     },
     {
       title: 'lark app id',
@@ -184,6 +131,14 @@ const Security: React.FC = () => {
           setGithub(res.githubEnabled.value);
           setLark(res.larkEnabled.value);
           return res;
+        },
+        onValuesChange: (values) => {
+          if (values.larkEnabled !== undefined) {
+            setLark(values.larkEnabled.value);
+          }
+          if (values.githubEnabled !== undefined) {
+            setGithub(values.githubEnabled.value);
+          }
         },
       }}
     />

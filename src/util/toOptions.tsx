@@ -7,7 +7,6 @@ interface IOptions {
 
 // 将数组转换为ProSchemaValueEnumMap
 export const toOptions = (data?: IOptions[]): ProSchemaValueEnumObj => {
-  console.log(data);
   // @ts-ignore
   let options: ProSchemaValueEnumObj = {};
   if (!data) return options;

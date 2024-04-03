@@ -127,6 +127,8 @@ export default {
   'pages.department.list.title': '部门列表',
   'pages.post.list.title': '岗位列表',
   /****************** field ******************/
+  'pages.fields.post': '岗位',
+  'pages.fields.department': '部门',
   'pages.fields.leaderID': '负责人',
   'pages.fields.dataScope': '数据范围',
   'pages.fields.email': '邮箱',
