@@ -108,6 +108,7 @@ export default {
   'pages.account.settings.title': 'Personal Settings',
   'pages.base.settings.title': 'Basic Settings',
   'pages.security.settings.title': 'Security Settings',
+  'pages.storage.settings.title': 'Storage Settings',
   'pages.binding.settings.title': 'Account Binding',
   'pages.notification.settings.title': 'New Message Notification',
   'pages.user.settings.title': 'User Settings',

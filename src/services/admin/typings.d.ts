@@ -664,6 +664,43 @@ declare namespace API {
     menuParentID?: string;
   };
 
+  type MonitorCPUInfo = {
+    cacheSize?: number;
+    coreId?: string;
+    cores?: number;
+    cpu?: number;
+    /** CPUUsagePercent CPU使用率 */
+    cpuUsagePercent?: number;
+    family?: string;
+    flags?: string[];
+    mhz?: number;
+    microcode?: string;
+    model?: string;
+    modelName?: string;
+    physicalId?: string;
+    stepping?: number;
+    vendorId?: string;
+  };
+
+  type MonitorResponse = {
+    /** CPUInfo CPU信息 */
+    cpuInfo?: MonitorCPUInfo[];
+    /** CPULogicalCore CPU逻辑核心数 */
+    cpuLogicalCore?: number;
+    /** CPUPhysicalCore CPU物理核心数 */
+    cpuPhysicalCore?: number;
+    /** MemoryAvailable 内存可用量 */
+    memoryAvailable?: number;
+    /** MemoryFree 内存空闲量 */
+    memoryFree?: number;
+    /** MemoryTotal 内存总量 */
+    memoryTotal?: number;
+    /** MemoryUsage 内存使用量 */
+    memoryUsage?: number;
+    /** MemoryUsagePercent 内存使用率 */
+    memoryUsagePercent?: number;
+  };
+
   type Notice = {
     avatar?: string;
     /** CreatedAt create time */
@@ -938,6 +975,8 @@ The Type method returns either this or "Bearer", the default. */
     command?: string;
     /** CreatedAt create time */
     createdAt?: string;
+    /** CreatorID creator id */
+    creatorID?: string;
     endpoint?: string;
     entryID?: number;
     /** ID primary key */
@@ -1074,6 +1113,7 @@ The Type method returns either this or "Bearer", the default. */
     name?: string;
     oauth2?: UserOAuth2[];
     password?: string;
+    passwordStrength?: string;
     permissions?: Record<string, any>;
     phone?: string;
     post?: Post;
@@ -1102,6 +1142,7 @@ The Type method returns either this or "Bearer", the default. */
     email?: string;
     oauth2?: UserOAuth2[];
     password?: string;
+    passwordStrength?: string;
     post?: Post;
     role?: Role;
     /** Status 状态 */
@@ -1136,6 +1177,7 @@ The Type method returns either this or "Bearer", the default. */
     sub?: string;
     /** TenantID tenant id */
     tenantID?: string;
+    type?: string;
     unionID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;

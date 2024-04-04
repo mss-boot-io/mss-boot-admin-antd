@@ -3,14 +3,15 @@ import Auth from '@/components/MssBoot/Auth';
 import { getMenuTree } from '@/services/admin/menu';
 import {
   deleteRolesId,
-  getRoleAuthorizeRoleId,
+  getRoleAuthorizeRoleID,
   getRoles,
   getRolesId,
-  postRoleAuthorizeRoleId,
+  postRoleAuthorizeRoleID,
   postRoles,
   putRolesId,
 } from '@/services/admin/role';
 import { idRender, statusOptions } from '@/util/columnOptions';
+import { fieldIntl } from '@/util/fieldIntl';
 import { indexTitle } from '@/util/indexTitle';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
@@ -19,7 +20,6 @@ import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max'
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useRef, useState } from 'react';
-import { fieldIntl } from '@/util/fieldIntl';
 
 const TableList: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
@@ -166,7 +166,7 @@ const TableList: React.FC = () => {
       const data = await getMenuTree();
       setTreeData(transfer(data));
       //get checkedKeys
-      const checkedRes = await getRoleAuthorizeRoleId({
+      const checkedRes = await getRoleAuthorizeRoleID({
         roleID: currentRow?.id ?? '',
       });
       if (checkedRes) {
@@ -278,7 +278,7 @@ const TableList: React.FC = () => {
             paths.push(value.toString());
           });
 
-          await postRoleAuthorizeRoleId(
+          await postRoleAuthorizeRoleID(
             {
               roleID: currentRow?.id ?? '',
             },

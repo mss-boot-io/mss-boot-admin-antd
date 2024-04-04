@@ -1,3 +1,4 @@
+import Storage from '@/pages/AppConfig/components/storage';
 import { GridContent, PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 import { Menu } from 'antd';
@@ -8,7 +9,7 @@ import styles from './style.less';
 
 const { Item } = Menu;
 
-type SettingsStateKeys = 'base' | 'security' | 'binding' | 'notification';
+type SettingsStateKeys = 'base' | 'security' | 'storage' | 'binding' | 'notification';
 type SettingsState = {
   mode: 'inline' | 'horizontal';
   selectKey: SettingsStateKeys;
@@ -25,6 +26,10 @@ const Settings: React.FC = () => {
     security: intl.formatMessage({
       id: 'pages.security.settings.title',
       defaultMessage: 'Security Settings',
+    }),
+    storage: intl.formatMessage({
+      id: 'pages.storage.settings.title',
+      defaultMessage: 'Storage Settings',
     }),
   };
 
@@ -72,6 +77,8 @@ const Settings: React.FC = () => {
         return <Base />;
       case 'security':
         return <Security />;
+      case 'storage':
+        return <Storage />;
       case 'binding':
         return <></>;
       case 'notification':

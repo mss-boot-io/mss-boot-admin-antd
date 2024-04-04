@@ -1,8 +1,8 @@
 {
-  "name": "ant-design-pro",
-  "version": "6.0.0",
-  "private": true,
-  "description": "An out-of-box UI solution for enterprise applications",
+  "name": "mss-boot-admin",
+  "version": "1.0.0",
+  "private": false,
+  "description": "基于Gin + React + Atndv5 + Umiv4 + mss-boot 的前后端分离权限管理系统,支持功能:多租户 角色 用户 菜单 国际化 系统配置 权限 虚拟模型 通知 字典, beta环境: https://admin-beta.mss-boot-io.top swagger: https://mss-boot-io.github.io/mss-boot-admin/swagger.json",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
     "build": "max build",

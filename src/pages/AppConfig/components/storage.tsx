@@ -1,0 +1,162 @@
+import { getAppConfigsGroup, putAppConfigsGroup } from '@/services/admin/appConfig';
+import { ProColumns, ProFormInstance, ProTable } from '@ant-design/pro-components';
+import { useIntl } from '@umijs/max';
+import { message } from 'antd';
+import React, { useRef } from 'react';
+
+const Storage: React.FC = () => {
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  const intl = useIntl();
+
+  const fromRef = useRef<ProFormInstance>();
+  // const [local, setLocal] = React.useState(false);
+  const [s3, setS3] = React.useState(false);
+  // const [minio, setMinio] = React.useState(false);
+
+  const columns: ProColumns<any>[] = [
+    {
+      title: 'type',
+      dataIndex: ['type', 'value'],
+      valueEnum: {
+        local: {
+          text: 'local',
+          color: 'red',
+          status: 'local',
+        },
+        s3: {
+          text: 's3',
+          color: 'blue',
+          status: 's3',
+        },
+      },
+    },
+    {
+      title: 'endpoint',
+      dataIndex: ['endpoint', 'value'],
+    },
+    {
+      title: 's3Provider',
+      dataIndex: ['s3Provider', 'value'],
+      hideInForm: !s3,
+      valueEnum: {
+        s3: {
+          text: 's3(aws)',
+          status: 's3',
+        },
+        oss: {
+          text: 'oss(aliyun)',
+          status: 'oss',
+        },
+        minio: {
+          text: 'minio',
+          status: 'minio',
+        },
+        gcs: {
+          text: 'gcs(google)',
+          status: 'gcs',
+        },
+        oos: {
+          text: 'oos(ctyun)',
+          status: 'oos',
+        },
+        kodo: {
+          text: 'kodo(qiniu)',
+          status: 'kodo',
+        },
+        cos: {
+          text: 'cos(tencent)',
+          status: 'cos',
+        },
+        obs: {
+          text: 'obs(huawei)',
+          status: 'obs',
+        },
+        bos: {
+          text: 'bos(baidu)',
+          status: 'bos',
+        },
+        ks3: {
+          text: 'ks3(kingsoft)',
+          status: 'ks3',
+        },
+      },
+    },
+    {
+      title: 's3Endpoint',
+      dataIndex: ['s3Endpoint', 'value'],
+      hideInForm: !s3,
+    },
+    {
+      title: 's3Region',
+      dataIndex: ['s3Region', 'value'],
+      hideInForm: !s3,
+    },
+    {
+      title: 's3Bucket',
+      dataIndex: ['s3Bucket', 'value'],
+      hideInForm: !s3,
+    },
+    {
+      title: 's3AccessKeyID',
+      dataIndex: ['s3AccessKeyID', 'value'],
+      hideInForm: !s3,
+    },
+    {
+      title: 's3SecretAccessKey',
+      dataIndex: ['s3SecretAccessKey', 'value'],
+      hideInForm: !s3,
+    },
+    {
+      title: 's3SigningMethod',
+      dataIndex: ['s3SigningMethod', 'value'],
+      hideInForm: !s3,
+    },
+  ];
+
+  const onSubmit = async (params: Record<string, any>) => {
+    params.type = { value: s3 ? 's3' : 'local' };
+    await putAppConfigsGroup({ group: 'storage' }, { data: params });
+    message.success(
+      intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: 'Update Success!' }),
+    );
+  };
+
+  return (
+    <ProTable<any>
+      type="form"
+      formRef={fromRef}
+      columns={columns}
+      onSubmit={onSubmit}
+      form={{
+        request: async () => {
+          const res = await getAppConfigsGroup({ group: 'storage' });
+          // setLocal(res.type?.value === 'local');
+          setS3(res.type?.value === 's3');
+          if (!res.type) {
+            // setLocal(true);
+            res.type = { value: 'local' };
+          }
+          // setMinio(res.s3Provider?.value === 'minio');
+          return res;
+        },
+        onValuesChange: (values) => {
+          console.log(values);
+          console.log('local', values.type?.value === 'local');
+          console.log('s3', values.type?.value === 's3');
+          if (values.type) {
+            // setLocal(values.type.value === 'local');
+            setS3(values.type.value === 's3');
+          }
+          if (values.s3Provider) {
+            // setMinio(values.s3Provider.value === 'minio');
+          }
+        },
+      }}
+    />
+  );
+};
+
+export default Storage;
