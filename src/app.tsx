@@ -3,7 +3,7 @@ import { Question, SelectLang } from '@/components/RightContent';
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
-import type { RunTimeLayoutConfig } from '@umijs/max';
+import { RunTimeLayoutConfig } from '@umijs/max';
 import { addLocale, FormattedMessage, history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
@@ -68,6 +68,9 @@ export async function getInitialState(): Promise<{
   // 如果不是登录页面，执行
   const { location } = history;
   const appConfig = await getAppConfigsNoAuthProfile();
+  //set title
+  defaultSettings.title = appConfig?.base?.websiteName || 'mss-boot-admin';
+  defaultSettings.logo = appConfig?.base?.websiteLogo || 'https://docs.mss-boot-io.top/favicon.ico';
   if (location.pathname !== loginPath && !callbackPath.includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
@@ -87,6 +90,7 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    title: initialState?.appConfig?.base?.websiteName || 'mss-boot-admin',
     menu: {
       request: async () => {
         const menuData = await getMenuAuthorize();
