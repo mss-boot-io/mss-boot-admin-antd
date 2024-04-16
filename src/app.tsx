@@ -16,7 +16,8 @@ import { MenuDataItem } from '@ant-design/pro-components';
 import { getLanguages } from './services/admin/language';
 import NoticeIconView from './components/NoticeIcon';
 import HeaderSearch from './components/HeaderSearch';
-import { getAppConfigsNoAuthProfile } from '@/services/admin/appConfig';
+import { getAppConfigsProfile } from '@/services/admin/appConfig';
+import { getUserConfigsProfile } from '@/services/admin/userConfig';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -28,6 +29,7 @@ const callbackPath = ['/user/github-callback', '/user/lark-callback'];
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   appConfig?: Record<string, Record<string, string>>;
+  userConfig?: Record<string, Record<string, string>>;
   currentUser?: API.User;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.User | undefined>;
@@ -67,14 +69,38 @@ export async function getInitialState(): Promise<{
 
   // 如果不是登录页面，执行
   const { location } = history;
-  const appConfig = await getAppConfigsNoAuthProfile();
+  const appConfig = await getAppConfigsProfile();
+  const userConfig = await getUserConfigsProfile();
   //set title
   defaultSettings.title = appConfig?.base?.websiteName || 'mss-boot-admin';
   defaultSettings.logo = appConfig?.base?.websiteLogo || 'https://docs.mss-boot-io.top/favicon.ico';
+  // set theme
+  defaultSettings.navTheme =
+    userConfig?.theme?.navTheme || appConfig?.theme?.navTheme || defaultSettings.navTheme;
+  defaultSettings.layout =
+    userConfig?.theme?.layout || appConfig?.theme?.layout || defaultSettings.layout;
+  defaultSettings.contentWidth =
+    userConfig?.theme?.contentWidth ||
+    appConfig?.theme?.contentWidth ||
+    defaultSettings.contentWidth;
+  defaultSettings.fixedHeader =
+    userConfig?.theme?.fixedHeader || appConfig?.theme?.fixedHeader || defaultSettings.fixedHeader;
+  defaultSettings.fixSiderbar =
+    userConfig?.theme?.fixSiderbar || appConfig?.theme?.fixSiderbar || defaultSettings.fixSiderbar;
+  defaultSettings.colorWeak =
+    userConfig?.theme?.colorWeak || appConfig?.theme?.colorWeak || defaultSettings.colorWeak;
+  defaultSettings.pwa = userConfig?.theme?.pwa || appConfig?.theme?.pwa || defaultSettings.pwa;
+  defaultSettings.colorPrimary =
+    userConfig?.theme?.colorPrimary ||
+    appConfig?.theme?.colorPrimary ||
+    defaultSettings.colorPrimary;
+  // defaultSettings.splitMenus = userConfig?.theme?.splitMenus || appConfig?.theme?.splitMenus || defaultSettings.splitMenus;
+
   if (location.pathname !== loginPath && !callbackPath.includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
       appConfig,
+      userConfig,
       fetchUserInfo,
       currentUser,
       settings: defaultSettings as Partial<LayoutSettings>,
@@ -82,6 +108,7 @@ export async function getInitialState(): Promise<{
   }
   return {
     appConfig,
+    userConfig,
     fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,
   };

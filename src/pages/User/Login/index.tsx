@@ -29,7 +29,7 @@ export type ActionIconsFormProps = {
 
 const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
   const { initialState } = useModel('@@initialState');
-  const scopes = initialState?.appConfig?.security?.githubScope.replace(/,/g, '+');
+  const scopes = initialState?.appConfig?.security?.githubScope?.replace(/,/g, '+') || '';
   const langClassName = useEmotionCss(({ token }) => {
     return {
       marginLeft: '8px',

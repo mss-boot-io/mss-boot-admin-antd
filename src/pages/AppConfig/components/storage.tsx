@@ -19,7 +19,7 @@ const Storage: React.FC = () => {
   const columns: ProColumns<any>[] = [
     {
       title: 'type',
-      dataIndex: ['type', 'value'],
+      dataIndex: 'type',
       valueEnum: {
         local: {
           text: 'local',
@@ -35,11 +35,11 @@ const Storage: React.FC = () => {
     },
     {
       title: 'endpoint',
-      dataIndex: ['endpoint', 'value'],
+      dataIndex: 'endpoint',
     },
     {
       title: 's3Provider',
-      dataIndex: ['s3Provider', 'value'],
+      dataIndex: 's3Provider',
       hideInForm: !s3,
       valueEnum: {
         s3: {
@@ -86,32 +86,33 @@ const Storage: React.FC = () => {
     },
     {
       title: 's3Endpoint',
-      dataIndex: ['s3Endpoint', 'value'],
+      dataIndex: 's3Endpoint',
       hideInForm: !s3,
     },
     {
       title: 's3Region',
-      dataIndex: ['s3Region', 'value'],
+      dataIndex: 's3Region',
       hideInForm: !s3,
     },
     {
       title: 's3Bucket',
-      dataIndex: ['s3Bucket', 'value'],
+      dataIndex: 's3Bucket',
       hideInForm: !s3,
     },
     {
       title: 's3AccessKeyID',
-      dataIndex: ['s3AccessKeyID', 'value'],
+      dataIndex: 's3AccessKeyID',
       hideInForm: !s3,
     },
     {
       title: 's3SecretAccessKey',
-      dataIndex: ['s3SecretAccessKey', 'value'],
+      dataIndex: 's3SecretAccessKey',
       hideInForm: !s3,
+      valueType: 'password',
     },
     {
       title: 's3SigningMethod',
-      dataIndex: ['s3SigningMethod', 'value'],
+      dataIndex: 's3SigningMethod',
       hideInForm: !s3,
     },
   ];
