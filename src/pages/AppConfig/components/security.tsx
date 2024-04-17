@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 import { useIntl } from '@umijs/max';
 import { message } from 'antd';
 import { getAppConfigsGroup, putAppConfigsGroup } from '@/services/admin/appConfig';
-import AppConfigItem from '@/components/MssBoot/AppConfigItem';
 const Security: React.FC = () => {
   /**
    * @en-US International configuration
@@ -19,12 +18,12 @@ const Security: React.FC = () => {
   const columns: ProColumns<any>[] = [
     {
       title: 'github登录',
-      dataIndex: ['githubEnabled', 'value'],
+      dataIndex: 'githubEnabled',
       valueType: 'switch',
     },
     {
       title: 'github client id',
-      dataIndex: ['githubClientId', 'value'],
+      dataIndex: 'githubClientId',
       hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
@@ -37,15 +36,11 @@ const Security: React.FC = () => {
       title: 'github client secret',
       dataIndex: 'githubClientSecret',
       hideInForm: !github,
-      valueType: 'text',
-      renderFormItem: (schema) => {
-        // @ts-ignore
-        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
-      },
+      valueType: 'password',
     },
     {
       title: 'github redirect uri',
-      dataIndex: ['githubRedirectURI', 'value'],
+      dataIndex: 'githubRedirectURI',
       hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
@@ -56,7 +51,7 @@ const Security: React.FC = () => {
     },
     {
       title: 'github scope',
-      dataIndex: ['githubScope', 'value'],
+      dataIndex: 'githubScope',
       hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
@@ -67,18 +62,18 @@ const Security: React.FC = () => {
     },
     {
       title: 'github allow group',
-      dataIndex: ['githubAllowGroup', 'value'],
+      dataIndex: 'githubAllowGroup',
       valueType: 'text',
       hideInForm: !github,
     },
     {
       title: 'lark登录',
-      dataIndex: ['larkEnabled', 'value'],
+      dataIndex: 'larkEnabled',
       valueType: 'switch',
     },
     {
       title: 'lark app id',
-      dataIndex: ['larkAppId', 'value'],
+      dataIndex: 'larkAppId',
       hideInForm: !lark,
       valueType: 'text',
       formItemProps: () => {
@@ -91,15 +86,11 @@ const Security: React.FC = () => {
       title: 'lark app secret',
       dataIndex: 'larkAppSecret',
       hideInForm: !lark,
-      valueType: 'text',
-      renderFormItem: (schema) => {
-        // @ts-ignore
-        return <AppConfigItem dataIndex={schema.dataIndex} required={true} defaultChecked={true} />;
-      },
+      valueType: 'password',
     },
     {
       title: 'lark redirect uri',
-      dataIndex: ['larkRedirectURI', 'value'],
+      dataIndex: 'larkRedirectURI',
       hideInForm: !lark,
       valueType: 'text',
       formItemProps: () => {
@@ -111,8 +102,8 @@ const Security: React.FC = () => {
   ];
 
   const onSubmit = async (params: Record<string, any>) => {
-    params.githubEnabled = { value: github };
-    params.larkEnabled = { value: lark };
+    params.githubEnabled = github;
+    params.larkEnabled = lark;
     await putAppConfigsGroup({ group: 'security' }, { data: params });
     message.success(
       intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: 'Update Success!' }),
@@ -128,16 +119,16 @@ const Security: React.FC = () => {
       form={{
         request: async () => {
           const res = await getAppConfigsGroup({ group: 'security' });
-          setGithub(res.githubEnabled.value);
-          setLark(res.larkEnabled.value);
+          setGithub(res.githubEnabled);
+          setLark(res.larkEnabled);
           return res;
         },
         onValuesChange: (values) => {
           if (values.larkEnabled !== undefined) {
-            setLark(values.larkEnabled.value);
+            setLark(values.larkEnabled);
           }
           if (values.githubEnabled !== undefined) {
-            setGithub(values.githubEnabled.value);
+            setGithub(values.githubEnabled);
           }
         },
       }}

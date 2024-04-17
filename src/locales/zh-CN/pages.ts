@@ -127,6 +127,7 @@ export default {
   'pages.tenant.domain.list': '域名列表',
   'pages.department.list.title': '部门列表',
   'pages.post.list.title': '岗位列表',
+  'pages.theme.settings.title': '主题设置',
   /****************** field ******************/
   'pages.fields.post': '岗位',
   'pages.fields.department': '部门',

@@ -1,4 +1,3 @@
-import { UploadOutlined } from '@ant-design/icons';
 import {
   ProColumns,
   ProFormDependency,
@@ -6,48 +5,14 @@ import {
   ProFormSelect,
   ProTable,
 } from '@ant-design/pro-components';
-import { Button, message, Upload } from 'antd';
+import { message, Upload } from 'antd';
 import React, { useRef, useState } from 'react';
-
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { getUserUserInfo, putUserUserInfo } from '@/services/admin/user';
 import { request, useIntl } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { city } from '../geographic/city';
 import { province } from '../geographic/province';
-import styles from './BaseView.less';
-
-// 头像组件 方便以后独立，增加裁剪之类的功能
-const AvatarView = ({ avatar, setAvatar }: { avatar: string; setAvatar: any }) => (
-  <>
-    <div className={styles.avatar_title}>头像</div>
-    <div className={styles.avatar}>
-      <img src={avatar} alt="avatar" />
-    </div>
-    <Upload
-      showUploadList={false}
-      // action={`${API_URL}/admin/api/user/avatar?token=${localStorage.getItem('token')}`}
-      customRequest={async ({ file }) => {
-        const formData = new FormData();
-
-        formData.append('file', file);
-        const res = await request('/admin/api/user/avatar', {
-          method: 'POST',
-          data: formData,
-        });
-        setAvatar(res.avatar);
-        console.log(res);
-        console.log(file);
-      }}
-    >
-      <div className={styles.button_view}>
-        <Button>
-          <UploadOutlined />
-          更换头像
-        </Button>
-      </div>
-    </Upload>
-  </>
-);
 
 const BaseView: React.FC = () => {
   /**
@@ -103,6 +68,41 @@ const BaseView: React.FC = () => {
           { max: 20, message: '用户名最多20位' },
           { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名只能包含字母、数字、下划线' },
         ],
+      },
+    },
+    {
+      title: '头像',
+      dataIndex: 'avatar',
+      valueType: 'avatar',
+      renderFormItem: () => {
+        return (
+          <Upload
+            name="avatar"
+            listType="picture-circle"
+            className="avatar-uploader"
+            showUploadList={false}
+            customRequest={async ({ file }) => {
+              const formData = new FormData();
+
+              formData.append('file', file);
+              const res = await request('/admin/api/user/avatar', {
+                method: 'POST',
+                data: formData,
+              });
+              setAvatar(res.avatar);
+              console.log(res);
+              console.log(file);
+            }}
+          >
+            {avatar ? (
+              <img src={avatar} alt="avatar" style={{ width: '100%' }} />
+            ) : loading ? (
+              <LoadingOutlined />
+            ) : (
+              <PlusOutlined />
+            )}
+          </Upload>
+        );
       },
     },
     {
@@ -236,7 +236,6 @@ const BaseView: React.FC = () => {
                 labelInValue: true,
               }}
               name="province"
-              className={styles.item}
               onChange={() => {
                 formRef.current?.setFieldsValue({
                   city: undefined,
@@ -261,7 +260,6 @@ const BaseView: React.FC = () => {
                       },
                     ]}
                     disabled={!province}
-                    className={styles.item}
                     request={async () => {
                       if (!province?.key) {
                         if (currentUser?.province) {
@@ -312,45 +310,35 @@ const BaseView: React.FC = () => {
   const handleFinish = async () => {
     const data = formRef.current?.getFieldsValue();
     data.avatar = avatar;
-    const res = await putUserUserInfo(data);
-    if (!res) {
-      message.success('更新基本信息成功');
-      return;
-    }
-    message.error('更新基本信息失败');
+    await putUserUserInfo(data);
+    message.success(
+      intl.formatMessage({
+        id: 'pages.message.edit.success',
+        defaultMessage: 'Update successfully!',
+      }),
+    );
   };
   return (
-    <div className={styles.baseView}>
-      {loading ? null : (
-        <>
-          <div className={styles.left}>
-            <ProTable
-              type="form"
-              formRef={formRef}
-              columns={columns}
-              onSubmit={handleFinish}
-              form={{
-                initialValues: {
-                  ...currentUser,
-                  country: currentUser?.country || 'China',
-                },
-                layout: 'vertical',
-                requiredMark: false,
-                submitter: {
-                  searchConfig: {
-                    submitText: '更新基本信息',
-                  },
-                  render: (_, dom) => dom[1],
-                },
-              }}
-            />
-          </div>
-          <div className={styles.right}>
-            <AvatarView avatar={avatar} setAvatar={setAvatar} />
-          </div>
-        </>
-      )}
-    </div>
+    <ProTable
+      type="form"
+      formRef={formRef}
+      columns={columns}
+      onSubmit={handleFinish}
+      form={{
+        initialValues: {
+          ...currentUser,
+          country: currentUser?.country || 'China',
+        },
+        layout: 'vertical',
+        requiredMark: false,
+        submitter: {
+          searchConfig: {
+            submitText: '更新基本信息',
+          },
+          render: (_, dom) => dom[1],
+        },
+      }}
+    />
   );
 };
 

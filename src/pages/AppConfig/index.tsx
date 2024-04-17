@@ -1,19 +1,11 @@
 import Storage from '@/pages/AppConfig/components/storage';
-import { GridContent, PageContainer } from '@ant-design/pro-components';
+import { PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
-import { Menu } from 'antd';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { Tabs } from 'antd';
+import React from 'react';
 import Base from './components/base';
 import Security from './components/security';
-import styles from './style.less';
-
-const { Item } = Menu;
-
-type SettingsStateKeys = 'base' | 'security' | 'storage' | 'binding' | 'notification';
-type SettingsState = {
-  mode: 'inline' | 'horizontal';
-  selectKey: SettingsStateKeys;
-};
+import Theme from '../../components/MssBoot/theme';
 
 const Settings: React.FC = () => {
   /**
@@ -21,72 +13,76 @@ const Settings: React.FC = () => {
    * @zh-CN 国际化配置
    * */
   const intl = useIntl();
-  const menuMap: Record<string, React.ReactNode> = {
-    base: intl.formatMessage({ id: 'pages.base.settings.title', defaultMessage: 'Basic Settings' }),
-    security: intl.formatMessage({
-      id: 'pages.security.settings.title',
-      defaultMessage: 'Security Settings',
-    }),
-    storage: intl.formatMessage({
-      id: 'pages.storage.settings.title',
-      defaultMessage: 'Storage Settings',
-    }),
-  };
-
-  const [initConfig, setInitConfig] = useState<SettingsState>({
-    mode: 'inline',
-    selectKey: 'base',
-  });
-  const dom = useRef<HTMLDivElement>();
-
-  const resize = () => {
-    requestAnimationFrame(() => {
-      if (!dom.current) {
-        return;
-      }
-      let mode: 'inline' | 'horizontal' = 'inline';
-      const { offsetWidth } = dom.current;
-      if (dom.current.offsetWidth < 641 && offsetWidth > 400) {
-        mode = 'horizontal';
-      }
-      if (window.innerWidth < 768 && offsetWidth > 400) {
-        mode = 'horizontal';
-      }
-      setInitConfig({ ...initConfig, mode: mode as SettingsState['mode'] });
-    });
-  };
-
-  useLayoutEffect(() => {
-    if (dom.current) {
-      window.addEventListener('resize', resize);
-      resize();
-    }
-    return () => {
-      window.removeEventListener('resize', resize);
-    };
-  }, [dom.current]);
-
-  const getMenu = () => {
-    return Object.keys(menuMap).map((item) => <Item key={item}>{menuMap[item]}</Item>);
-  };
-
-  const renderChildren = () => {
-    const { selectKey } = initConfig;
-    switch (selectKey) {
-      case 'base':
-        return <Base />;
-      case 'security':
-        return <Security />;
-      case 'storage':
-        return <Storage />;
-      case 'binding':
-        return <></>;
-      case 'notification':
-        return <></>;
-      default:
-        return null;
-    }
-  };
+  const menuMap: any[] = [
+    {
+      label: intl.formatMessage({
+        id: 'pages.base.settings.title',
+        defaultMessage: 'Basic Settings',
+      }),
+      key: 'base',
+      children: (
+        <PageContainer
+          title={intl.formatMessage({
+            id: 'pages.base.settings.title',
+            defaultMessage: 'Basic Settings',
+          })}
+        >
+          <Base />
+        </PageContainer>
+      ),
+    },
+    {
+      label: intl.formatMessage({
+        id: 'pages.security.settings.title',
+        defaultMessage: 'Security Settings',
+      }),
+      key: 'security',
+      children: (
+        <PageContainer
+          title={intl.formatMessage({
+            id: 'pages.security.settings.title',
+            defaultMessage: 'Security Settings',
+          })}
+        >
+          <Security />
+        </PageContainer>
+      ),
+    },
+    {
+      label: intl.formatMessage({
+        id: 'pages.storage.settings.title',
+        defaultMessage: 'Storage Settings',
+      }),
+      key: 'storage',
+      children: (
+        <PageContainer
+          title={intl.formatMessage({
+            id: 'pages.storage.settings.title',
+            defaultMessage: 'Storage Settings',
+          })}
+        >
+          <Storage />
+        </PageContainer>
+      ),
+    },
+    {
+      label: intl.formatMessage({
+        id: 'pages.theme.settings.title',
+        defaultMessage: 'Theme Settings',
+      }),
+      key: 'theme',
+      children: (
+        <PageContainer
+          title={intl.formatMessage({
+            id: 'pages.theme.settings.title',
+            defaultMessage: 'Theme Settings',
+          })}
+        >
+          <Theme />
+        </PageContainer>
+      ),
+    },
+  ];
 
   return (
     <PageContainer
@@ -95,35 +91,7 @@ const Settings: React.FC = () => {
         defaultMessage: 'Personal Settings',
       })}
     >
-      <GridContent>
-        <div
-          className={styles.main}
-          ref={(ref) => {
-            if (ref) {
-              dom.current = ref;
-            }
-          }}
-        >
-          <div className={styles.leftMenu}>
-            <Menu
-              mode={initConfig.mode}
-              selectedKeys={[initConfig.selectKey]}
-              onClick={({ key }) => {
-                setInitConfig({
-                  ...initConfig,
-                  selectKey: key as SettingsStateKeys,
-                });
-              }}
-            >
-              {getMenu()}
-            </Menu>
-          </div>
-          <div className={styles.right}>
-            <div className={styles.title}>{menuMap[initConfig.selectKey]}</div>
-            {renderChildren()}
-          </div>
-        </div>
-      </GridContent>
+      <Tabs tabPosition="left" type="card" items={menuMap} />
     </PageContainer>
   );
 };

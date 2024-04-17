@@ -143,6 +143,7 @@ export default {
   'pages.tenant.domain.list': 'Domain List',
   'pages.department.list.title': 'Department List',
   'pages.post.list.title': 'Post List',
+  'pages.theme.settings.title': 'Theme Settings',
   /****************** field ******************/
   'pages.fields.post': 'post',
   'pages.fields.department': 'department',
