@@ -32,9 +32,7 @@ const Theme: React.FC = () => {
       title: '布局',
       dataIndex: 'layout',
       valueType: 'select',
-      initialValue: {
-        value: 'mix',
-      },
+      initialValue: 'mix',
       valueEnum: {
         side: 'side',
         top: 'top',
@@ -45,9 +43,7 @@ const Theme: React.FC = () => {
       title: '内容宽度',
       dataIndex: 'contentWidth',
       valueType: 'select',
-      initialValue: {
-        value: 'Fluid',
-      },
+      initialValue: 'Fluid',
       valueEnum: {
         Fluid: 'Fluid',
         Fixed: 'Fixed',
@@ -76,7 +72,9 @@ const Theme: React.FC = () => {
   ];
 
   const onSubmit = async (params: Record<string, any>) => {
-    params.colorPrimary = params.colorPrimary.toHexString();
+    if (params.colorPrimary) {
+      params.colorPrimary = params.colorPrimary.toHexString();
+    }
     await putAppConfigsGroup({ group: 'theme' }, { data: params });
     message.success(
       intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: 'Update Success!' }),

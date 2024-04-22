@@ -37,9 +37,14 @@ const Virtual: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.Model>();
   const formRef = useRef<ProFormInstance>();
-  const { data, loading } = useRequest(() => {
-    return getVirtualDocumentation({ key: key! });
-  });
+  const { data, loading } = useRequest(
+    () => {
+      return getVirtualDocumentation({ key: key! });
+    },
+    {
+      refreshDeps: [key, id],
+    },
+  );
 
   const setFormItemProps = (rules: API.ColumnType[]): ProColumns<{ [key: string]: any }>[] => {
     let columns: ProColumns<{ [key: string]: any }>[] = [];

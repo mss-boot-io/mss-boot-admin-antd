@@ -57,10 +57,9 @@ export async function getInitialState(): Promise<{
   }
   const fetchUserInfo = async () => {
     try {
-      const msg = await getUserUserInfo({
+      return await getUserUserInfo({
         skipErrorHandler: true,
       });
-      return msg;
     } catch (error) {
       history.push(loginPath);
     }

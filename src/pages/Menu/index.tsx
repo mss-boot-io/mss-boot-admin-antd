@@ -323,8 +323,7 @@ const TableList: React.FC = () => {
           id && id !== 'create'
             ? {
                 request: async () => {
-                  const res = await getMenusId({ id });
-                  return res;
+                  return await getMenusId({ id });
                 },
               }
             : undefined

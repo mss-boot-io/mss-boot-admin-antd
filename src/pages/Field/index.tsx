@@ -25,6 +25,9 @@ import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import { fieldIntl } from '@/util/fieldIntl';
+import { useRequest } from 'ahooks';
+import { getOptions } from '@/services/admin/option';
+import { toOptions } from '@/util/toOptions';
 
 const Field: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -35,6 +38,10 @@ const Field: React.FC = () => {
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
   const intl = useIntl();
+  const { data: options, loading } = useRequest(async () => {
+    const res = await getOptions({ pageSize: 1000 });
+    return res.data;
+  });
 
   const columnsTable: ProColumns<API.BaseRule>[] = [
     {
@@ -184,6 +191,7 @@ const Field: React.FC = () => {
     },
   ];
 
+  // @ts-ignore
   const columns: ProColumns<API.Field>[] = [
     {
       title: fieldIntl(intl, 'id'),
@@ -208,6 +216,11 @@ const Field: React.FC = () => {
           rules: [{ required: true }],
         };
       },
+    },
+    {
+      title: fieldIntl(intl, 'sort'),
+      dataIndex: 'sort',
+      valueType: 'digit',
     },
     {
       title: fieldIntl(intl, 'jsonTag'),
@@ -250,6 +263,100 @@ const Field: React.FC = () => {
           status: 'bytes',
         },
       },
+    },
+    {
+      title: fieldIntl(intl, 'formComponent'),
+      dataIndex: 'formComponent',
+      valueEnum: {
+        richText: {
+          text: fieldIntl(intl, 'options.richText'),
+          status: 'richText',
+        },
+        input: {
+          text: fieldIntl(intl, 'options.input'),
+          status: 'input',
+        },
+        textarea: {
+          text: fieldIntl(intl, 'options.textarea'),
+          status: 'textarea',
+        },
+        password: {
+          text: fieldIntl(intl, 'options.password'),
+          status: 'password',
+        },
+        number: {
+          text: fieldIntl(intl, 'options.number'),
+          status: 'number',
+        },
+        select: {
+          text: fieldIntl(intl, 'options.select'),
+          status: 'select',
+        },
+        radio: {
+          text: fieldIntl(intl, 'options.radio'),
+          status: 'radio',
+        },
+        checkbox: {
+          text: fieldIntl(intl, 'options.checkbox'),
+          status: 'checkbox',
+        },
+        rate: {
+          text: fieldIntl(intl, 'options.rate'),
+          status: 'rate',
+        },
+        slider: {
+          text: fieldIntl(intl, 'options.slider'),
+          status: 'slider',
+        },
+        switch: {
+          text: fieldIntl(intl, 'options.switch'),
+          status: 'switch',
+        },
+        date: {
+          text: fieldIntl(intl, 'options.date'),
+          status: 'date',
+        },
+        time: {
+          text: fieldIntl(intl, 'options.time'),
+          status: 'time',
+        },
+        datetime: {
+          text: fieldIntl(intl, 'options.datetime'),
+          status: 'datetime',
+        },
+        year: {
+          text: fieldIntl(intl, 'options.year'),
+          status: 'year',
+        },
+        month: {
+          text: fieldIntl(intl, 'options.month'),
+          status: 'month',
+        },
+        week: {
+          text: fieldIntl(intl, 'options.week'),
+          status: 'week',
+        },
+        upload: {
+          text: fieldIntl(intl, 'options.upload'),
+          status: 'upload',
+        },
+      },
+    },
+    {
+      title: fieldIntl(intl, 'tableComponent'),
+      dataIndex: 'tableComponent',
+      valueEnum: {
+        avatar: {
+          text: fieldIntl(intl, 'options.avatar'),
+          status: 'avatar',
+        },
+      },
+    },
+    {
+      title: fieldIntl(intl, 'valueEnum'),
+      dataIndex: 'valueEnumName',
+      //@ts-ignore
+      valueEnum: toOptions(options),
     },
     {
       title: fieldIntl(intl, 'size'),
@@ -459,7 +566,9 @@ const Field: React.FC = () => {
     }
   }, [modelID]);
 
-  return (
+  return loading ? (
+    <></>
+  ) : (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Field, API.getFieldsParams>
         headerTitle={intl.formatMessage({
