@@ -21,7 +21,7 @@ function randToken(): string {
   const buffer = new Uint8Array(28);
   window.crypto.getRandomValues(buffer);
   // @ts-ignore
-  return btoa(String.fromCharCode.apply(null, buffer));
+  return encodeURIComponent(btoa(String.fromCharCode.apply(null, buffer)));
 }
 
 export type ActionIconsFormProps = {
