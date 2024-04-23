@@ -118,7 +118,7 @@ const Storage: React.FC = () => {
   ];
 
   const onSubmit = async (params: Record<string, any>) => {
-    params.type = { value: s3 ? 's3' : 'local' };
+    params.type = s3 ? 's3' : 'local';
     await putAppConfigsGroup({ group: 'storage' }, { data: params });
     message.success(
       intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: 'Update Success!' }),
@@ -135,21 +135,18 @@ const Storage: React.FC = () => {
         request: async () => {
           const res = await getAppConfigsGroup({ group: 'storage' });
           // setLocal(res.type?.value === 'local');
-          setS3(res.type?.value === 's3');
+          setS3(res.type === 's3');
           if (!res.type) {
             // setLocal(true);
-            res.type = { value: 'local' };
+            res.type = 'local';
           }
           // setMinio(res.s3Provider?.value === 'minio');
           return res;
         },
         onValuesChange: (values) => {
-          console.log(values);
-          console.log('local', values.type?.value === 'local');
-          console.log('s3', values.type?.value === 's3');
           if (values.type) {
             // setLocal(values.type.value === 'local');
-            setS3(values.type.value === 's3');
+            setS3(values.type === 's3');
           }
           if (values.s3Provider) {
             // setMinio(values.s3Provider.value === 'minio');

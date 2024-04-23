@@ -52,8 +52,6 @@ const Base: React.FC = () => {
                 data: formData,
               });
               setLogo(res);
-              console.log(res);
-              console.log(file);
             }}
           >
             {logo ? <img src={logo} alt="avatar" style={{ width: '100%' }} /> : <PlusOutlined />}
@@ -73,7 +71,7 @@ const Base: React.FC = () => {
   ];
 
   const onSubmit = async (params: Record<string, any>) => {
-    params.websiteLogo = { value: logo };
+    params.websiteLogo = logo;
     await putAppConfigsGroup({ group: 'base' }, { data: params });
     message.success(
       intl.formatMessage({ id: 'pages.message.edit.success', defaultMessage: 'Update Success!' }),
@@ -89,7 +87,7 @@ const Base: React.FC = () => {
       form={{
         request: async () => {
           const res = await getAppConfigsGroup({ group: 'base' });
-          setLogo(res?.websiteLogo?.value || 'https://docs.mss-boot-io.top/favicon.ico');
+          setLogo(res?.websiteLogo || 'https://docs.mss-boot-io.top/favicon.ico');
           return res;
         },
       }}

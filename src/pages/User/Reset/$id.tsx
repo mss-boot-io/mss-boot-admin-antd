@@ -1,4 +1,4 @@
-import { putUserUserIDPasswordReset } from '@/services/admin/user';
+import { putUserUserIdPasswordReset } from '@/services/admin/user';
 import { PageContainer, ProForm, ProFormInstance, ProFormText } from '@ant-design/pro-components';
 import { history, useParams } from '@umijs/max';
 import { message } from 'antd';
@@ -10,7 +10,7 @@ const PasswordRest: React.FC = () => {
   const onFinish = async () => {
     console.log(formRef.current?.getFieldsValue());
     console.log(id);
-    const res = await putUserUserIDPasswordReset(
+    const res = await putUserUserIdPasswordReset(
       { userID: id! },
       formRef.current?.getFieldsValue(),
     );
