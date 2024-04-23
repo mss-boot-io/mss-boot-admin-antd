@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import { postUserFakeCaptcha, postUserLogin } from '@/services/admin/user';
+import { getUserRefreshToken, postUserFakeCaptcha, postUserLogin } from '@/services/admin/user';
 import { GithubOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import {
   LoginForm,
@@ -15,6 +15,7 @@ import Icon from '@ant-design/icons';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+import { useRequest } from 'ahooks';
 
 function randToken(): string {
   const buffer = new Uint8Array(28);
@@ -178,6 +179,8 @@ const LoginMessage: React.FC<{
 };
 
 const Login: React.FC = () => {
+  const intl = useIntl();
+
   // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -194,8 +197,6 @@ const Login: React.FC = () => {
     };
   });
 
-  const intl = useIntl();
-
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
@@ -208,23 +209,46 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.UserLogin) => {
-    try {
-      // 登录
-      const msg = await postUserLogin({ ...values, type });
-      if (msg.code === 200 && msg.token) {
+  const loginSuccessed = async (data: API.LoginResponse, autoLogin?: boolean, popup?: boolean) => {
+    if (data.code === 200 && data.token) {
+      if (popup) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
         message.success(defaultLoginSuccessMessage);
-        //set token to localstorage
-        localStorage.setItem('token', msg.token);
-        await fetchUserInfo();
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
+      }
+      //set token to localstorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('token.expire', data.expire?.toString() || '');
+      localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
+      await fetchUserInfo();
+      const urlParams = new URL(window.location.href).searchParams;
+      if (urlParams.get('redirect') === '/user/login') {
+        history.push('/');
         return;
       }
+      history.push(urlParams.get('redirect') || '/');
+      return;
+    }
+  };
+
+  const { loading } = useRequest(async () => {
+    if (
+      localStorage.getItem('autoLogin') &&
+      localStorage.getItem('token') &&
+      localStorage.getItem('token.expire')
+    ) {
+      const res = await getUserRefreshToken();
+      await loginSuccessed(res, true);
+    }
+  });
+
+  const handleSubmit = async (values: API.UserLogin, autoLogin?: boolean) => {
+    try {
+      // 登录
+      const msg = await postUserLogin({ ...values, type });
+      await loginSuccessed(msg, autoLogin, true);
       // 如果失败去设置用户错误信息
       // setUserLoginState(msg);
     } catch (error) {
@@ -237,7 +261,9 @@ const Login: React.FC = () => {
   };
   // const { status, type: loginType } = userLoginState;
 
-  return (
+  return loading ? (
+    <></>
+  ) : (
     <div className={containerClassName}>
       <Helmet>
         <title>
@@ -283,7 +309,7 @@ const Login: React.FC = () => {
             <ActionIcons fetchUserInfo={fetchUserInfo} key="icons" />,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.UserLogin);
+            await handleSubmit(values as API.UserLogin, values.autoLogin);
           }}
         >
           <Tabs

@@ -32,11 +32,6 @@ declare namespace API {
     value?: string;
   };
 
-  type AppConfigControlItem = {
-    auth?: boolean;
-    value?: any;
-  };
-
   type AppConfigControlRequest = {
     data: Record<string, any>;
   };
@@ -178,6 +173,7 @@ declare namespace API {
     /** CreatedAt create time */
     createdAt?: string;
     default?: string;
+    formComponent?: string;
     hideInDescriptions?: boolean;
     hideInForm?: boolean;
     hideInTable?: boolean;
@@ -194,6 +190,7 @@ declare namespace API {
     search?: string;
     size?: number;
     sort?: number;
+    tableComponent?: string;
     type?: string;
     unique?: string;
     /** UpdatedAt update time */
@@ -654,7 +651,7 @@ declare namespace API {
     multiTenant?: boolean;
     name?: string;
     path?: string;
-    tableName?: string;
+    table?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -689,6 +686,12 @@ declare namespace API {
     cpuLogicalCore?: number;
     /** CPUPhysicalCore CPU物理核心数 */
     cpuPhysicalCore?: number;
+    /** DiskTotal 磁盘总量 */
+    diskTotal?: number;
+    /** DiskUsage 磁盘使用量 */
+    diskUsage?: number;
+    /** DiskUsagePercent 磁盘使用率 */
+    diskUsagePercent?: number;
     /** MemoryAvailable 内存可用量 */
     memoryAvailable?: number;
     /** MemoryFree 内存空闲量 */

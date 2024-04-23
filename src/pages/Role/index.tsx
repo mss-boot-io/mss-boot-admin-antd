@@ -3,10 +3,10 @@ import Auth from '@/components/MssBoot/Auth';
 import { getMenuTree } from '@/services/admin/menu';
 import {
   deleteRolesId,
-  getRoleAuthorizeRoleID,
+  getRoleAuthorizeRoleId,
   getRoles,
   getRolesId,
-  postRoleAuthorizeRoleID,
+  postRoleAuthorizeRoleId,
   postRoles,
   putRolesId,
 } from '@/services/admin/role';
@@ -166,7 +166,7 @@ const TableList: React.FC = () => {
       const data = await getMenuTree();
       setTreeData(transfer(data));
       //get checkedKeys
-      const checkedRes = await getRoleAuthorizeRoleID({
+      const checkedRes = await getRoleAuthorizeRoleId({
         roleID: currentRow?.id ?? '',
       });
       if (checkedRes) {
@@ -278,7 +278,7 @@ const TableList: React.FC = () => {
             paths.push(value.toString());
           });
 
-          await postRoleAuthorizeRoleID(
+          await postRoleAuthorizeRoleId(
             {
               roleID: currentRow?.id ?? '',
             },
