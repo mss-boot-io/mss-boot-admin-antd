@@ -59,6 +59,7 @@ declare namespace API {
     title?: string;
     validateRules?: BaseRule[];
     valueEnum?: Record<string, any>;
+    valueType?: string;
   };
 
   type deleteApisIdParams = {
