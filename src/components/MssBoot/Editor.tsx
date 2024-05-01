@@ -1,12 +1,14 @@
-import BraftEditor, { BraftEditorProps } from 'braft-editor';
-import { getLocale, request } from '@@/exports';
+import BraftEditor, {BraftEditorProps, EditorState} from 'braft-editor';
+import 'braft-editor/dist/index.css'
+import { getLocale, request } from '@umijs/max';
 import React from 'react';
 
 const RichTextEditor: React.FC<BraftEditorProps> = (props) => {
-  props.language = getLocale().replace(/-.*$/, '');
-  props.media = {
+  const local = getLocale()
+  const language = local.replace(/-.*$/, '');
+  const media = {
+    // @ts-ignore
     uploadFn: async (param) => {
-      console.log(param);
       const formData = new FormData();
       formData.append('file', param.file);
       const response = await request('/admin/api/storage/upload', {
@@ -21,7 +23,7 @@ const RichTextEditor: React.FC<BraftEditorProps> = (props) => {
     },
   };
 
-  return <BraftEditor {...props} />;
+  return <BraftEditor {...props} value={BraftEditor.createEditorState(props.value)} language={language} media={media} />;
 };
 
 export default RichTextEditor;

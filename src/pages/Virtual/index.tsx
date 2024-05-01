@@ -23,6 +23,8 @@ import {
   listVirtualModels,
   updateVirtualModel,
 } from './service/virtual';
+import RichTextEditor from "@/components/MssBoot/Editor";
+import BraftEditor from "braft-editor";
 
 const Virtual: React.FC = () => {
   /**
@@ -49,9 +51,24 @@ const Virtual: React.FC = () => {
   const setFormItemProps = (rules: API.ColumnType[]): ProColumns<{ [key: string]: any }>[] => {
     let columns: ProColumns<{ [key: string]: any }>[] = [];
     rules.forEach((item) => {
+      // @ts-ignore
       let column: ProColumns<{ [key: string]: any }> = {
         ...item,
       };
+      switch (item.valueType) {
+        case 'richText':
+          column.renderFormItem = (text, props) => {
+            console.log(props.value)
+            return <RichTextEditor {...props} defaultValue={props.value}  onChange={(value) => {
+              let o ={};
+              // @ts-ignore
+              o[text.dataIndex] = value.toHTML();
+              formRef.current?.setFieldsValue(o);
+
+            }} />;
+          };
+          break;
+      }
       if (item.pk) {
         column.render = (dom, entity) => {
           return idRender(dom, entity, setCurrentRow, setShowDetail);
