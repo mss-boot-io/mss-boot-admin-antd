@@ -261,6 +261,20 @@ const Tenant: React.FC = () => {
     if (!id) {
       return;
     }
+
+    // @ts-ignore
+    const dateObj = new Date(params?.expire);
+    if (dateObj.toString() === 'Invalid Date') {
+      message.error(
+        intl.formatMessage({
+          id: 'pages.message.date.invalid',
+          defaultMessage: 'Invalid Date',
+        }),
+      );
+      return;
+    }
+    params.expire = dateObj.toISOString();
+
     if (id === 'create') {
       await postTenants(params);
       message.success(
