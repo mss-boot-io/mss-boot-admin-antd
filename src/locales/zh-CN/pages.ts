@@ -89,6 +89,7 @@ export default {
   'pages.message.username.rule.pattern': '用户名只能包含字母、数字、下划线',
   'pages.message.password.rule.pattern.letters': '密码必须包含字母',
   'pages.message.password.rule.pattern.numbers': '密码必须包含数字',
+  'pages.message.date.invalid': '无效的日期格式',
   'pages.app.config.title': '应用配置',
   'pages.account.settings.title': '个人设置',
   'pages.base.settings.title': '基本设置',

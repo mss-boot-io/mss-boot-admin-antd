@@ -93,6 +93,7 @@ export default {
     'Username can only contain letters, numbers, and underscores',
   'pages.message.password.rule.pattern.letters': 'The password must contain letters',
   'pages.message.password.rule.pattern.numbers': 'The password must contain numbers',
+  'pages.message.date.invalid': 'Invalid date',
   'pages.column.role.title': 'Role',
   'pages.column.avatar.title': 'Avatar',
   'pages.column.username.title': 'Username',
