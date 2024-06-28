@@ -379,7 +379,6 @@ const TableList: React.FC = () => {
           checkedKeys.forEach((value) => {
             paths.push(value.toString());
           });
-          console.log(checkedKeys);
 
           await postMenuBindApi({
             menuID: currentRow?.id ?? '',
