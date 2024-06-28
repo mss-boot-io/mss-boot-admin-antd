@@ -12,7 +12,6 @@ import {
 } from '@/services/admin/menu';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
-import { menuTransferTree } from '@/util/menuTransferTree';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
@@ -224,10 +223,23 @@ const TableList: React.FC = () => {
     },
   ];
 
+  const transfer = (data: API.API[]): DataNode[] => {
+    // @ts-ignore
+    return data.map((item) => {
+      return {
+        title: `${item.method}---${item.path}`,
+        key: `${item.method}---${item.path}`,
+        // @ts-ignore
+        children: item.children ? transfer(item.children) : null,
+      };
+    });
+  };
+
   const onOpenChange = async (e: boolean) => {
     if (e) {
-      const { data } = await getApis({ pageSize: 1000 });
-      setTreeData(menuTransferTree(intl, data!));
+      const { data } = await getApis({ pageSize: 9999 });
+      const res = transfer(data!);
+      setTreeData(res);
       //get checkedKeys
       const checkedRes = await getMenuApiId({
         id: currentRow?.id ?? '',
@@ -237,7 +249,6 @@ const TableList: React.FC = () => {
         checkedRes?.forEach((value) => {
           checkedKeys.push(`${value.method}---${value.path}`);
         });
-        console.log(checkedKeys);
         setCheckedKeys(checkedKeys);
       }
       return;
@@ -286,7 +297,6 @@ const TableList: React.FC = () => {
   useEffect(() => {
     if (id) {
       getMenus({ pageSize: 1000, type: ['DIRECTORY'], show: true }).then((res) => {
-        console.log(res);
         // @ts-ignore
         setList(transferTree(res.data!));
       });
