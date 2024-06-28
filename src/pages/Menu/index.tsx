@@ -236,7 +236,6 @@ const TableList: React.FC = () => {
   };
 
   const onOpenChange = async (e: boolean) => {
-    console.log(e);
     if (e) {
       const { data } = await getApis({ pageSize: 9999 });
       const res = transfer(data!);
@@ -245,13 +244,11 @@ const TableList: React.FC = () => {
       const checkedRes = await getMenuApiId({
         id: currentRow?.id ?? '',
       });
-      console.log('checked', checkedKeys);
       if (checkedRes) {
         const checkedKeys: React.Key[] = [];
         checkedRes?.forEach((value) => {
           checkedKeys.push(`${value.method}---${value.path}`);
         });
-        console.log(checkedKeys);
         setCheckedKeys(checkedKeys);
       }
       return;
@@ -300,7 +297,6 @@ const TableList: React.FC = () => {
   useEffect(() => {
     if (id) {
       getMenus({ pageSize: 1000, type: ['DIRECTORY'], show: true }).then((res) => {
-        console.log(res);
         // @ts-ignore
         setList(transferTree(res.data!));
       });
