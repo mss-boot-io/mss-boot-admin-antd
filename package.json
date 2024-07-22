@@ -6,6 +6,7 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
     "build": "max build",
+    "build:local": "cross-env REACT_APP_ENV=local UMI_ENV=local max build",
     "build:alpha": "cross-env REACT_APP_ENV=alpha UMI_ENV=alpha max build",
     "build:beta": "cross-env REACT_APP_ENV=beta UMI_ENV=beta max build",
     "build:prod": "cross-env REACT_APP_ENV=prod UMI_ENV=prod max build",

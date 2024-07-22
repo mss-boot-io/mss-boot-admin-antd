@@ -31,8 +31,15 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Build for run local
+        run: pnpm build:local
+
+      - name: Pack dist for run local
+        run: tar -czvf dist-local.tar.gz dist
+
       - name: Build
         run: |
+          rm -rf dist
           rm -rf config/config.prod.*
           pnpm build
 
@@ -51,6 +58,7 @@ jobs:
           generate_release_notes: true
           files: |
             dist.tar.gz
+            dist-local.tar.gz
           prerelease: false
           body: |
             ## Pull Image
