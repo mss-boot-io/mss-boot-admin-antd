@@ -516,6 +516,11 @@ declare namespace API {
     status?: string;
   };
 
+  type getUserAuthTokenGenerateParams = {
+    /** 有效期 */
+    validityPeriod: string;
+  };
+
   type getUserConfigsGroupParams = {
     /** group */
     group: string;
@@ -895,6 +900,16 @@ The Type method returns either this or "Bearer", the default. */
     id: string;
   };
 
+  type putUserAuthTokenIdRefreshParams = {
+    /** id */
+    id: string;
+  };
+
+  type putUserAuthTokenIdRevokeParams = {
+    /** id */
+    id: string;
+  };
+
   type putUserConfigsGroupParams = {
     /** group */
     group: string;
@@ -1123,6 +1138,7 @@ The Type method returns either this or "Bearer", the default. */
     post?: Post;
     profile?: string;
     province?: string;
+    refreshTokenDisable?: boolean;
     role?: Role;
     signature?: string;
     /** Status 状态 */
@@ -1137,6 +1153,21 @@ The Type method returns either this or "Bearer", the default. */
     username?: string;
   };
 
+  type UserAuthToken = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    expiredAt?: string;
+    /** ID primary key */
+    id?: string;
+    revoked?: boolean;
+    /** TenantID tenant id */
+    tenantID?: string;
+    token?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+    userID?: string;
+  };
+
   type UserConfigControlRequest = {
     data: Record<string, any>;
   };
@@ -1148,6 +1179,7 @@ The Type method returns either this or "Bearer", the default. */
     password?: string;
     passwordStrength?: string;
     post?: Post;
+    refreshTokenDisable?: boolean;
     role?: Role;
     /** Status 状态 */
     status?: string;

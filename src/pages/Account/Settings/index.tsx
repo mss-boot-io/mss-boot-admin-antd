@@ -7,6 +7,7 @@ import BindingView from './components/binding';
 import NotificationView from './components/notification';
 import SecurityView from './components/security';
 import Theme from '../../../components/MssBoot/theme';
+import AccessTokenView from '@/pages/Account/Settings/components/AccessToken';
 
 const Settings: React.FC = () => {
   /**
@@ -29,6 +30,23 @@ const Settings: React.FC = () => {
           })}
         >
           <BaseView />
+        </PageContainer>
+      ),
+    },
+    {
+      label: intl.formatMessage({
+        id: 'pages.accessToken.settings.title',
+        defaultMessage: 'Access Token',
+      }),
+      key: 'accessToken',
+      children: (
+        <PageContainer
+          title={intl.formatMessage({
+            id: 'pages.accessToken.settings.title',
+            defaultMessage: 'Access Token',
+          })}
+        >
+          <AccessTokenView />
         </PageContainer>
       ),
     },
