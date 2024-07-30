@@ -21,6 +21,7 @@ import * as statistics from './statistics';
 import * as systemConfig from './systemConfig';
 import * as task from './task';
 import * as tenant from './tenant';
+import * as userAuthToken from './userAuthToken';
 import * as userConfig from './userConfig';
 import * as user from './user';
 export default {
@@ -43,6 +44,7 @@ export default {
   systemConfig,
   task,
   tenant,
+  userAuthToken,
   userConfig,
   user,
 };
