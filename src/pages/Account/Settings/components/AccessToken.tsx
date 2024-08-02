@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import { message, Card } from 'antd';
 import { useRequest } from 'ahooks';
 import { useIntl } from '@umijs/max';
@@ -11,7 +11,7 @@ import { CopyOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ProForm, ModalForm, ProFormSelect } from '@ant-design/pro-components';
 
 // 自定义日期解析和格式化函数
-const formatDateTime = (dateString) => {
+const formatDateTime = (dateString: string) => {
   const date = new Date(dateString);
 
   // 获取年、月、日、时、分、秒
@@ -25,12 +25,12 @@ const formatDateTime = (dateString) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-const CopyButton = ({ textToCopy }) => {
+const CopyButton: React.FC<PropsWithChildren<{ textToCopy: string }>> = (props) => {
   const [copySuccess, setCopySuccess] = useState('');
 
   const copyToClipboard = () => {
     navigator.clipboard
-      .writeText(textToCopy)
+      .writeText(props.textToCopy)
       .then(() => {
         setCopySuccess('Copied!');
       })
