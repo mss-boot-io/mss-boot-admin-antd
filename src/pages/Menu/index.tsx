@@ -98,6 +98,14 @@ const TableList: React.FC = () => {
         },
       },
     },
+    // {
+    //   title: fieldIntl(intl, 'icon'),
+    //   dataIndex: 'icon',
+    //   search: false,
+    //   render: (dom) => {
+    //     return <span className={`iconfont ${dom}`} />;
+    //   },
+    // },
     {
       title: fieldIntl(intl, 'name'),
       dataIndex: 'name',

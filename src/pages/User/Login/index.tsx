@@ -18,10 +18,14 @@ import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
 
 function randToken(): string {
-  const buffer = new Uint8Array(28);
-  window.crypto.getRandomValues(buffer);
-  // @ts-ignore
-  return encodeURIComponent(btoa(String.fromCharCode.apply(null, buffer)));
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < 28; i++) {
+    // 可以根据需要调整长度
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 export type ActionIconsFormProps = {
