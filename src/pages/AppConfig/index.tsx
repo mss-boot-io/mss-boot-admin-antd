@@ -6,6 +6,7 @@ import React from 'react';
 import Base from './components/base';
 import Security from './components/security';
 import Theme from '../../components/MssBoot/theme';
+import Email from '@/pages/AppConfig/components/email';
 
 const Settings: React.FC = () => {
   /**
@@ -62,6 +63,23 @@ const Settings: React.FC = () => {
           })}
         >
           <Storage />
+        </PageContainer>
+      ),
+    },
+    {
+      label: intl.formatMessage({
+        id: 'pages.email.settings.title',
+        defaultMessage: 'Email Settings',
+      }),
+      key: 'email',
+      children: (
+        <PageContainer
+          title={intl.formatMessage({
+            id: 'pages.email.settings.title',
+            defaultMessage: 'Email Settings',
+          })}
+        >
+          <Email />
         </PageContainer>
       ),
     },
