@@ -29,6 +29,10 @@ export default [
         path: '/user/lark-callback',
         component: './User/Lark/callback.tsx',
       },
+      {
+        path: '/user/forget',
+        component: './User/Login/forget.tsx',
+      },
     ],
   },
   {

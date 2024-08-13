@@ -940,6 +940,12 @@ The Type method returns either this or "Bearer", the default. */
     userID: string;
   };
 
+  type ResetPasswordRequest = {
+    captcha: string;
+    email: string;
+    password: string;
+  };
+
   type Response = {
     code?: number;
     errorCode?: string;
