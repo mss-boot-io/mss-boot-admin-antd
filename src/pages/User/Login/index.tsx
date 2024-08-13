@@ -1,10 +1,17 @@
 import Footer from '@/components/Footer';
 import { getUserRefreshToken, postUserFakeCaptcha, postUserLogin } from '@/services/admin/user';
-import { GithubOutlined, LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  GithubOutlined,
+  LockOutlined,
+  MailOutlined,
+  MobileOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import {
   LoginForm,
   ProFormCaptcha,
   ProFormCheckbox,
+  ProFormInstance,
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -188,6 +195,7 @@ const Login: React.FC = () => {
   // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
+  const formRef = React.createRef<ProFormInstance>();
 
   const containerClassName = useEmotionCss(() => {
     return {
@@ -264,6 +272,39 @@ const Login: React.FC = () => {
     }
   };
   // const { status, type: loginType } = userLoginState;
+  const loginItem = () => {
+    let items = [
+      {
+        key: 'account',
+        label: intl.formatMessage({
+          id: 'pages.login.accountLogin.tab',
+          defaultMessage: '账户密码登录',
+        }),
+      },
+    ];
+    const phoneEnabled = initialState?.appConfig?.security?.phoneEnabled;
+    const emailEnabled = initialState?.appConfig?.security?.emailEnabled;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    phoneEnabled &&
+      items.push({
+        key: 'mobile',
+        label: intl.formatMessage({
+          id: 'pages.login.phoneLogin.tab',
+          defaultMessage: '手机号登录',
+        }),
+      });
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    emailEnabled &&
+      items.push({
+        key: 'email',
+        label: intl.formatMessage({
+          id: 'pages.login.emailLogin.tab',
+          defaultMessage: '邮箱登录',
+        }),
+      });
+
+    return items;
+  };
 
   return loading ? (
     <></>
@@ -290,6 +331,7 @@ const Login: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
+          formRef={formRef}
           logo={<img alt="logo" src="https://docs.mss-boot-io.top/favicon.ico" />}
           title={initialState?.appConfig?.base?.websiteName || 'mss-boot-io'}
           subTitle={
@@ -316,27 +358,7 @@ const Login: React.FC = () => {
             await handleSubmit(values as API.UserLogin, values.autoLogin);
           }}
         >
-          <Tabs
-            activeKey={type}
-            onChange={setType}
-            centered
-            items={[
-              {
-                key: 'account',
-                label: intl.formatMessage({
-                  id: 'pages.login.accountLogin.tab',
-                  defaultMessage: '账户密码登录',
-                }),
-              },
-              {
-                key: 'mobile',
-                label: intl.formatMessage({
-                  id: 'pages.login.phoneLogin.tab',
-                  defaultMessage: '手机号登录',
-                }),
-              },
-            ]}
-          />
+          <Tabs activeKey={type} onChange={setType} centered items={loginItem()} />
 
           {status === 'error' && type === 'account' && (
             <LoginMessage
@@ -478,6 +500,97 @@ const Login: React.FC = () => {
                     return;
                   }
                   message.success('获取验证码成功！验证码为：1234');
+                }}
+              />
+            </>
+          )}
+          {status === 'error' && type === 'email' && (
+            <LoginMessage
+              content={intl.formatMessage({
+                id: 'pages.login.emailLogin.errorMessage',
+                defaultMessage: '验证码错误',
+              })}
+            />
+          )}
+          {type === 'email' && (
+            <>
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <MailOutlined />,
+                }}
+                name="email"
+                placeholder={intl.formatMessage({
+                  id: 'pages.login.email.placeholder',
+                  defaultMessage: '邮箱',
+                })}
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="pages.login.email.required"
+                        defaultMessage="请输入邮箱！"
+                      />
+                    ),
+                  },
+                  {
+                    pattern: /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/,
+                    message: (
+                      <FormattedMessage
+                        id="pages.login.email.invalid"
+                        defaultMessage="邮箱格式错误！"
+                      />
+                    ),
+                  },
+                ]}
+              />
+              <ProFormCaptcha
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined />,
+                }}
+                captchaProps={{
+                  size: 'large',
+                }}
+                placeholder={intl.formatMessage({
+                  id: 'pages.login.captcha.placeholder',
+                  defaultMessage: '请输入验证码',
+                })}
+                captchaTextRender={(timing, count) => {
+                  if (timing) {
+                    return `${count} ${intl.formatMessage({
+                      id: 'pages.getCaptchaSecondText',
+                      defaultMessage: '获取验证码',
+                    })}`;
+                  }
+                  return intl.formatMessage({
+                    id: 'pages.login.emailLogin.getVerificationCode',
+                    defaultMessage: '获取验证码',
+                  });
+                }}
+                name="captcha"
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="pages.login.captcha.required"
+                        defaultMessage="请输入验证码！"
+                      />
+                    ),
+                  },
+                ]}
+                onGetCaptcha={async () => {
+                  // @ts-ignore
+                  const email: string = formRef.current?.getFieldFormatValue('email');
+                  const result = await postUserFakeCaptcha({
+                    email,
+                  });
+                  if (!result) {
+                    return;
+                  }
+                  message.success('获取验证码成功！');
                 }}
               />
             </>
