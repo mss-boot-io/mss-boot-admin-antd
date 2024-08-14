@@ -259,6 +259,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.UserLogin, autoLogin?: boolean) => {
     try {
       // 登录
+      // @ts-ignore
       const msg = await postUserLogin({ ...values, type });
       await loginSuccessed(msg, autoLogin, true);
       // 如果失败去设置用户错误信息
@@ -587,6 +588,7 @@ const Login: React.FC = () => {
                   const email: string = formRef.current?.getFieldFormatValue('email');
                   const result = await postUserFakeCaptcha({
                     email,
+                    useBy: 'login',
                   });
                   if (!result) {
                     return;

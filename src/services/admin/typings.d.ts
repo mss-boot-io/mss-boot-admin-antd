@@ -173,6 +173,7 @@ declare namespace API {
   type FakeCaptchaRequest = {
     email?: string;
     phone?: string;
+    useBy?: string;
   };
 
   type FakeCaptchaResponse = {
