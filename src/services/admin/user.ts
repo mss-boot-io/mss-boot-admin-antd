@@ -56,6 +56,21 @@ export async function getUserRefreshToken(options?: { [key: string]: any }) {
   });
 }
 
+/** 重置密码 重置密码 POST /admin/api/user/reset-password */
+export async function postUserResetPassword(
+  body: API.ResetPasswordRequest,
+  options?: { [key: string]: any },
+) {
+  return request<any>('/admin/api/user/reset-password', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 获取登录用户信息 获取登录用户信息 GET /admin/api/user/userInfo */
 export async function getUserUserInfo(options?: { [key: string]: any }) {
   return request<API.User>('/admin/api/user/userInfo', {

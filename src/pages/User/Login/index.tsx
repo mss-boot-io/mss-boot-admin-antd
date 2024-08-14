@@ -15,11 +15,11 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
+import { FormattedMessage, Helmet, history, Link, SelectLang, useIntl, useModel } from '@umijs/max';
 import { Alert, message, Tabs, Avatar } from 'antd';
 import Icon from '@ant-design/icons';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
@@ -195,7 +195,7 @@ const Login: React.FC = () => {
   // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
-  const formRef = React.createRef<ProFormInstance>();
+  const formRef = useRef<ProFormInstance>();
 
   const containerClassName = useEmotionCss(() => {
     return {
@@ -570,6 +570,7 @@ const Login: React.FC = () => {
                   });
                 }}
                 name="captcha"
+                phoneName="email"
                 rules={[
                   {
                     required: true,
@@ -603,13 +604,15 @@ const Login: React.FC = () => {
             <ProFormCheckbox noStyle name="autoLogin">
               <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
             </ProFormCheckbox>
-            <a
-              style={{
-                float: 'right',
-              }}
-            >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-            </a>
+            <Link to="/user/forget">
+              <a
+                style={{
+                  float: 'right',
+                }}
+              >
+                <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+              </a>
+            </Link>
           </div>
         </LoginForm>
       </div>
