@@ -184,6 +184,7 @@ const Forget: React.FC = () => {
                   const email: string = formRef.current?.getFieldFormatValue('email');
                   const result = await postUserFakeCaptcha({
                     email,
+                    useBy: 'resetPassword',
                   });
                   if (!result) {
                     return;
