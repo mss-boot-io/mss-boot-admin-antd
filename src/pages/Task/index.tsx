@@ -60,6 +60,20 @@ const TaskList: React.FC = () => {
       valueType: 'textarea',
     },
     {
+      title: fieldIntl(intl, 'provider'),
+      dataIndex: 'provider',
+      valueEnum: {
+        default: {
+          text: fieldIntl(intl, 'options.default'),
+          color: 'default',
+        },
+        k8s: {
+          text: fieldIntl(intl, 'options.k8s'),
+          color: 'blue',
+        },
+      },
+    },
+    {
       title: fieldIntl(intl, 'protocol'),
       dataIndex: 'protocol',
       hideInTable: true,
@@ -203,6 +217,7 @@ const TaskList: React.FC = () => {
                   )
                   .then(() => actionRef.current?.reload());
               }
+              // @ts-ignore
               if (!record.status || record.status === '' || record.status === 'disabled') {
                 await getTaskOperateId({ id: record.id!, operate: 'start' });
                 message

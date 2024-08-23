@@ -222,7 +222,11 @@ const Index: React.FC = () => {
                   return res;
                 },
               }
-            : undefined
+            : {
+                initialValues: {
+                  status: 'enabled',
+                },
+              }
         }
         request={getPosts}
         params={{ parentID: '' }}

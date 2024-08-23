@@ -333,7 +333,15 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           formRef={formRef}
-          logo={<img alt="logo" src="https://docs.mss-boot-io.top/favicon.ico" />}
+          logo={
+            <img
+              alt="logo"
+              src={
+                initialState?.appConfig?.base?.websiteLogo ||
+                'https://docs.mss-boot-io.top/favicon.ico'
+              }
+            />
+          }
           title={initialState?.appConfig?.base?.websiteName || 'mss-boot-io'}
           subTitle={
             initialState?.appConfig?.base?.websiteDescription ||
