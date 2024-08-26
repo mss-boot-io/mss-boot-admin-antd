@@ -9,7 +9,7 @@ import {
 } from '@/services/admin/task';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
-import { PlusOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
   PageContainer,
@@ -18,12 +18,13 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max';
-import { Button, Drawer, message, Popconfirm } from 'antd';
+import { Button, Drawer, Form, Input, message, Popconfirm, Row, Col, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
 
 const TaskList: React.FC = () => {
   const actionRef = useRef<ActionType>();
+  const [provider, setProvider] = useState<string>('default');
   const [needMethod, setNeedMethod] = useState<boolean>(false);
   const [needBody, setNeedBody] = useState<boolean>(false);
   const [mustBody, setMustBody] = useState<boolean>(false);
@@ -60,9 +61,39 @@ const TaskList: React.FC = () => {
       valueType: 'textarea',
     },
     {
+      title: fieldIntl(intl, 'provider'),
+      dataIndex: 'provider',
+      valueEnum: {
+        default: {
+          text: fieldIntl(intl, 'options.default'),
+          color: 'default',
+        },
+        k8s: {
+          text: fieldIntl(intl, 'options.k8s'),
+          color: 'blue',
+        },
+      },
+    },
+    {
+      title: fieldIntl(intl, 'cluster'),
+      dataIndex: 'cluster',
+      hideInTable: true,
+      hideInForm: provider !== 'k8s',
+      formItemProps: {
+        rules: [{ required: true }],
+      },
+    },
+    {
+      title: fieldIntl(intl, 'image'),
+      dataIndex: 'image',
+      hideInForm: provider !== 'k8s',
+      hideInTable: true,
+    },
+    {
       title: fieldIntl(intl, 'protocol'),
       dataIndex: 'protocol',
       hideInTable: true,
+      hideInForm: provider !== 'default',
       renderFormItem() {
         return (
           <ProFormSelect
@@ -96,6 +127,7 @@ const TaskList: React.FC = () => {
       title: fieldIntl(intl, 'endpoint'),
       dataIndex: 'endpoint',
       hideInTable: true,
+      hideInForm: provider !== 'default',
       formItemProps: {
         rules: [{ required: true }],
       },
@@ -104,6 +136,7 @@ const TaskList: React.FC = () => {
       title: fieldIntl(intl, 'method'),
       dataIndex: 'method',
       hideInTable: !needMethod,
+      hideInForm: provider !== 'default',
       renderFormItem() {
         return (
           <ProFormSelect
@@ -135,10 +168,118 @@ const TaskList: React.FC = () => {
       title: fieldIntl(intl, 'body'),
       dataIndex: 'body',
       hideInTable: true,
-      hideInForm: !needBody,
+      hideInForm: !needBody && provider !== 'default',
       valueType: 'jsonCode',
       formItemProps: {
         rules: [{ required: mustBody }],
+      },
+    },
+    {
+      title: fieldIntl(intl, 'command'),
+      dataIndex: 'command',
+      valueType: 'text',
+      hideInTable: true,
+      hideInForm: provider === 'default',
+      renderFormItem: (_, formItemProps, fieldProps) => {
+        return (
+          <Form.List name="command">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map((field) => (
+                  <Row key={field.key} gutter={8}>
+                    <Col span={16}>
+                      <Form.Item
+                        {...field}
+                        {...formItemProps}
+                        name={[field.name]}
+                        rules={[{ required: true, message: 'Missing command' }]}
+                        style={{ marginBottom: 0 }}
+                      >
+                        <Input placeholder="Enter an command" {...fieldProps} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                      <MinusCircleOutlined
+                        onClick={() => remove(field.name)}
+                        style={{ margin: '0 8px', cursor: 'pointer' }}
+                      />
+                    </Col>
+                  </Row>
+                ))}
+                <Form.Item>
+                  <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                    Add Command
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        );
+      },
+      render: (_, entity) => {
+        return (
+          <div>
+            {entity.command?.split('|').map((item: string) => (
+              <Tag key={item} color="blue">
+                {item}
+              </Tag>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      title: fieldIntl(intl, 'args'),
+      dataIndex: 'args',
+      valueType: 'text',
+      hideInTable: true,
+      hideInForm: provider === 'default',
+      renderFormItem: (_, formItemProps, fieldProps) => {
+        return (
+          <Form.List name="args">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map((field) => (
+                  <Row key={field.key} gutter={8}>
+                    <Col span={16}>
+                      <Form.Item
+                        {...field}
+                        {...formItemProps}
+                        name={[field.name]}
+                        rules={[{ required: true, message: 'Missing argument' }]}
+                        style={{ marginBottom: 0 }}
+                      >
+                        <Input placeholder="Enter an argument" {...fieldProps} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                      <MinusCircleOutlined
+                        onClick={() => remove(field.name)}
+                        style={{ margin: '0 8px', cursor: 'pointer' }}
+                      />
+                    </Col>
+                  </Row>
+                ))}
+                <Form.Item>
+                  <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                    Add Argument
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        );
+      },
+      render: (_, entity) => {
+        return (
+          <div>
+            {entity.args?.split('|').map((item: string) => (
+              <Tag key={item} color="blue">
+                {item}
+              </Tag>
+            ))}
+          </div>
+        );
       },
     },
     {
@@ -203,6 +344,7 @@ const TaskList: React.FC = () => {
                   )
                   .then(() => actionRef.current?.reload());
               }
+              // @ts-ignore
               if (!record.status || record.status === '' || record.status === 'disabled') {
                 await getTaskOperateId({ id: record.id!, operate: 'start' });
                 message
@@ -267,6 +409,14 @@ const TaskList: React.FC = () => {
     if (!id) {
       return;
     }
+    //将args数组使用|分割
+    if (params.args) {
+      params.args = params.args.join('|');
+    }
+    //将command数组使用|分割
+    if (params.command) {
+      params.command = params.command.join('|');
+    }
     if (id === 'create') {
       await postTasks(params);
       message.success(
@@ -289,6 +439,9 @@ const TaskList: React.FC = () => {
   };
 
   const onValuesChange = (values: API.Task) => {
+    if (values.provider !== undefined) {
+      setProvider(values.provider);
+    }
     if (values.protocol !== undefined) {
       setNeedMethod(values.protocol === 'http' || values.protocol === 'https');
     }
@@ -326,12 +479,21 @@ const TaskList: React.FC = () => {
             ? {
                 request: async () => {
                   const res = await getTasksId({ id });
+                  setProvider(res.provider!);
                   setNeedBody(res.method !== 'GET');
+                  if (res.args) {
+                    // @ts-ignore
+                    res.args = res.args.split('|');
+                  }
+                  if (res.command) {
+                    // @ts-ignore
+                    res.command = res.command.split('|');
+                  }
                   return res;
                 },
                 onValuesChange,
               }
-            : { onValuesChange }
+            : { onValuesChange, initialValues: { provider: 'default', status: 'enabled' } }
         }
         request={getTasks}
         columns={columns}

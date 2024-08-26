@@ -156,6 +156,11 @@ export default {
   'pages.accessToken.settings.longTime': '长期',
   'pages.email.settings.title': '邮件设置',
   /****************** field ******************/
+  'pages.fields.cluster': '集群',
+  'pages.fields.args': '参数',
+  'pages.fields.command': '命令',
+  'pages.fields.image': '镜像',
+  'pages.fields.provider': '引擎',
   'pages.fields.confirm': '确认密码',
   'pages.fields.smtpPort': 'smtp端口',
   'pages.fields.smtpHost': 'smtp主机',
@@ -255,6 +260,8 @@ export default {
   'pages.fields.formComponent': '表单组件',
   'pages.fields.tableComponent': '表格组件',
   /****************** field options ******************/
+  'pages.fields.options.default': '默认',
+  'pages.fields.options.k8s': 'k8s',
   'pages.fields.options.richText': '富文本',
   'pages.fields.options.avatar': '头像',
   'pages.fields.options.upload': '上传',

@@ -171,6 +171,11 @@ export default {
   'pages.accessToken.settings.longTime': 'Long time',
   'pages.email.settings.title': 'Email Settings',
   /****************** field ******************/
+  'pages.fields.cluster': 'Cluster',
+  'pages.fields.args': 'Args',
+  'pages.fields.command': 'Command',
+  'pages.fields.image': 'Image',
+  'pages.fields.provider': 'Provider',
   'pages.fields.confirm': 'confirm password',
   'pages.fields.smtpPort': 'Smtp Port',
   'pages.fields.smtpHost': 'Smtp Host',
@@ -270,6 +275,8 @@ export default {
   'pages.fields.formComponent': 'form component',
   'pages.fields.tableComponent': 'table component',
   /****************** field options ******************/
+  'pages.fields.options.default': 'default',
+  'pages.fields.options.k8s': 'k8s',
   'pages.fields.options.richTextEditor': 'rich text',
   'pages.fields.options.avatar': 'avatar',
   'pages.fields.options.upload': 'upload',
