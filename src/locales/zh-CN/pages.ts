@@ -156,6 +156,7 @@ export default {
   'pages.accessToken.settings.longTime': '长期',
   'pages.email.settings.title': '邮件设置',
   /****************** field ******************/
+  'pages.fields.namespace': '命名空间',
   'pages.fields.cluster': '集群',
   'pages.fields.args': '参数',
   'pages.fields.command': '命令',

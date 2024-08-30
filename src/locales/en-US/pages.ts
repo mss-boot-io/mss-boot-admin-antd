@@ -171,6 +171,7 @@ export default {
   'pages.accessToken.settings.longTime': 'Long time',
   'pages.email.settings.title': 'Email Settings',
   /****************** field ******************/
+  'pages.fields.namespace': 'Namespace',
   'pages.fields.cluster': 'Cluster',
   'pages.fields.args': 'Args',
   'pages.fields.command': 'Command',

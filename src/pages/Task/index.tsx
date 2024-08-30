@@ -84,6 +84,15 @@ const TaskList: React.FC = () => {
       },
     },
     {
+      title: fieldIntl(intl, 'namespace'),
+      dataIndex: 'namespace',
+      hideInTable: true,
+      hideInForm: provider !== 'k8s',
+      formItemProps: {
+        rules: [{ required: true }],
+      },
+    },
+    {
       title: fieldIntl(intl, 'image'),
       dataIndex: 'image',
       hideInForm: provider !== 'k8s',
@@ -409,13 +418,13 @@ const TaskList: React.FC = () => {
     if (!id) {
       return;
     }
-    //将args数组使用|分割
+    //将args数组, 转换成json字符串
     if (params.args) {
-      params.args = params.args.join('|');
+      params.args = JSON.stringify(params.args);
     }
     //将command数组使用|分割
     if (params.command) {
-      params.command = params.command.join('|');
+      params.command = JSON.stringify(params.command);
     }
     if (id === 'create') {
       await postTasks(params);
@@ -493,7 +502,10 @@ const TaskList: React.FC = () => {
                 },
                 onValuesChange,
               }
-            : { onValuesChange, initialValues: { provider: 'default', status: 'enabled' } }
+            : {
+                onValuesChange,
+                initialValues: { provider: 'default', status: 'enabled', namespace: 'default' },
+              }
         }
         request={getTasks}
         columns={columns}
