@@ -21,7 +21,7 @@ import { getUserConfigsProfile } from '@/services/admin/userConfig';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-const callbackPath = ['/user/github-callback', '/user/lark-callback'];
+const excludePath = ['/user/github-callback', '/user/lark-callback', '/user/register'];
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -95,7 +95,7 @@ export async function getInitialState(): Promise<{
     defaultSettings.colorPrimary;
   // defaultSettings.splitMenus = userConfig?.theme?.splitMenus || appConfig?.theme?.splitMenus || defaultSettings.splitMenus;
 
-  if (location.pathname !== loginPath && !callbackPath.includes(location.pathname)) {
+  if (location.pathname !== loginPath && !excludePath.includes(location.pathname)) {
     const currentUser = await fetchUserInfo();
     return {
       appConfig,

@@ -1,4 +1,5 @@
-﻿import routesCustom from './routes.custom';
+﻿import component from '@/locales/en-US/component';
+import routesCustom from './routes.custom';
 
 /**
  * @name umi 的路由配置
@@ -32,6 +33,10 @@ export default [
       {
         path: '/user/forget',
         component: './User/Login/forget.tsx',
+      },
+      {
+        path: '/user/register',
+        component: './User/Login/register.tsx',
       },
     ],
   },

@@ -367,7 +367,7 @@ const Login: React.FC = () => {
             await handleSubmit(values as API.UserLogin, values.autoLogin);
           }}
         >
-          <Tabs activeKey={type} onChange={setType} centered items={loginItem()} />
+          <Tabs activeKey={type} onChange={setType} items={loginItem()} />
 
           {status === 'error' && type === 'account' && (
             <LoginMessage
