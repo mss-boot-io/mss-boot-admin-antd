@@ -362,6 +362,18 @@ const Login: React.FC = () => {
               ''
             ),
             <ActionIcons fetchUserInfo={fetchUserInfo} key="icons" />,
+            initialState?.appConfig?.security?.registerEnabled ? (
+              <p>
+                还没有账号? &nbsp;
+                <Link to="/user/register">
+                  <a>
+                    <FormattedMessage id="pages.login.signup" defaultMessage="注册账户" />
+                  </a>
+                </Link>
+              </p>
+            ) : (
+              ''
+            ),
           ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.UserLogin, values.autoLogin);
@@ -614,6 +626,7 @@ const Login: React.FC = () => {
             <ProFormCheckbox noStyle name="autoLogin">
               <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
             </ProFormCheckbox>
+
             <Link to="/user/forget">
               <a
                 style={{
