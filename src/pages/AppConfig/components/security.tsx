@@ -17,6 +17,11 @@ const Security: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
+      title: '开放注册',
+      dataIndex: 'registerEnabled',
+      valueType: 'switch',
+    },
+    {
       title: '邮箱登录',
       dataIndex: 'emailEnabled',
       valueType: 'switch',
