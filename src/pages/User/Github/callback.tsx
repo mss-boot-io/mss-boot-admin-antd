@@ -29,7 +29,7 @@ const Github: React.FC = () => {
           message.success('获取成功');
 
           //get token
-          if (state.startsWith('ghs_')) {
+          if (state.startsWith('ghs_') && !localStorage.getItem('token')) {
             postUserLogin({ password: res.accessToken, type: 'github' }).then((msg) => {
               if (msg.code === 200 && msg.token) {
                 message.success('登录成功');

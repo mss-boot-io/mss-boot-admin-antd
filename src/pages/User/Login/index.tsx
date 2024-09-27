@@ -19,7 +19,7 @@ import { FormattedMessage, Helmet, history, Link, SelectLang, useIntl, useModel 
 import { Alert, message, Tabs, Avatar } from 'antd';
 import Icon from '@ant-design/icons';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
@@ -123,25 +123,6 @@ const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
             const w = window.open('about:blank');
             // @ts-ignore
             w.location.href = loginURL;
-            const intervalId = setInterval(() => {
-              const loginType = localStorage.getItem('login.type');
-              const token = localStorage.getItem('token');
-              if (token && loginType === 'lark') {
-                clearInterval(intervalId);
-                try {
-                  props.fetchUserInfo();
-                } catch (e) {
-                  message.error('登录失败，请重试！');
-                  return;
-                } finally {
-                  //登录成功跳转
-                  const urlParams = new URL(window.location.href).searchParams;
-                  setTimeout(() => {
-                    history.push(urlParams.get('redirect') || '/');
-                  }, 1000);
-                }
-              }
-            }, 1000);
           }}
         >
           <Avatar src="https://sf16-scmcdn2-va.larksuitecdn.com/lark/open/doc/frontend/favicon-logo.svg" />
@@ -306,6 +287,37 @@ const Login: React.FC = () => {
 
     return items;
   };
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        const loginType = localStorage.getItem('login.type');
+        const token = localStorage.getItem('token');
+        if (token && loginType === 'github') {
+          try {
+            fetchUserInfo();
+          } catch (e) {
+            message.error('登录失败，请重试！');
+            return;
+          } finally {
+            //登录成功跳转
+            const urlParams = new URL(window.location.href).searchParams;
+            setTimeout(() => {
+              history.push(urlParams.get('redirect') || '/');
+            }, 1000);
+          }
+        }
+      }
+    };
+
+    // 添加事件监听器
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // 清理事件监听器
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   return loading ? (
     <></>

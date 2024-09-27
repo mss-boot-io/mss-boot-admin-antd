@@ -21,6 +21,18 @@ export async function putUserUserIdPasswordReset(
   });
 }
 
+/** 绑定第三方登录 绑定第三方登录 POST /admin/api/user/binding */
+export async function postUserBinding(body: API.UserLogin, options?: { [key: string]: any }) {
+  return request<any>('/admin/api/user/binding', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 获取验证码 获取验证码 POST /admin/api/user/fakeCaptcha */
 export async function postUserFakeCaptcha(
   body: API.FakeCaptchaRequest,
@@ -44,6 +56,14 @@ export async function postUserLogin(body: API.UserLogin, options?: { [key: strin
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 获取用户第三方登录信息 获取用户第三方登录信息 GET /admin/api/user/oauth2 */
+export async function getUserOauth2(options?: { [key: string]: any }) {
+  return request<API.UserOAuth2[]>('/admin/api/user/oauth2', {
+    method: 'GET',
     ...(options || {}),
   });
 }
