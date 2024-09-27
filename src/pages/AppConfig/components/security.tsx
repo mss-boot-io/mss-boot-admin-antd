@@ -34,47 +34,55 @@ const Security: React.FC = () => {
     {
       title: 'github client id',
       dataIndex: 'githubClientId',
-      hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
+        return github
+          ? {
+              rules: [{ required: true }],
+            }
+          : {};
       },
     },
     {
       title: 'github client secret',
       dataIndex: 'githubClientSecret',
-      hideInForm: !github,
       valueType: 'password',
+      formItemProps: () => {
+        return github
+          ? {
+              rules: [{ required: true }],
+            }
+          : {};
+      },
     },
     {
       title: 'github redirect uri',
       dataIndex: 'githubRedirectURI',
-      hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
+        return github
+          ? {
+              rules: [{ required: true }],
+            }
+          : {};
       },
     },
     {
       title: 'github scope',
       dataIndex: 'githubScope',
-      hideInForm: !github,
       valueType: 'text',
       formItemProps: () => {
-        return {
-          rules: [{ required: true }],
-        };
+        return github
+          ? {
+              rules: [{ required: true }],
+            }
+          : {};
       },
     },
     {
       title: 'github allow group',
       dataIndex: 'githubAllowGroup',
       valueType: 'text',
-      hideInForm: !github,
     },
     {
       title: 'lark登录',
