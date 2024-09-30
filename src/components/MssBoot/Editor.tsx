@@ -1,10 +1,10 @@
-import BraftEditor, {BraftEditorProps, EditorState} from 'braft-editor';
-import 'braft-editor/dist/index.css'
+import BraftEditor, { BraftEditorProps } from 'braft-editor';
+import 'braft-editor/dist/index.css';
 import { getLocale, request } from '@umijs/max';
 import React from 'react';
 
 const RichTextEditor: React.FC<BraftEditorProps> = (props) => {
-  const local = getLocale()
+  const local = getLocale();
   const language = local.replace(/-.*$/, '');
   const media = {
     // @ts-ignore
@@ -23,7 +23,14 @@ const RichTextEditor: React.FC<BraftEditorProps> = (props) => {
     },
   };
 
-  return <BraftEditor {...props} value={BraftEditor.createEditorState(props.value)} language={language} media={media} />;
+  return (
+    <BraftEditor
+      {...props}
+      value={BraftEditor.createEditorState(props.value)}
+      language={language}
+      media={media}
+    />
+  );
 };
 
 export default RichTextEditor;

@@ -29,7 +29,7 @@ const Lark: React.FC = () => {
           message.success('获取成功');
 
           //get token
-          if (state.startsWith('lark')) {
+          if (state.startsWith('lark') && !localStorage.getItem('token')) {
             postUserLogin({ password: res.accessToken, type: 'lark' }).then((msg) => {
               if (msg.code === 200 && msg.token) {
                 message.success('登录成功');

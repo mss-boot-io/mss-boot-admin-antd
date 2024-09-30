@@ -170,6 +170,7 @@ export default {
   'pages.accessToken.settings.ninetyDay': '90 days',
   'pages.accessToken.settings.longTime': 'Long time',
   'pages.email.settings.title': 'Email Settings',
+  'pages.security.settings.changePassword': 'Change Password',
   /****************** field ******************/
   'pages.fields.namespace': 'Namespace',
   'pages.fields.cluster': 'Cluster',

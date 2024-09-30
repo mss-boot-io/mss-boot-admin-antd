@@ -62,7 +62,6 @@ const AccessTokenView: React.FC = () => {
   const now = new Date();
   const oneYearLater = new Date(now).setFullYear(now.getFullYear() + 1);
 
-  console.log(oneYearLater);
   const { data: accessTokenDatas, loading } = useRequest(
     async () => {
       const res = await getUserAuthTokens();

@@ -4,6 +4,7 @@ import { useModel } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { List } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
+import { LarkOutlined } from '@/components/MssBoot/icon';
 
 function randToken(): string {
   let result = '';
@@ -19,21 +20,28 @@ function randToken(): string {
 const BindingView: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const [bindingGithub, setBindingGithub] = useState(false);
+  const [bindingLark, setBindingLark] = useState(false);
   const scopes = initialState?.appConfig?.security?.githubScope?.replace(/,/g, '+') || '';
-  const state = 'ghs_' + randToken();
-  const githubURL = `https://github.com/login/oauth/authorize?client_id=${initialState?.appConfig?.security?.githubClientId}&response_type=code&scope=${scopes}&state=${state}`;
+  const githubState = 'ghs_' + randToken();
+  const githubURL = `https://github.com/login/oauth/authorize?client_id=${initialState?.appConfig?.security?.githubClientId}&response_type=code&scope=${scopes}&state=${githubState}`;
+  const larkState = 'lark' + randToken();
+  const larkURL = `https://open.larksuite.com/open-apis/authen/v1/index?redirect_uri=${initialState?.appConfig?.security?.larkRedirectURI}&app_id=${initialState?.appConfig?.security?.larkAppId}&state=${larkState}`;
 
   const {} = useRequest(
-    () => {
-      return getUserOauth2().then((res) => {
-        if (res.length > 0) {
-          res.forEach((item: any) => {
-            if (item.type === 'github') {
-              setBindingGithub(true);
-            }
-          });
-        }
-      });
+    async () => {
+      const res = await getUserOauth2();
+      if (res.length > 0) {
+        res.forEach((item: any) => {
+          if (item.type === 'github') {
+            setBindingGithub(true);
+            return;
+          }
+          if (item.type === 'lark') {
+            setBindingLark(true);
+            return;
+          }
+        });
+      }
     },
     {
       refreshDeps: [],
@@ -49,9 +57,11 @@ const BindingView: React.FC = () => {
           <a
             key="Bind"
             onClick={() => {
-              localStorage.setItem('github.state', state);
+              localStorage.setItem('github.state', githubState);
+              localStorage.setItem('bindingType', 'github');
+              window.open(githubURL);
             }}
-            href={githubURL}
+            // href={githubURL}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -61,15 +71,52 @@ const BindingView: React.FC = () => {
       ],
       avatar: <GithubOutlined className="github" />,
     },
+    {
+      title: 'Lark',
+      description: bindingLark ? '已绑定 Lark 账号' : '未绑定 Lark 账号',
+      actions: [
+        bindingLark ? null : (
+          <a
+            key="Bind"
+            onClick={() => {
+              localStorage.setItem('lark.state', larkState);
+              localStorage.setItem('bindingType', 'lark');
+              window.open(larkURL);
+            }}
+            // href={larkURL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            绑定
+          </a>
+        ),
+      ],
+      avatar: <LarkOutlined className="lark" />,
+    },
   ];
 
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        const token = localStorage.getItem('github.token');
-        postUserBinding({ type: 'github', password: token as string }).then(() => {
-          setBindingGithub(true);
-        });
+        const bindingType = localStorage.getItem('bindingType');
+        let token: string | null = null;
+        let setHandler = setBindingGithub;
+        switch (bindingType) {
+          case 'github':
+            token = localStorage.getItem('github.token');
+            setHandler = setBindingGithub;
+            break;
+          case 'lark':
+            token = localStorage.getItem('lark.token');
+            setHandler = setBindingLark;
+            break;
+        }
+        postUserBinding({ type: bindingType as API.LoginProvider, password: token as string }).then(
+          () => {
+            setHandler(true);
+          },
+        );
+        localStorage.removeItem('bindingType');
       }
     };
 
