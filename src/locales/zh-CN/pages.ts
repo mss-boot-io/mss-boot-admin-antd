@@ -155,6 +155,7 @@ export default {
   'pages.accessToken.settings.ninetyDay': '90天',
   'pages.accessToken.settings.longTime': '长期',
   'pages.email.settings.title': '邮件设置',
+  'pages.security.settings.changePassword': '修改密码',
   /****************** field ******************/
   'pages.fields.namespace': '命名空间',
   'pages.fields.cluster': '集群',

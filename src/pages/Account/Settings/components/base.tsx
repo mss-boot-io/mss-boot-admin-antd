@@ -119,58 +119,58 @@ const BaseView: React.FC = () => {
         ],
       },
     },
-    {
-      title: '新密码',
-      dataIndex: 'password',
-      valueType: 'password',
-      width: 'md',
-      formItemProps: {
-        rules: [
-          { min: 8 },
-          { max: 20 },
-          {
-            pattern: /[a-zA-Z]/,
-            message: intl.formatMessage({
-              id: 'pages.message.password.rule.pattern.letters',
-              defaultMessage: 'The password must contain letters',
-            }),
-          },
-          {
-            pattern: /[0-9]/,
-            message: intl.formatMessage({
-              id: 'pages.message.password.rule.pattern.numbers',
-              defaultMessage: 'The password must contain numbers',
-            }),
-          },
-        ],
-      },
-    },
-    {
-      title: '确认密码',
-      dataIndex: 'confirm',
-      valueType: 'password',
-      width: 'md',
-      formItemProps: {
-        rules: [
-          { min: 8 },
-          { max: 20 },
-          {
-            pattern: /[a-zA-Z]/,
-            message: intl.formatMessage({
-              id: 'pages.message.password.rule.pattern.letters',
-              defaultMessage: 'The password must contain letters',
-            }),
-          },
-          {
-            pattern: /[0-9]/,
-            message: intl.formatMessage({
-              id: 'pages.message.password.rule.pattern.numbers',
-              defaultMessage: 'The password must contain numbers',
-            }),
-          },
-        ],
-      },
-    },
+    // {
+    //   title: '新密码',
+    //   dataIndex: 'password',
+    //   valueType: 'password',
+    //   width: 'md',
+    //   formItemProps: {
+    //     rules: [
+    //       { min: 8 },
+    //       { max: 20 },
+    //       {
+    //         pattern: /[a-zA-Z]/,
+    //         message: intl.formatMessage({
+    //           id: 'pages.message.password.rule.pattern.letters',
+    //           defaultMessage: 'The password must contain letters',
+    //         }),
+    //       },
+    //       {
+    //         pattern: /[0-9]/,
+    //         message: intl.formatMessage({
+    //           id: 'pages.message.password.rule.pattern.numbers',
+    //           defaultMessage: 'The password must contain numbers',
+    //         }),
+    //       },
+    //     ],
+    //   },
+    // },
+    // {
+    //   title: '确认密码',
+    //   dataIndex: 'confirm',
+    //   valueType: 'password',
+    //   width: 'md',
+    //   formItemProps: {
+    //     rules: [
+    //       { min: 8 },
+    //       { max: 20 },
+    //       {
+    //         pattern: /[a-zA-Z]/,
+    //         message: intl.formatMessage({
+    //           id: 'pages.message.password.rule.pattern.letters',
+    //           defaultMessage: 'The password must contain letters',
+    //         }),
+    //       },
+    //       {
+    //         pattern: /[0-9]/,
+    //         message: intl.formatMessage({
+    //           id: 'pages.message.password.rule.pattern.numbers',
+    //           defaultMessage: 'The password must contain numbers',
+    //         }),
+    //       },
+    //     ],
+    //   },
+    // },
     {
       title: '昵称',
       dataIndex: 'name',
