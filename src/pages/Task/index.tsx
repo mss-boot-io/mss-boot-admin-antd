@@ -491,12 +491,10 @@ const TaskList: React.FC = () => {
                   setProvider(res.provider!);
                   setNeedBody(res.method !== 'GET');
                   if (res.args) {
-                    // @ts-ignore
-                    res.args = res.args.split('|');
+                    res.args = JSON.parse(res.args);
                   }
                   if (res.command) {
-                    // @ts-ignore
-                    res.command = res.command.split('|');
+                    res.command = JSON.parse(res.command);
                   }
                   return res;
                 },
