@@ -2,21 +2,6 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** github回调 github回调 GET /admin/api/github/callback */
-export async function getGithubCallback(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getGithubCallbackParams,
-  options?: { [key: string]: any },
-) {
-  return request<API.OauthToken>('/admin/api/github/callback', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
-}
-
 /** 获取github登录地址 获取github登录地址 GET /admin/api/github/get-login-url */
 export async function getGithubGetLoginUrl(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

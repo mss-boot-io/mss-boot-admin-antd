@@ -21,7 +21,13 @@ import { getUserConfigsProfile } from '@/services/admin/userConfig';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-const excludePath = ['/user/github-callback', '/user/lark-callback', '/user/register'];
+const excludePath = [
+  '/user/github-callback',
+  '/user/lark-callback',
+  '/user/register',
+  '/user/callback/github',
+  '/user/callback/lark',
+];
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state

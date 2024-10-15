@@ -277,13 +277,6 @@ declare namespace API {
     modelID?: string;
   };
 
-  type getGithubCallbackParams = {
-    /** code */
-    code: string;
-    /** state */
-    state: string;
-  };
-
   type getGithubGetLoginUrlParams = {
     /** state */
     state: string;
@@ -303,13 +296,6 @@ declare namespace API {
     current?: number;
     /** pageSize */
     pageSize?: number;
-  };
-
-  type getLarkCallbackParams = {
-    /** code */
-    code: string;
-    /** state */
-    state: string;
   };
 
   type getMenuApiIdParams = {
@@ -538,6 +524,15 @@ declare namespace API {
     group: string;
   };
 
+  type getUserProviderCallbackParams = {
+    /** provider */
+    provider: string;
+    /** code */
+    code: string;
+    /** state */
+    state: string;
+  };
+
   type getUsersIdParams = {
     /** id */
     id: string;
@@ -757,6 +752,8 @@ If zero, TokenSource implementations will reuse the same
 token forever and RefreshToken or equivalent
 mechanisms for that TokenSource will not be used. */
     expiry?: string;
+    /** Provider is the name of the OAuth2 provider[GitHub, Lark]. */
+    provider: string;
     refreshExpiry?: string;
     /** RefreshToken is a token that's used by the application
 (as opposed to the user) to refresh the access token
@@ -942,8 +939,8 @@ The Type method returns either this or "Bearer", the default. */
   };
 
   type ResetPasswordRequest = {
-    captcha: string;
-    email: string;
+    captcha?: string;
+    email?: string;
     password: string;
   };
 

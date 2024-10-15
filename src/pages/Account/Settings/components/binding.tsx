@@ -1,8 +1,8 @@
-import { getUserOauth2, postUserBinding } from '@/services/admin/user';
+import { deleteUserUnbinding, getUserOauth2, postUserBinding } from '@/services/admin/user';
 import { GithubOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { useRequest } from 'ahooks';
-import { List } from 'antd';
+import { List, message } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
 import { LarkOutlined } from '@/components/MssBoot/icon';
 
@@ -53,7 +53,21 @@ const BindingView: React.FC = () => {
       title: 'Github',
       description: bindingGithub ? '已绑定 Github 账号' : '未绑定 Github 账号',
       actions: [
-        bindingGithub ? null : (
+        bindingGithub ? (
+          <a
+            key="Bind"
+            onClick={() => {
+              deleteUserUnbinding({ type: 'github' }).then(() => {
+                message.success('解绑成功');
+                setBindingGithub(false);
+              });
+            }}
+            // href={githubURL}
+            rel="noopener noreferrer"
+          >
+            解绑
+          </a>
+        ) : (
           <a
             key="Bind"
             onClick={() => {
@@ -75,7 +89,20 @@ const BindingView: React.FC = () => {
       title: 'Lark',
       description: bindingLark ? '已绑定 Lark 账号' : '未绑定 Lark 账号',
       actions: [
-        bindingLark ? null : (
+        bindingLark ? (
+          <a
+            key="Bind"
+            onClick={() => {
+              deleteUserUnbinding({ type: 'lark' }).then(() => {
+                message.success('解绑成功');
+                setBindingLark(false);
+              });
+            }}
+            rel="noopener noreferrer"
+          >
+            解绑
+          </a>
+        ) : (
           <a
             key="Bind"
             onClick={() => {
@@ -110,6 +137,9 @@ const BindingView: React.FC = () => {
             token = localStorage.getItem('lark.token');
             setHandler = setBindingLark;
             break;
+        }
+        if (!bindingType) {
+          return;
         }
         postUserBinding({ type: bindingType as API.LoginProvider, password: token as string }).then(
           () => {
