@@ -9,7 +9,6 @@ import * as virtual from './virtual';
 import * as field from './field';
 import * as generator from './generator';
 import * as language from './language';
-import * as lark from './lark';
 import * as menu from './menu';
 import * as model from './model';
 import * as monitor from './monitor';
@@ -32,7 +31,6 @@ export default {
   field,
   generator,
   language,
-  lark,
   menu,
   model,
   monitor,

@@ -1,5 +1,5 @@
 import { PageContainer } from '@ant-design/pro-components';
-import { useIntl } from '@umijs/max';
+import { useIntl, useSearchParams } from '@umijs/max';
 import { Tabs } from 'antd';
 import React from 'react';
 import BaseView from './components/base';
@@ -15,6 +15,8 @@ const Settings: React.FC = () => {
    * @zh-CN 国际化配置
    * */
   const intl = useIntl();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const key = searchParams.get('key') || 'base';
   const menuMap: any[] = [
     {
       label: intl.formatMessage({
@@ -127,7 +129,13 @@ const Settings: React.FC = () => {
         defaultMessage: 'Personal Settings',
       })}
     >
-      <Tabs tabPosition="left" type="card" items={menuMap} />
+      <Tabs
+        type="card"
+        activeKey={key}
+        tabPosition="left"
+        items={menuMap}
+        onTabClick={(key: string) => setSearchParams({ key })}
+      />
     </PageContainer>
   );
 };

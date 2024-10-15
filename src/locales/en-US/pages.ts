@@ -31,6 +31,11 @@ export default {
   'pages.login.registerAccount': 'Register Account',
   'pages.login.passwordInconsistent': 'The two passwords are inconsistent!',
   'pages.login.email.invalid': 'Email is invalid!',
+  'pages.login.oauth2.success': 'Get successfully',
+  'pages.login.callback.loading': 'Waiting for callback...',
+  'pages.login.callback.success.title': 'Callback success',
+  'pages.login.callback.success.description':
+    'Login information has been obtained, waiting for the page to close.',
   'pages.validate.required': 'This field is required',
   'pages.validate.password.min8': 'Password must be at least 8 characters',
   'pages.validate.password.max20': 'Password must be at most 20 characters',

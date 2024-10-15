@@ -23,12 +23,8 @@ export default [
         component: './User/Login',
       },
       {
-        path: '/user/github-callback',
-        component: './User/Github/callback.tsx',
-      },
-      {
-        path: '/user/lark-callback',
-        component: './User/Lark/callback.tsx',
+        path: '/user/callback/:provider',
+        component: './User/Callback/$provider.tsx',
       },
       {
         path: '/user/forget',
