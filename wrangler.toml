@@ -1,9 +1,8 @@
 type = "webpack"
-route = ""
 workers_dev = true
 zone_id = "83499b45e20e8e3c34b2c0b6507c2f66"
-name = ""
 account_id = "126f4a0c75180e9493cb3716f5178574"
+compatibility_date = "2025-03-04"
 
 [site]
 bucket = "./dist"
@@ -11,12 +10,18 @@ entry-point = "workers-site"
 
 [env.alpha]
 name = "mss-boot-admin-alpha"
-route = "admin-alpha.mss-boot-io.top/*"
+routes = [
+    { pattern = "admin-alpha.mss-boot-io.top/*", zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
+]
 
 [env.beta]
 name = "mss-boot-admin-beta"
-route = "admin-beta.mss-boot-io.top/*"
+routes = [
+    { pattern = "admin-beta.mss-boot-io.top/*", zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
+]
 
 [env.prod]
 name = "mss-boot-admin"
-route = "admin.mss-boot-io.top/*"
+routes = [
+    { pattern = "admin.mss-boot-io.top/*", zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
+]
