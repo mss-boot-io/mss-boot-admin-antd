@@ -11,17 +11,17 @@ entry-point = "workers-site"
 [env.alpha]
 name = "mss-boot-admin-alpha"
 routes = [
-    { pattern = "admin-alpha.mss-boot-io.top/*", zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
+    { pattern = "admin-alpha.mss-boot-io.top", custom_domain = true, zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
 ]
 
 [env.beta]
 name = "mss-boot-admin-beta"
 routes = [
-    { pattern = "admin-beta.mss-boot-io.top/*", zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
+    { pattern = "admin-beta.mss-boot-io.top", custom_domain = true, zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
 ]
 
 [env.prod]
 name = "mss-boot-admin"
 routes = [
-    { pattern = "admin.mss-boot-io.top/*", zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
+    { pattern = "admin.mss-boot-io.top", custom_domain = true, zone_id = "83499b45e20e8e3c34b2c0b6507c2f66" }
 ]
