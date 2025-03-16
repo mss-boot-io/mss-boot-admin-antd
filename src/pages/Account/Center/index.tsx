@@ -18,22 +18,17 @@ const Center: React.FC = () => {
     try {
       setLoading(true);
       const userRes = await getUserUserInfo();
-      console.log('userRes:', userRes);
       setUserInfo(userRes);
 
       // 获取部门信息
       if (userRes.department?.id) {
-        // console.log('department id:', userRes.department.id);
         const deptRes = await getDepartmentsId({ id: userRes.department.id });
-        // console.log('deptRes:', deptRes);
         setDepartmentInfo(deptRes);
       }
 
       // 获取岗位信息
       if (userRes.post?.id) {
-        // console.log('post id:', userRes.post.id);
         const postRes = await getPostsId({ id: userRes.post.id });
-        // console.log('postRes:', postRes);
         setPostInfo(postRes);
       }
     } catch (error) {
