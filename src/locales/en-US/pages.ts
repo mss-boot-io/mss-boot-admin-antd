@@ -361,4 +361,16 @@ export default {
   'pages.fields.options.bytes': 'bytes',
   /****************** field options ******************/
   /****************** field ******************/
+  'pages.account.center.title': 'Profile',
+  'pages.account.center.username': 'Username',
+  'pages.account.center.phone': 'Phone',
+  'pages.account.center.email': 'Email',
+  'pages.account.center.department': 'Department',
+  'pages.account.center.post': 'Position',
+  'pages.account.center.role': 'Role',
+  'pages.account.center.address': 'Address',
+  'pages.account.center.profile': 'Profile',
+  'pages.account.center.signature': 'Signature',
+  'pages.account.center.tags': 'Tags',
+  'pages.account.center.fetchDataError': 'Failed to fetch data',
 };
