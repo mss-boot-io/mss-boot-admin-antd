@@ -23,9 +23,9 @@ const Center: React.FC = () => {
 
       // 获取部门信息
       if (userRes.department?.id) {
-        console.log('department id:', userRes.department.id);
+        // console.log('department id:', userRes.department.id);
         const deptRes = await getDepartmentsId({ id: userRes.department.id });
-        console.log('deptRes:', deptRes);
+        // console.log('deptRes:', deptRes);
         setDepartmentInfo(deptRes);
       }
 
