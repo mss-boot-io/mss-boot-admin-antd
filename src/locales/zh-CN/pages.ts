@@ -345,4 +345,16 @@ export default {
   'pages.fields.options.bytes': '字节',
   /****************** field options ******************/
   /****************** field ******************/
+  'pages.account.center.title': '个人信息',
+  'pages.account.center.username': '用户名',
+  'pages.account.center.phone': '手机号',
+  'pages.account.center.email': '邮箱',
+  'pages.account.center.department': '部门',
+  'pages.account.center.post': '岗位',
+  'pages.account.center.role': '角色',
+  'pages.account.center.address': '地址',
+  'pages.account.center.profile': '个人简介',
+  'pages.account.center.signature': '个性签名',
+  'pages.account.center.tags': '标签',
+  'pages.account.center.fetchDataError': '获取数据失败',
 };

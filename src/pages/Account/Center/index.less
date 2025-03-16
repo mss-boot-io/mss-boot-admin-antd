@@ -1,0 +1,116 @@
+.container {
+  padding: 24px;
+  background: #f0f2f5;
+  min-height: 100vh;
+
+  :global {
+    .ant-card {
+      border-radius: 4px;
+    }
+  }
+}
+
+.userCard {
+  text-align: center;
+  margin-bottom: 24px;
+
+  .userInfo {
+    padding: 24px 0;
+    text-align: center;
+
+    .userDetail {
+      margin-top: 16px;
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: 24px;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 0;
+        color: rgba(0, 0, 0, 0.45);
+      }
+    }
+  }
+
+  .userStats {
+    padding: 24px;
+    border-top: 1px solid #f0f0f0;
+
+    .statItem {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #fafafa;
+      border-radius: 4px;
+      transition: all 0.3s;
+
+      &:hover {
+        background: #f5f5f5;
+        transform: translateY(-2px);
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .icon {
+        font-size: 24px;
+        margin-right: 16px;
+        color: #1890ff;
+      }
+
+      .content {
+        text-align: left;
+
+        .label {
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.45);
+          margin-bottom: 4px;
+        }
+
+        .value {
+          font-size: 16px;
+          color: rgba(0, 0, 0, 0.85);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.detailCard {
+  :global {
+    .ant-descriptions-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .ant-descriptions-item {
+      padding-bottom: 16px;
+    }
+
+    .ant-descriptions-item-label {
+      width: 120px;
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+    }
+
+    .ant-descriptions-item-content {
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .ant-tag {
+      margin: 4px;
+      padding: 0 8px;
+      height: 24px;
+      line-height: 22px;
+      border-radius: 4px;
+    }
+  }
+} 
