@@ -31,9 +31,9 @@ const Center: React.FC = () => {
 
       // 获取岗位信息
       if (userRes.post?.id) {
-        console.log('post id:', userRes.post.id);
+        // console.log('post id:', userRes.post.id);
         const postRes = await getPostsId({ id: userRes.post.id });
-        console.log('postRes:', postRes);
+        // console.log('postRes:', postRes);
         setPostInfo(postRes);
       }
     } catch (error) {
