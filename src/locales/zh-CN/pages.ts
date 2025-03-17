@@ -357,4 +357,12 @@ export default {
   'pages.account.center.signature': '个性签名',
   'pages.account.center.tags': '标签',
   'pages.account.center.fetchDataError': '获取数据失败',
+
+  /****************** account center ******************/
+  'pages.account.center.country.China': '中国',
+  'pages.account.center.country.United States': '美国',
+  'pages.account.center.country.Japan': '日本',
+  'pages.account.center.country.Korea': '韩国',
+  'pages.account.center.country.Russia': '俄罗斯',
+  'pages.account.center.country.Germany': '德国',
 };
