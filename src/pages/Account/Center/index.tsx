@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Descriptions, Spin, Tag, message, Row, Col } from 'antd';
+import { Avatar, Spin, Tag, message, Row, Col, Space, Typography } from 'antd';
 import { UserOutlined, TeamOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 import { getUserUserInfo } from '@/services/admin/user';
 import { getDepartmentsId } from '@/services/admin/department';
 import { getPostsId } from '@/services/admin/post';
 import { useIntl } from '@umijs/max';
-import styles from './index.less';
+import { PageContainer, ProCard, ProDescriptions } from '@ant-design/pro-components';
+
+const { Title, Paragraph } = Typography;
 
 const Center: React.FC = () => {
   const intl = useIntl();
@@ -13,6 +15,11 @@ const Center: React.FC = () => {
   const [departmentInfo, setDepartmentInfo] = useState<API.Department>();
   const [postInfo, setPostInfo] = useState<API.Post>();
   const [loading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage({
+    top: 60,
+    duration: 3,
+    maxCount: 3,
+  });
 
   const fetchData = async () => {
     try {
@@ -20,20 +27,17 @@ const Center: React.FC = () => {
       const userRes = await getUserUserInfo();
       setUserInfo(userRes);
 
-      // 获取部门信息
       if (userRes.department?.id) {
         const deptRes = await getDepartmentsId({ id: userRes.department.id });
         setDepartmentInfo(deptRes);
       }
 
-      // 获取岗位信息
       if (userRes.post?.id) {
         const postRes = await getPostsId({ id: userRes.post.id });
         setPostInfo(postRes);
       }
     } catch (error) {
-      console.error('error:', error);
-      message.error(intl.formatMessage({ id: 'pages.account.center.fetchDataError' }));
+      messageApi.error(intl.formatMessage({ id: 'pages.account.center.fetchDataError' }));
     } finally {
       setLoading(false);
     }
@@ -44,75 +48,101 @@ const Center: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <PageContainer title={intl.formatMessage({ id: 'pages.account.center.title' })}>
+      {contextHolder}
       <Spin spinning={loading}>
         <Row gutter={24}>
           <Col span={8}>
-            <Card bordered={false} className={styles.userCard}>
-              <div className={styles.userInfo}>
+            <ProCard>
+              <Space
+                direction="vertical"
+                align="center"
+                style={{ width: '100%', padding: '24px 0' }}
+              >
                 <Avatar size={100} src={userInfo?.avatar} icon={<UserOutlined />} />
-                <div className={styles.userDetail}>
-                  <h2>{userInfo?.name}</h2>
-                  <p>{userInfo?.title}</p>
-                </div>
-              </div>
-              <div className={styles.userStats}>
-                <div className={styles.statItem}>
-                  <TeamOutlined className={styles.icon} />
-                  <div className={styles.content}>
-                    <div className={styles.label}>{intl.formatMessage({ id: 'pages.account.center.department' })}</div>
-                    <div className={styles.value}>{departmentInfo?.name || '-'}</div>
-                  </div>
-                </div>
-                <div className={styles.statItem}>
-                  <SafetyCertificateOutlined className={styles.icon} />
-                  <div className={styles.content}>
-                    <div className={styles.label}>{intl.formatMessage({ id: 'pages.account.center.post' })}</div>
-                    <div className={styles.value}>{postInfo?.name || '-'}</div>
-                  </div>
-                </div>
-              </div>
-            </Card>
+                <Title level={2} style={{ marginTop: 16, marginBottom: 4 }}>
+                  {userInfo?.name}
+                </Title>
+                <Paragraph type="secondary">{userInfo?.title}</Paragraph>
+              </Space>
+              <ProCard split="horizontal">
+                <ProCard>
+                  <Space align="start">
+                    <TeamOutlined style={{ fontSize: 24 }} />
+                    <Space direction="vertical" size={4}>
+                      <span>{intl.formatMessage({ id: 'pages.account.center.department' })}</span>
+                      <span>{departmentInfo?.name || '-'}</span>
+                    </Space>
+                  </Space>
+                </ProCard>
+                <ProCard>
+                  <Space align="start">
+                    <SafetyCertificateOutlined style={{ fontSize: 24 }} />
+                    <Space direction="vertical" size={4}>
+                      <span>{intl.formatMessage({ id: 'pages.account.center.post' })}</span>
+                      <span>{postInfo?.name || '-'}</span>
+                    </Space>
+                  </Space>
+                </ProCard>
+              </ProCard>
+            </ProCard>
           </Col>
           <Col span={16}>
-            <Card bordered={false} className={styles.detailCard}>
-              <Descriptions title={intl.formatMessage({ id: 'pages.account.center.title' })} column={2}>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.username' })}>
-                  {userInfo?.username}
-                </Descriptions.Item>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.phone' })}>
-                  {userInfo?.phone}
-                </Descriptions.Item>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.email' })}>
-                  {userInfo?.email}
-                </Descriptions.Item>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.role' })}>
-                  {userInfo?.role?.name}
-                </Descriptions.Item>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.address' })} span={2}>
-                  {[userInfo?.country, userInfo?.province, userInfo?.city, userInfo?.address]
-                    .filter(Boolean)
-                    .join(' ')}
-                </Descriptions.Item>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.profile' })} span={2}>
-                  {userInfo?.profile}
-                </Descriptions.Item>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.signature' })} span={2}>
-                  {userInfo?.signature}
-                </Descriptions.Item>
-                <Descriptions.Item label={intl.formatMessage({ id: 'pages.account.center.tags' })} span={2}>
-                  {userInfo?.tags?.map((tag: string) => (
-                    <Tag key={tag} color="blue">
-                      {tag}
-                    </Tag>
-                  ))}
-                </Descriptions.Item>
-              </Descriptions>
-            </Card>
+            <ProCard>
+              <ProDescriptions
+                column={2}
+                title={intl.formatMessage({ id: 'pages.account.center.title' })}
+                dataSource={userInfo}
+                columns={[
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.username' }),
+                    dataIndex: 'username',
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.phone' }),
+                    dataIndex: 'phone',
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.email' }),
+                    dataIndex: 'email',
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.role' }),
+                    dataIndex: ['role', 'name'],
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.address' }),
+                    dataIndex: 'address',
+                    span: 2,
+                    render: () =>
+                      [userInfo?.country, userInfo?.province, userInfo?.city, userInfo?.address]
+                        .filter(Boolean)
+                        .join(' '),
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.profile' }),
+                    dataIndex: 'profile',
+                    span: 2,
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.signature' }),
+                    dataIndex: 'signature',
+                    span: 2,
+                  },
+                  {
+                    title: intl.formatMessage({ id: 'pages.account.center.tags' }),
+                    dataIndex: 'tags',
+                    span: 2,
+                    render: (dom: any, entity: API.User) =>
+                      entity.tags?.map((tag) => <Tag key={tag}>{tag}</Tag>),
+                  },
+                ]}
+              />
+            </ProCard>
           </Col>
         </Row>
       </Spin>
-    </div>
+    </PageContainer>
   );
 };
 

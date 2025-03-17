@@ -46,7 +46,7 @@ jobs:
 
       - name: deploy ${{ inputs.env }}
         uses: cloudflare/wrangler-action@v3
-        if: ${{ inputs.env == 'beta' || inputs.env == 'prod' }}
+        if: ${{ inputs.env == 'alpha' || inputs.env == 'beta' || inputs.env == 'prod' }}
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: ${{ inputs.env }}
