@@ -6,6 +6,8 @@ import { getDepartmentsId } from '@/services/admin/department';
 import { getPostsId } from '@/services/admin/post';
 import { useIntl } from '@umijs/max';
 import { PageContainer, ProCard, ProDescriptions } from '@ant-design/pro-components';
+import { province } from '../Settings/geographic/province';
+import { city } from '../Settings/geographic/city';
 
 const { Title, Paragraph } = Typography;
 
@@ -114,10 +116,25 @@ const Center: React.FC = () => {
                     title: intl.formatMessage({ id: 'pages.account.center.address' }),
                     dataIndex: 'address',
                     span: 2,
-                    render: () =>
-                      [userInfo?.country, userInfo?.province, userInfo?.city, userInfo?.address]
+                    render: () => {
+                      const country = intl.formatMessage({
+                        id: `pages.account.center.country.${userInfo?.country}`,
+                      });
+                      const provinceName = province.find((item: { id: string; name: string }) => {
+                        return item.id === userInfo?.province;
+                      })?.name;
+                      const cityName =
+                        userInfo?.province && userInfo?.city
+                          ? city[userInfo.province as keyof typeof city].find(
+                              (item: { id: string; name: string }) => {
+                                return item.id === userInfo.city;
+                              },
+                            )?.name
+                          : undefined;
+                      return [country, provinceName, cityName, userInfo?.address]
                         .filter(Boolean)
-                        .join(' '),
+                        .join(' ');
+                    },
                   },
                   {
                     title: intl.formatMessage({ id: 'pages.account.center.profile' }),

@@ -373,4 +373,12 @@ export default {
   'pages.account.center.signature': 'Signature',
   'pages.account.center.tags': 'Tags',
   'pages.account.center.fetchDataError': 'Failed to fetch data',
+
+  /****************** account center ******************/
+  'pages.account.center.country.China': 'China',
+  'pages.account.center.country.United States': 'United States',
+  'pages.account.center.country.Japan': 'Japan',
+  'pages.account.center.country.Korea': 'Korea',
+  'pages.account.center.country.Russia': 'Russia',
+  'pages.account.center.country.Germany': 'Germany',
 };
