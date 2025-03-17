@@ -117,9 +117,11 @@ const Center: React.FC = () => {
                     dataIndex: 'address',
                     span: 2,
                     render: () => {
-                      const country = intl.formatMessage({
-                        id: `pages.account.center.country.${userInfo?.country}`,
-                      });
+                      const country = userInfo?.country
+                        ? intl.formatMessage({
+                            id: `pages.account.center.country.${userInfo?.country}`,
+                          })
+                        : '';
                       const provinceName = province.find((item: { id: string; name: string }) => {
                         return item.id === userInfo?.province;
                       })?.name;
