@@ -176,6 +176,7 @@ export default {
   'pages.accessToken.settings.longTime': 'Long time',
   'pages.email.settings.title': 'Email Settings',
   'pages.security.settings.changePassword': 'Change Password',
+  'pages.department.leader.placeholder': 'Please select leader',
   /****************** field ******************/
   'pages.fields.namespace': 'Namespace',
   'pages.fields.cluster': 'Cluster',

@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max';
-import { Button, Drawer, message, Popconfirm, TreeSelect } from 'antd';
+import { Button, Drawer, message, Popconfirm, TreeSelect, Select } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useEffect, useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
@@ -17,9 +17,11 @@ import {
   putDepartmentsId,
 } from '@/services/admin/department';
 import { statusOptions } from '@/util/statusOptions';
+import { getUsers } from '@/services/admin/user';
 
 const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [userOptions, setUserOptions] = useState<{ label: string; value: string }[]>([]);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.Role>();
@@ -79,6 +81,23 @@ const TableList: React.FC = () => {
     {
       title: fieldIntl(intl, 'leaderID'),
       dataIndex: 'leaderID',
+      render: (_, record) => {
+        const leader = userOptions.find((user) => user.value === record.leaderID);
+        return leader?.label || '-';
+      },
+      renderFormItem: () => (
+        <Select
+          showSearch
+          placeholder={intl.formatMessage({
+            id: 'pages.department.leader.placeholder',
+            defaultMessage: '请选择负责人',
+          })}
+          options={userOptions}
+          filterOption={(input, option) =>
+            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+          }
+        />
+      ),
     },
     {
       title: fieldIntl(intl, 'phone'),
@@ -136,14 +155,14 @@ const TableList: React.FC = () => {
       hideInDescriptions: true,
       hideInForm: true,
       render: (_, record) => [
-        <Access key="/department/edit">
-          <Link to={`/department/${record.id}`} key="edit">
+        <Access key="/departments/edit">
+          <Link to={`/departments/${record.id}`} key="edit">
             <Button key="edit">
               <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
             </Button>
           </Link>
         </Access>,
-        <Access key="/department/delete">
+        <Access key="/departments/delete">
           <Popconfirm
             key="delete"
             title={intl.formatMessage({
@@ -224,6 +243,20 @@ const TableList: React.FC = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    // 获取用户列表用于选择负责人
+    getUsers({ pageSize: 1000 }).then((res) => {
+      if (res.data) {
+        setUserOptions(
+          res.data.map((user) => ({
+            label: user.name || user.username || '',
+            value: user.id || '',
+          })),
+        );
+      }
+    });
+  }, []);
+
   return (
     <PageContainer title={indexTitle(id)}>
       <ProTable<API.Department, API.getDepartmentsParams>
@@ -239,8 +272,8 @@ const TableList: React.FC = () => {
         type={id ? 'form' : 'table'}
         onSubmit={id ? onSubmit : undefined}
         toolBarRender={() => [
-          <Access key="/department/create">
-            <Link to="/department/create" key="create">
+          <Access key="/departments/create">
+            <Link to="/departments/create" key="create">
               <Button type="primary" key="create">
                 <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Button>
