@@ -209,7 +209,7 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Role, API.Page>
+      <ProTable<API.Role, API.getRolesParams>
         headerTitle={intl.formatMessage({
           id: 'pages.role.list.title',
           defaultMessage: 'Role List',
@@ -238,9 +238,12 @@ const TableList: React.FC = () => {
                   return res;
                 },
               }
-            : undefined
+            : {
+                initialValues: {
+                  status: 'enabled',
+                },
+              }
         }
-        // @ts-ignore
         request={getRoles}
         columns={columns}
       />

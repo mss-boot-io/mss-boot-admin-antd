@@ -125,15 +125,15 @@ export default [
   },
   {
     icon: 'table',
-    path: '/department',
+    path: '/departments',
     routes: [
       {
-        path: '/department',
+        path: '/departments',
         hideInMenu: true,
         component: './Department',
       },
       {
-        path: '/department/:id',
+        path: '/departments/:id',
         hideInMenu: true,
         component: './Department',
       },
@@ -141,15 +141,15 @@ export default [
   },
   {
     icon: 'table',
-    path: '/post',
+    path: '/posts',
     routes: [
       {
-        path: '/post',
+        path: '/posts',
         hideInMenu: true,
         component: './Post',
       },
       {
-        path: '/post/:id',
+        path: '/posts/:id',
         hideInMenu: true,
         component: './Post',
       },
