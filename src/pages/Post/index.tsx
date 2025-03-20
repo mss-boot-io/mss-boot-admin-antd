@@ -21,7 +21,6 @@ const TableList: React.FC = () => {
   const [list, setList] = useState<[]>([]);
   const { id } = useParams();
 
-  console.log(id);
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -209,7 +208,7 @@ const TableList: React.FC = () => {
         toolBarRender={() => [
           <Access key="/posts/create">
             <Button type="primary" key="create">
-              <Link type="primary" to="/posts/create" key="primary">
+              <Link type="primary" to="/posts/create" key="/posts/create">
                 <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
               </Link>
             </Button>
