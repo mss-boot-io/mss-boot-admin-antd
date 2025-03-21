@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { message, Card } from 'antd';
+import { message, Card, Empty } from 'antd';
 import { useRequest } from 'ahooks';
 import { useIntl } from '@umijs/max';
 import {
@@ -27,22 +27,37 @@ const formatDateTime = (dateString: string) => {
 
 const CopyButton: React.FC<PropsWithChildren<{ textToCopy: string }>> = (props) => {
   const [copySuccess, setCopySuccess] = useState('');
+  const intl = useIntl();
 
   const copyToClipboard = () => {
     navigator.clipboard
       .writeText(props.textToCopy)
       .then(() => {
-        setCopySuccess('Copied!');
+        setCopySuccess(
+          intl.formatMessage({
+            id: 'pages.accessToken.settings.copySuccess',
+            defaultMessage: '已复制',
+          }),
+        );
       })
       .catch((err) => {
-        setCopySuccess('Failed to copy');
+        setCopySuccess(
+          intl.formatMessage({
+            id: 'pages.accessToken.settings.copyFailed',
+            defaultMessage: '复制失败',
+          }),
+        );
         console.error('Failed to copy: ', err);
       });
   };
 
   return (
     <div>
-      token: **********
+      {intl.formatMessage({
+        id: 'pages.accessToken.settings.token',
+        defaultMessage: '令牌',
+      })}
+      : **********
       <CopyOutlined onClick={copyToClipboard} />
       {copySuccess && <span>{copySuccess}</span>}
     </div>
@@ -65,7 +80,7 @@ const AccessTokenView: React.FC = () => {
   const { data: accessTokenDatas, loading } = useRequest(
     async () => {
       const res = await getUserAuthTokens();
-      return res.data;
+      return res.data || [];
     },
     {
       refreshDeps: [refresh],
@@ -80,47 +95,68 @@ const AccessTokenView: React.FC = () => {
         <Card
           title={intl.formatMessage({
             id: 'pages.accessToken.settings.title',
-            defaultMessage: 'Access Token',
+            defaultMessage: '访问令牌',
           })}
           extra={<PlusOutlined onClick={() => setAddToken(true)} />}
         >
-          {accessTokenDatas?.map((item: any) => (
-            <Card
-              key={item.id}
-              type="inner"
-              title={`id: ${item.id}`}
-              extra={
-                <DeleteOutlined
-                  onClick={async () => {
-                    await putUserAuthTokenIdRevoke({ id: item.id });
-                    setRefresh(refresh + 1);
-                  }}
-                />
-              }
-            >
-              <CopyButton textToCopy={item.token} />
-              <div>
-                expired:{' '}
-                {new Date(item.expiredAt).getTime() > oneYearLater
-                  ? intl.formatMessage({
-                      id: 'pages.accessToken.settings.longTime',
-                      defaultMessage: 'Long Time',
-                    })
-                  : formatDateTime(item.expiredAt)}
-              </div>
-            </Card>
-          ))}
+          {accessTokenDatas && accessTokenDatas.length > 0 ? (
+            accessTokenDatas.map((item: any) => (
+              <Card
+                key={item.id}
+                type="inner"
+                title={`${intl.formatMessage({
+                  id: 'pages.accessToken.settings.id',
+                  defaultMessage: 'ID',
+                })}: ${item.id}`}
+                extra={
+                  <DeleteOutlined
+                    onClick={async () => {
+                      await putUserAuthTokenIdRevoke({ id: item.id });
+                      setRefresh(refresh + 1);
+                    }}
+                  />
+                }
+              >
+                <CopyButton textToCopy={item.token} />
+                <div>
+                  {intl.formatMessage({
+                    id: 'pages.accessToken.settings.expired',
+                    defaultMessage: '过期时间',
+                  })}
+                  :{' '}
+                  {new Date(item.expiredAt).getTime() > oneYearLater
+                    ? intl.formatMessage({
+                        id: 'pages.accessToken.settings.longTime',
+                        defaultMessage: '长期有效',
+                      })
+                    : formatDateTime(item.expiredAt)}
+                </div>
+              </Card>
+            ))
+          ) : (
+            <Empty
+              description={intl.formatMessage({
+                id: 'pages.accessToken.settings.noData',
+                defaultMessage: '暂无访问令牌',
+              })}
+            />
+          )}
         </Card>
       )}
       <ModalForm
         title={intl.formatMessage({
           id: 'pages.accessToken.settings.addToken',
-          defaultMessage: 'Add Token',
+          defaultMessage: '添加令牌',
         })}
         open={addToken}
         onFinish={async (item: API.getUserAuthTokenGenerateParams) => {
           await getUserAuthTokenGenerate(item);
-          message.success('提交成功');
+          message.success(
+            intl.formatMessage({
+              id: 'pages.accessToken.settings.createSuccess',
+              defaultMessage: '创建成功',
+            }),
+          );
           setRefresh(refresh + 1);
           return true;
         }}
@@ -132,37 +168,37 @@ const AccessTokenView: React.FC = () => {
             width="md"
             label={intl.formatMessage({
               id: 'pages.accessToken.settings.validityPeriod',
-              defaultMessage: 'Validity Period',
+              defaultMessage: '有效期',
             })}
             valueEnum={{
               '24h': {
                 text: intl.formatMessage({
                   id: 'pages.accessToken.settings.oneDay',
-                  defaultMessage: 'One Day',
+                  defaultMessage: '一天',
                 }),
               },
               '168h': {
                 text: intl.formatMessage({
                   id: 'pages.accessToken.settings.sevenDay',
-                  defaultMessage: 'Seven Day',
+                  defaultMessage: '七天',
                 }),
               },
               '720h': {
                 text: intl.formatMessage({
                   id: 'pages.accessToken.settings.thirtyDay',
-                  defaultMessage: 'Thirty Day',
+                  defaultMessage: '三十天',
                 }),
               },
               '2160h': {
                 text: intl.formatMessage({
                   id: 'pages.accessToken.settings.ninetyDay',
-                  defaultMessage: 'Ninety Day',
+                  defaultMessage: '九十天',
                 }),
               },
               '0': {
                 text: intl.formatMessage({
                   id: 'pages.accessToken.settings.noExpired',
-                  defaultMessage: 'No Expired',
+                  defaultMessage: '永久有效',
                 }),
               },
             }}

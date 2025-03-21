@@ -13,6 +13,7 @@ import { request, useIntl } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { city } from '../geographic/city';
 import { province } from '../geographic/province';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const BaseView: React.FC = () => {
   /**
@@ -57,21 +58,16 @@ const BaseView: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '用户名',
+      title: fieldIntl(intl, 'username'),
       dataIndex: 'username',
       valueType: 'text',
       width: 'md',
       formItemProps: {
-        rules: [
-          { required: true, message: '请输入用户名' },
-          { min: 3, message: '用户名至少3位' },
-          { max: 20, message: '用户名最多20位' },
-          { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名只能包含字母、数字、下划线' },
-        ],
+        rules: [{ required: true }, { min: 3 }, { max: 20 }, { pattern: /^[a-zA-Z0-9_]+$/ }],
       },
     },
     {
-      title: '头像',
+      title: fieldIntl(intl, 'avatar'),
       dataIndex: 'avatar',
       valueType: 'avatar',
       renderFormItem: () => {
@@ -106,7 +102,7 @@ const BaseView: React.FC = () => {
       },
     },
     {
-      title: '邮箱',
+      title: fieldIntl(intl, 'email'),
       dataIndex: 'email',
       valueType: 'text',
       width: 'md',
@@ -114,7 +110,6 @@ const BaseView: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请输入您的邮箱!',
           },
         ],
       },
@@ -172,7 +167,7 @@ const BaseView: React.FC = () => {
     //   },
     // },
     {
-      title: '昵称',
+      title: fieldIntl(intl, 'nickname'),
       dataIndex: 'name',
       valueType: 'text',
       width: 'md',
@@ -180,13 +175,12 @@ const BaseView: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请输入您的昵称!',
           },
         ],
       },
     },
     {
-      title: '个人简介',
+      title: fieldIntl(intl, 'profile'),
       dataIndex: 'profile',
       valueType: 'textarea',
       width: 'md',
@@ -194,13 +188,13 @@ const BaseView: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请输入个人简介!',
           },
         ],
       },
     },
     {
-      title: '国家/地区',
+      // title: '国家/地区',
+      title: fieldIntl(intl, 'country'),
       dataIndex: 'country',
       valueType: 'select',
       width: 'md',
@@ -209,7 +203,7 @@ const BaseView: React.FC = () => {
       },
     },
     {
-      title: '所在省市',
+      title: fieldIntl(intl, 'province'),
       dataIndex: 'province',
       valueType: 'select',
       width: 'md',
@@ -217,7 +211,6 @@ const BaseView: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请输入您的所在省!',
           },
         ],
       },
@@ -278,7 +271,7 @@ const BaseView: React.FC = () => {
       },
     },
     {
-      title: '街道地址',
+      title: fieldIntl(intl, 'address'),
       dataIndex: 'address',
       valueType: 'text',
       width: 'md',
@@ -286,13 +279,12 @@ const BaseView: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请输入您的街道地址!',
           },
         ],
       },
     },
     {
-      title: '联系电话',
+      title: fieldIntl(intl, 'phone'),
       dataIndex: 'phone',
       valueType: 'text',
       width: 'md',
@@ -300,7 +292,6 @@ const BaseView: React.FC = () => {
         rules: [
           {
             required: true,
-            message: '请输入您的联系电话!',
           },
         ],
       },
