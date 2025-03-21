@@ -55,10 +55,12 @@ const TableList: React.FC = () => {
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder={fieldIntl(intl, 'parent.placeholder')}
+            placeholder={intl.formatMessage({
+              id: 'pages.department.parent.placeholder',
+              defaultMessage: 'Please select parent department',
+            })}
             allowClear
             treeDefaultExpandAll
-            // onChange={onChange}
             treeData={list}
           />
         );
@@ -68,14 +70,30 @@ const TableList: React.FC = () => {
       title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
       formItemProps: {
-        rules: [{ required: true }],
+        rules: [
+          {
+            required: true,
+            message: intl.formatMessage({
+              id: 'pages.department.name.required',
+              defaultMessage: 'Department name is required',
+            }),
+          },
+        ],
       },
     },
     {
       title: fieldIntl(intl, 'code'),
       dataIndex: 'code',
       formItemProps: {
-        rules: [{ required: true }],
+        rules: [
+          {
+            required: true,
+            message: intl.formatMessage({
+              id: 'pages.department.code.required',
+              defaultMessage: 'Department code is required',
+            }),
+          },
+        ],
       },
     },
     {
@@ -107,12 +125,10 @@ const TableList: React.FC = () => {
         rules: [
           {
             pattern: /^1\d{10}$/,
-            message: (
-              <FormattedMessage
-                id="pages.login.phoneNumber.invalid"
-                defaultMessage="The phone number is in the wrong format!"
-              />
-            ),
+            message: intl.formatMessage({
+              id: 'pages.department.phone.invalid',
+              defaultMessage: 'Invalid phone number format',
+            }),
           },
         ],
       },
@@ -125,6 +141,10 @@ const TableList: React.FC = () => {
         rules: [
           {
             type: 'email',
+            message: intl.formatMessage({
+              id: 'pages.department.email.invalid',
+              defaultMessage: 'Invalid email format',
+            }),
           },
         ],
       },

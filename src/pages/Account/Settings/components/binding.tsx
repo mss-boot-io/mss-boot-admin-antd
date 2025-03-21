@@ -1,10 +1,11 @@
 import { deleteUserUnbinding, getUserOauth2, postUserBinding } from '@/services/admin/user';
 import { GithubOutlined } from '@ant-design/icons';
-import { useModel } from '@umijs/max';
+import { FormattedMessage, useModel } from '@umijs/max';
 import { useRequest } from 'ahooks';
 import { List, message } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
 import { LarkOutlined } from '@/components/MssBoot/icon';
+import { useIntl } from '@umijs/max';
 
 function randToken(): string {
   let result = '';
@@ -18,6 +19,12 @@ function randToken(): string {
 }
 
 const BindingView: React.FC = () => {
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  const intl = useIntl();
+
   const { initialState } = useModel('@@initialState');
   const [bindingGithub, setBindingGithub] = useState(false);
   const [bindingLark, setBindingLark] = useState(false);
@@ -51,21 +58,23 @@ const BindingView: React.FC = () => {
   const getData = () => [
     {
       title: 'Github',
-      description: bindingGithub ? '已绑定 Github 账号' : '未绑定 Github 账号',
+      description: bindingGithub
+        ? intl.formatMessage({ id: 'pages.settings.binding.github' })
+        : intl.formatMessage({ id: 'pages.settings.unbinding.github' }),
       actions: [
         bindingGithub ? (
           <a
             key="Bind"
             onClick={() => {
               deleteUserUnbinding({ type: 'github' }).then(() => {
-                message.success('解绑成功');
+                message.success(intl.formatMessage({ id: 'pages.settings.unbinding.success' }));
                 setBindingGithub(false);
               });
             }}
             // href={githubURL}
             rel="noopener noreferrer"
           >
-            解绑
+            <FormattedMessage id="pages.settings.unbinding" />
           </a>
         ) : (
           <a
@@ -79,7 +88,7 @@ const BindingView: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            绑定
+            <FormattedMessage id="pages.settings.binding" />
           </a>
         ),
       ],
@@ -87,7 +96,9 @@ const BindingView: React.FC = () => {
     },
     {
       title: 'Lark',
-      description: bindingLark ? '已绑定 Lark 账号' : '未绑定 Lark 账号',
+      description: bindingLark
+        ? intl.formatMessage({ id: 'pages.settings.binding.lark' })
+        : intl.formatMessage({ id: 'pages.settings.unbinding.lark' }),
       actions: [
         bindingLark ? (
           <a

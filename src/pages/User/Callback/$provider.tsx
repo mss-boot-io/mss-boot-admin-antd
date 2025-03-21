@@ -23,11 +23,6 @@ const Index: React.FC = () => {
         message.error('state error');
         return;
       }
-      const req = {
-        code: code!,
-        state: state,
-      };
-      console.log(req);
 
       getUserProviderCallback({ provider: provider, code: code!, state: state }).then(
         (res: API.OauthToken) => {

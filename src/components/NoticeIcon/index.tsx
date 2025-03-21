@@ -112,7 +112,7 @@ const NoticeIconView: React.FC = () => {
         defaultMessage: '查看更多',
       })}
       onViewMore={(e) => {
-        console.log(e);
+        // console.log(e);
         history.push(`/notice?type=${e.tabKey}`);
       }}
       clearClose

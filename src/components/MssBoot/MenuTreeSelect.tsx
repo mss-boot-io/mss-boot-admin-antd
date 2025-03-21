@@ -26,7 +26,7 @@ const MenuTreeSelect: React.FC = () => {
   const [value, setValue] = useState<string>();
 
   const onChange = (newValue: string) => {
-    console.log(newValue);
+    // console.log(newValue);
     setValue(newValue);
   };
 

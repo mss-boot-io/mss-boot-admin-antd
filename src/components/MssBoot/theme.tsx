@@ -3,6 +3,7 @@ import { useIntl } from '@@/exports';
 import { ProColumns, ProFormInstance, ProTable } from '@ant-design/pro-components';
 import { getAppConfigsGroup, putAppConfigsGroup } from '@/services/admin/appConfig';
 import { message } from 'antd';
+import { fieldIntl } from '@/util/fieldIntl';
 
 const Theme: React.FC = () => {
   /**
@@ -15,7 +16,7 @@ const Theme: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '导航主题',
+      title: fieldIntl(intl, 'navTheme'),
       dataIndex: 'navTheme',
       valueType: 'select',
       valueEnum: {
@@ -24,12 +25,12 @@ const Theme: React.FC = () => {
       },
     },
     {
-      title: '主题色',
+      title: fieldIntl(intl, 'primaryColor'),
       dataIndex: 'colorPrimary',
       valueType: 'color',
     },
     {
-      title: '布局',
+      title: fieldIntl(intl, 'layout'),
       dataIndex: 'layout',
       valueType: 'select',
       initialValue: 'mix',
@@ -40,7 +41,7 @@ const Theme: React.FC = () => {
       },
     },
     {
-      title: '内容宽度',
+      title: fieldIntl(intl, 'contentWidth'),
       dataIndex: 'contentWidth',
       valueType: 'select',
       initialValue: 'Fluid',
@@ -50,22 +51,22 @@ const Theme: React.FC = () => {
       },
     },
     {
-      title: '固定头部',
+      title: fieldIntl(intl, 'fixedHeader'),
       dataIndex: 'fixedHeader',
       valueType: 'switch',
     },
     {
-      title: '固定侧边栏',
+      title: fieldIntl(intl, 'fixSiderbar'),
       dataIndex: 'fixSiderbar',
       valueType: 'switch',
     },
     {
-      title: '渐进式',
+      title: fieldIntl(intl, 'pwa'),
       dataIndex: 'pwa',
       valueType: 'switch',
     },
     {
-      title: '色弱模式',
+      title: fieldIntl(intl, 'colorWeak'),
       dataIndex: 'colorWeak',
       valueType: 'switch',
     },

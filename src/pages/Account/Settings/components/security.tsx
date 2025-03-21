@@ -30,25 +30,86 @@ const SecurityView: React.FC = () => {
 
   const getData = () => [
     {
-      title: '账户密码',
-      description: <>密码存储方式为非对称加密，请妥善保管</>,
+      title: intl.formatMessage({
+        id: 'pages.security.settings.accountPassword',
+        defaultMessage: '账户密码',
+      }),
+      description: intl.formatMessage({
+        id: 'pages.security.settings.passwordDescription',
+        defaultMessage: '密码存储方式为非对称加密，请妥善保管',
+      }),
       actions: [
         <a key="Modify" onClick={() => setOpenChangePassword(true)}>
-          修改
+          {intl.formatMessage({
+            id: 'pages.security.settings.modify',
+            defaultMessage: '修改',
+          })}
         </a>,
       ],
     },
     {
-      title: '手机号',
+      title: intl.formatMessage({
+        id: 'pages.security.settings.phone',
+        defaultMessage: '手机号',
+      }),
       description:
-        loading || !currentUser?.phone ? '未绑定手机' : `已绑定手机：${currentUser?.phone}`,
-      actions: [<a key="Modify">{currentUser?.phone ? '修改' : '绑定'}</a>],
+        loading || !currentUser?.phone
+          ? intl.formatMessage({
+              id: 'pages.security.settings.phoneUnbound',
+              defaultMessage: '未绑定手机',
+            })
+          : intl.formatMessage(
+              {
+                id: 'pages.security.settings.phoneBound',
+                defaultMessage: '已绑定手机：{phone}',
+              },
+              { phone: currentUser?.phone },
+            ),
+      actions: [
+        <a key="Modify">
+          {currentUser?.phone
+            ? intl.formatMessage({
+                id: 'pages.security.settings.modify',
+                defaultMessage: '修改',
+              })
+            : intl.formatMessage({
+                id: 'pages.security.settings.bind',
+                defaultMessage: '绑定',
+              })}
+        </a>,
+      ],
     },
     {
-      title: '邮箱',
+      title: intl.formatMessage({
+        id: 'pages.security.settings.email',
+        defaultMessage: '邮箱',
+      }),
       description:
-        loading || !currentUser?.email ? '未绑定邮箱' : `已绑定邮箱：${currentUser?.email}`,
-      actions: [<a key="Modify">{currentUser?.email ? '修改' : '绑定'}</a>],
+        loading || !currentUser?.email
+          ? intl.formatMessage({
+              id: 'pages.security.settings.emailUnbound',
+              defaultMessage: '未绑定邮箱',
+            })
+          : intl.formatMessage(
+              {
+                id: 'pages.security.settings.emailBound',
+                defaultMessage: '已绑定邮箱：{email}',
+              },
+              { email: currentUser?.email },
+            ),
+      actions: [
+        <a key="Modify">
+          {currentUser?.email
+            ? intl.formatMessage({
+                id: 'pages.security.settings.modify',
+                defaultMessage: '修改',
+              })
+            : intl.formatMessage({
+                id: 'pages.security.settings.bind',
+                defaultMessage: '绑定',
+              })}
+        </a>,
+      ],
     },
   ];
 
@@ -67,12 +128,17 @@ const SecurityView: React.FC = () => {
       <ModalForm
         title={intl.formatMessage({
           id: 'pages.security.settings.changePassword',
-          defaultMessage: 'Change Password',
+          defaultMessage: '修改密码',
         })}
         open={openChangePassword}
         onFinish={async (item: API.ResetPasswordRequest) => {
           await postUserResetPassword(item);
-          message.success('修改成功');
+          message.success(
+            intl.formatMessage({
+              id: 'pages.security.settings.changePasswordSuccess',
+              defaultMessage: '修改成功',
+            }),
+          );
           setOpenChangePassword(false);
           return true;
         }}

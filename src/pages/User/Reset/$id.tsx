@@ -8,8 +8,8 @@ const PasswordRest: React.FC = () => {
   const { id } = useParams();
   const formRef = useRef<ProFormInstance>();
   const onFinish = async () => {
-    console.log(formRef.current?.getFieldsValue());
-    console.log(id);
+    // console.log(formRef.current?.getFieldsValue());
+    // console.log(id);
     const res = await putUserUserIdPasswordReset(
       { userID: id! },
       formRef.current?.getFieldsValue(),
