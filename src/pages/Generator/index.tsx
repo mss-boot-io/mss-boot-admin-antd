@@ -16,7 +16,7 @@ import {
   postTemplateGenerate,
 } from '@/services/admin/generator';
 import { GithubOutlined } from '@ant-design/icons';
-import { useLocation } from '@umijs/max';
+import { useIntl } from '@umijs/max';
 
 function randToken(): string {
   const buffer = new Uint8Array(32);
@@ -26,6 +26,7 @@ function randToken(): string {
 }
 
 const Generate: React.FC = () => {
+  const intl = useIntl();
   const formRef = useRef<ProFormInstance>();
 
   const [branches, setBranches] = useState<string[]>([]);
@@ -35,12 +36,10 @@ const Generate: React.FC = () => {
   const [source, setSource] = useState<string>('');
   const [branch, setBranch] = useState<string>('');
   const [path, setPath] = useState<string>('');
-  const location = useLocation();
 
   useEffect(() => {
     if (!accessToken) {
       const intervalId = setInterval(() => {
-        console.log('interval');
         const token = localStorage.getItem('github.token');
         if (token) {
           setAccessToken(token);
@@ -77,7 +76,9 @@ const Generate: React.FC = () => {
               },
             });
             if (req.repo && req.branch) {
-              message.success('代码生成成功, 分支为: ' + req.branch);
+              message.success(
+                intl.formatMessage({ id: 'pages.generator.success' }, { branch: req.branch }),
+              );
             }
           }}
           formProps={{
@@ -90,9 +91,9 @@ const Generate: React.FC = () => {
             name: string;
           }>
             name="template"
-            title="设置模板仓库"
+            title={intl.formatMessage({ id: 'pages.generator.steps.template.title' })}
             stepProps={{
-              description: '这里填入模板仓库链接',
+              description: intl.formatMessage({ id: 'pages.generator.steps.template.desc' }),
             }}
             onFinish={async () => {
               if (!accessToken) {
@@ -105,19 +106,19 @@ const Generate: React.FC = () => {
               setSource(formRef.current?.getFieldsValue().source);
               const data = formRef.current?.getFieldsValue();
               data.accessToken = accessToken;
-              console.log(data);
+              // console.log(data);
               const branchesData = await getTemplateGetBranches(data);
-              console.log(branchesData);
+              // console.log(branchesData);
               setBranches(branchesData.branches || []);
               return true;
             }}
           >
             <ProFormText
               name="source"
-              label="模板仓库地址"
+              label={intl.formatMessage({ id: 'pages.generator.steps.template.title' })}
               width="md"
               tooltip="目前支持github地址"
-              placeholder="请输入模板仓库地址"
+              placeholder={intl.formatMessage({ id: 'pages.form.placeholder' })}
               rules={[{ required: true }]}
             />
             {accessToken ? (
@@ -125,7 +126,7 @@ const Generate: React.FC = () => {
             ) : (
               <ProCard
                 onClick={async () => {
-                  console.log(location);
+                  // console.log(location);
                   const state = randToken();
                   localStorage.setItem('github.state', state);
                   const loginURL = await getGithubGetLoginUrl({ state: state });
@@ -134,7 +135,8 @@ const Generate: React.FC = () => {
                   w.location.href = loginURL;
                 }}
               >
-                获取GitHub权限 <GithubOutlined key="GithubOutlined" />
+                {intl.formatMessage({ id: 'pages.generator.githubAuth' })}{' '}
+                <GithubOutlined key="GithubOutlined" />
               </ProCard>
             )}
           </StepsForm.StepForm>
@@ -142,9 +144,9 @@ const Generate: React.FC = () => {
             checkbox: string;
           }>
             name="branch"
-            title="选择分支"
+            title={intl.formatMessage({ id: 'pages.generator.steps.branch.title' })}
             stepProps={{
-              description: '这里选择仓库分支',
+              description: intl.formatMessage({ id: 'pages.generator.steps.branch.desc' }),
             }}
             onFinish={async () => {
               setBranch(formRef.current?.getFieldsValue().branch);
@@ -155,12 +157,12 @@ const Generate: React.FC = () => {
               });
               setPaths(pathData.path || []);
 
-              console.log(formRef.current?.getFieldsValue());
+              // console.log(formRef.current?.getFieldsValue());
               return true;
             }}
           >
             <ProFormSelect
-              label="分支"
+              label={intl.formatMessage({ id: 'pages.generator.steps.branch.title' })}
               name="branch"
               rules={[
                 {
@@ -173,9 +175,9 @@ const Generate: React.FC = () => {
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="path"
-            title="选择目录"
+            title={intl.formatMessage({ id: 'pages.generator.steps.path.title' })}
             stepProps={{
-              description: '这里选择模板目录',
+              description: intl.formatMessage({ id: 'pages.generator.steps.path.desc' }),
             }}
             onFinish={async () => {
               setPath(formRef.current?.getFieldsValue().path);
@@ -187,12 +189,12 @@ const Generate: React.FC = () => {
               });
               setParams(paramsData.params || []);
 
-              console.log(formRef.current?.getFieldsValue());
+              // console.log(formRef.current?.getFieldsValue());
               return true;
             }}
           >
             <ProFormSelect
-              label="目录"
+              label={intl.formatMessage({ id: 'pages.generator.steps.path.title' })}
               name="path"
               rules={[
                 {
@@ -205,24 +207,44 @@ const Generate: React.FC = () => {
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="params"
-            title="填写参数"
+            title={intl.formatMessage({ id: 'pages.generator.steps.params.title' })}
             stepProps={{
-              description: '这里填写模板参数',
+              description: intl.formatMessage({ id: 'pages.generator.steps.params.desc' }),
             }}
           >
-            <ProCard title="仓库信息" tooltip="生成代码的目标仓库信息" style={{ maxWidth: 500 }}>
+            <ProCard
+              title={intl.formatMessage({ id: 'pages.generator.steps.params.title' })}
+              tooltip={intl.formatMessage({ id: 'pages.generator.steps.params.tooltip' })}
+              style={{ maxWidth: 500 }}
+            >
               <ProForm.Group>
-                <ProFormText name="repo" label="仓库地址" tooltip="生成代码目标仓库地址" />
+                <ProFormText
+                  name="repo"
+                  label={intl.formatMessage({ id: 'pages.generator.repo' })}
+                  tooltip={intl.formatMessage({ id: 'pages.generator.repo.tooltip' })}
+                />
               </ProForm.Group>
               <ProForm.Group>
-                <ProFormText name="service" label="服务" tooltip="生成代码目标仓库目录" />
+                <ProFormText
+                  name="service"
+                  label={intl.formatMessage({ id: 'pages.generator.service' })}
+                  tooltip={intl.formatMessage({ id: 'pages.generator.service.tooltip' })}
+                />
               </ProForm.Group>
               <ProForm.Group>
-                <ProFormText name="email" label="邮箱" tooltip="代码仓库提交邮箱" />
+                <ProFormText
+                  name="email"
+                  label={intl.formatMessage({ id: 'pages.generator.email' })}
+                  tooltip={intl.formatMessage({ id: 'pages.generator.email.tooltip' })}
+                />
               </ProForm.Group>
             </ProCard>
 
-            <ProCard title="模板参数" tooltip="生成代码模板所用参数" style={{ maxWidth: 500 }}>
+            <ProCard
+              title={intl.formatMessage({ id: 'pages.generator.steps.params.title' })}
+              tooltip={intl.formatMessage({ id: 'pages.generator.steps.params.tooltip' })}
+              style={{ maxWidth: 500 }}
+            >
               {params.map((item) => (
                 <ProForm.Group key={item.name}>
                   <ProFormText

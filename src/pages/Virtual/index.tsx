@@ -23,8 +23,7 @@ import {
   listVirtualModels,
   updateVirtualModel,
 } from './service/virtual';
-import RichTextEditor from "@/components/MssBoot/Editor";
-import BraftEditor from "braft-editor";
+import RichTextEditor from '@/components/MssBoot/Editor';
 
 const Virtual: React.FC = () => {
   /**
@@ -58,14 +57,18 @@ const Virtual: React.FC = () => {
       switch (item.valueType) {
         case 'richText':
           column.renderFormItem = (text, props) => {
-            console.log(props.value)
-            return <RichTextEditor {...props} defaultValue={props.value}  onChange={(value) => {
-              let o ={};
-              // @ts-ignore
-              o[text.dataIndex] = value.toHTML();
-              formRef.current?.setFieldsValue(o);
-
-            }} />;
+            return (
+              <RichTextEditor
+                {...props}
+                defaultValue={props.value}
+                onChange={(value) => {
+                  let o = {};
+                  // @ts-ignore
+                  o[text.dataIndex] = value.toHTML();
+                  formRef.current?.setFieldsValue(o);
+                }}
+              />
+            );
           };
           break;
       }

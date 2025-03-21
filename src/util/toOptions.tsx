@@ -10,7 +10,7 @@ export const toOptions = (data?: IOptions[]): ProSchemaValueEnumObj => {
   // @ts-ignore
   let options: ProSchemaValueEnumObj = {};
   if (!data) return options;
-  console.log(data);
+  // console.log(data);
   // @ts-ignore
   data?.forEach((item) => {
     // @ts-ignore

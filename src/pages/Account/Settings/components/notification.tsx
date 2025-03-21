@@ -2,10 +2,18 @@ import { List, Switch } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { getUserConfigsGroup, putUserConfigsGroup } from '@/services/admin/userConfig';
 import { useRequest } from 'ahooks';
+import { fieldIntl } from '@/util/fieldIntl';
+import { useIntl } from '@umijs/max';
 
 type Unpacked<T> = T extends (infer U)[] ? U : T;
 
 const NotificationView: React.FC = () => {
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  const intl = useIntl();
+
   const [refresh, setRefresh] = useState(0);
 
   const { data, loading } = useRequest(
@@ -20,13 +28,15 @@ const NotificationView: React.FC = () => {
   const getData = () => {
     return [
       {
-        title: '账户密码',
-        description: '其他用户的消息将以站内信的形式通知',
+        title: fieldIntl(intl, 'accountNotice'),
+        description: fieldIntl(intl, 'accountNotice.description'),
         actions: [
           <Switch
             key="password"
-            checkedChildren="开"
-            unCheckedChildren="关"
+            checkedChildren={intl.formatMessage({ id: 'pages.settings.account.notification.open' })}
+            unCheckedChildren={intl.formatMessage({
+              id: 'pages.settings.account.notification.close',
+            })}
             onChange={async (e) => {
               await putUserConfigsGroup({ group: 'notification' }, { data: { password: e } });
               setRefresh(refresh + 1);
@@ -37,13 +47,16 @@ const NotificationView: React.FC = () => {
         ],
       },
       {
-        title: '系统消息',
-        description: '系统消息将以站内信的形式通知',
+        title: fieldIntl(intl, 'systemNotice'),
+        description: fieldIntl(intl, 'systemNotice.description'),
+        // description: '系统消息将以站内信的形式通知',
         actions: [
           <Switch
             key="system"
-            checkedChildren="开"
-            unCheckedChildren="关"
+            checkedChildren={intl.formatMessage({ id: 'pages.settings.account.notification.open' })}
+            unCheckedChildren={intl.formatMessage({
+              id: 'pages.settings.account.notification.close',
+            })}
             onChange={async (e) => {
               await putUserConfigsGroup({ group: 'notification' }, { data: { system: e } });
               setRefresh(refresh + 1);
@@ -54,13 +67,15 @@ const NotificationView: React.FC = () => {
         ],
       },
       {
-        title: '待办任务',
-        description: '待办任务将以站内信的形式通知',
+        title: fieldIntl(intl, 'todoNotice'),
+        description: fieldIntl(intl, 'todoNotice.description'),
         actions: [
           <Switch
             key="todo"
-            checkedChildren="开"
-            unCheckedChildren="关"
+            checkedChildren={intl.formatMessage({ id: 'pages.settings.account.notification.open' })}
+            unCheckedChildren={intl.formatMessage({
+              id: 'pages.settings.account.notification.close',
+            })}
             onChange={async (e) => {
               await putUserConfigsGroup({ group: 'notification' }, { data: { todo: e } });
               setRefresh(refresh + 1);
@@ -71,13 +86,15 @@ const NotificationView: React.FC = () => {
         ],
       },
       {
-        title: '邮件通知',
-        description: '所有通知再以邮件方式通知',
+        title: fieldIntl(intl, 'emailNotice'),
+        description: fieldIntl(intl, 'emailNotice.description'),
         actions: [
           <Switch
             key="email"
-            checkedChildren="开"
-            unCheckedChildren="关"
+            checkedChildren={intl.formatMessage({ id: 'pages.settings.account.notification.open' })}
+            unCheckedChildren={intl.formatMessage({
+              id: 'pages.settings.account.notification.close',
+            })}
             onChange={async (e) => {
               await putUserConfigsGroup({ group: 'notification' }, { data: { email: e } });
               setRefresh(refresh + 1);

@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { useIntl } from '@umijs/max';
 import { message } from 'antd';
 import { getAppConfigsGroup, putAppConfigsGroup } from '@/services/admin/appConfig';
+import { fieldIntl } from '@/util/fieldIntl';
 const Security: React.FC = () => {
   /**
    * @en-US International configuration
@@ -17,22 +18,22 @@ const Security: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '开放注册',
+      title: fieldIntl(intl, 'registerEnabled'),
       dataIndex: 'registerEnabled',
       valueType: 'switch',
     },
     {
-      title: '邮箱登录',
+      title: fieldIntl(intl, 'loginByEmailEnabled'),
       dataIndex: 'emailEnabled',
       valueType: 'switch',
     },
     {
-      title: 'github登录',
+      title: fieldIntl(intl, 'githubLoginEnabled'),
       dataIndex: 'githubEnabled',
       valueType: 'switch',
     },
     {
-      title: 'github client id',
+      title: fieldIntl(intl, 'githubClientId'),
       dataIndex: 'githubClientId',
       valueType: 'text',
       formItemProps: () => {
@@ -44,7 +45,7 @@ const Security: React.FC = () => {
       },
     },
     {
-      title: 'github client secret',
+      title: fieldIntl(intl, 'githubClientSecret'),
       dataIndex: 'githubClientSecret',
       valueType: 'password',
       formItemProps: () => {
@@ -56,7 +57,7 @@ const Security: React.FC = () => {
       },
     },
     {
-      title: 'github redirect uri',
+      title: fieldIntl(intl, 'githubRedirectURI'),
       dataIndex: 'githubRedirectURI',
       valueType: 'text',
       formItemProps: () => {
@@ -68,7 +69,7 @@ const Security: React.FC = () => {
       },
     },
     {
-      title: 'github scope',
+      title: fieldIntl(intl, 'githubScope'),
       dataIndex: 'githubScope',
       valueType: 'text',
       formItemProps: () => {
@@ -80,17 +81,17 @@ const Security: React.FC = () => {
       },
     },
     {
-      title: 'github allow group',
+      title: fieldIntl(intl, 'githubAllowGroup'),
       dataIndex: 'githubAllowGroup',
       valueType: 'text',
     },
     {
-      title: 'lark登录',
+      title: fieldIntl(intl, 'larkLoginEnabled'),
       dataIndex: 'larkEnabled',
       valueType: 'switch',
     },
     {
-      title: 'lark app id',
+      title: fieldIntl(intl, 'larkAppId'),
       dataIndex: 'larkAppId',
       hideInForm: !lark,
       valueType: 'text',
@@ -101,13 +102,13 @@ const Security: React.FC = () => {
       },
     },
     {
-      title: 'lark app secret',
+      title: fieldIntl(intl, 'larkAppSecret'),
       dataIndex: 'larkAppSecret',
       hideInForm: !lark,
       valueType: 'password',
     },
     {
-      title: 'lark redirect uri',
+      title: fieldIntl(intl, 'larkRedirectURI'),
       dataIndex: 'larkRedirectURI',
       hideInForm: !lark,
       valueType: 'text',

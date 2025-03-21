@@ -86,8 +86,6 @@ const BaseView: React.FC = () => {
                 data: formData,
               });
               setAvatar(res.avatar);
-              console.log(res);
-              console.log(file);
             }}
           >
             {avatar ? (

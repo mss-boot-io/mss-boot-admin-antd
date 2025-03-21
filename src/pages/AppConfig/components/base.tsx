@@ -18,23 +18,26 @@ const Base: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '网站名称',
+      title: intl.formatMessage({ id: 'pages.appConfig.base.websiteName' }),
       dataIndex: 'websiteName',
       initialValue: 'mss-boot-admin',
-      formItemProps: () => {
-        return {
-          rules: [{ required: true, message: '此项为必填项' }],
-        };
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: intl.formatMessage({ id: 'pages.form.required' }),
+          },
+        ],
       },
     },
     {
-      title: '网站描述',
+      title: intl.formatMessage({ id: 'pages.appConfig.base.websiteDescription' }),
       dataIndex: 'websiteDescription',
       initialValue: '快速开发http/grpc服务的框架，帮助您快速搭建单体服务或微服务系统',
       valueType: 'textarea',
     },
     {
-      title: '网站logo',
+      title: intl.formatMessage({ id: 'pages.appConfig.base.websiteLogo' }),
       dataIndex: 'websiteLogo',
       valueType: 'avatar',
       renderFormItem: () => {
@@ -60,11 +63,11 @@ const Base: React.FC = () => {
       },
     },
     {
-      title: '备案编号',
+      title: intl.formatMessage({ id: 'pages.appConfig.base.websiteRecordNumber' }),
       dataIndex: 'websiteRecordNumber',
     },
     {
-      title: '版权所有',
+      title: intl.formatMessage({ id: 'pages.appConfig.base.websiteCopyRight' }),
       initialValue: '开源组织mss-boot-io出品',
       dataIndex: 'websiteCopyRight',
     },
