@@ -311,7 +311,7 @@ export default {
   'pages.fields.websiteDescription': 'website description',
   'pages.fields.websiteLogo': 'website logo',
   'pages.fields.websiteRecordNumber': 'website record number',
-  'pages.fields.websiteCopyRight': 'website copy right',
+  'pages.fields.websiteCopyRight': 'website copyright',
   'pages.fields.registerEnabled': 'register enabled',
   'pages.fields.loginByEmailEnabled': 'login by email enabled',
   'pages.fields.githubLoginEnabled': 'github login enabled',
