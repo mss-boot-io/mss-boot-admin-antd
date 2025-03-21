@@ -2,6 +2,7 @@ import { Access } from '@/components/MssBoot/Access';
 import Auth from '@/components/MssBoot/Auth';
 import { getMenuTree } from '@/services/admin/menu';
 import {
+  deleteRolesId,
   getRoleAuthorizeRoleId,
   getRoles,
   getRolesId,
@@ -19,7 +20,6 @@ import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max'
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useRef, useState } from 'react';
-import { deleteRolesId as removeRole } from '@/services/admin/role';
 
 const TableList: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
@@ -52,17 +52,6 @@ const TableList: React.FC = () => {
     {
       title: fieldIntl(intl, 'name'),
       dataIndex: 'name',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: intl.formatMessage({
-              id: 'pages.role.name.required',
-              defaultMessage: 'Role name is required',
-            }),
-          },
-        ],
-      },
     },
     {
       title: fieldIntl(intl, 'remark'),
@@ -77,17 +66,11 @@ const TableList: React.FC = () => {
       hideInForm: true,
       valueEnum: {
         false: {
-          text: intl.formatMessage({
-            id: 'pages.role.root.false',
-            defaultMessage: 'No',
-          }),
+          text: fieldIntl(intl, 'options.false'),
           status: 'false',
         },
         true: {
-          text: intl.formatMessage({
-            id: 'pages.role.root.true',
-            defaultMessage: 'Yes',
-          }),
+          text: fieldIntl(intl, 'options.true'),
           status: 'true',
         },
       },
@@ -106,23 +89,31 @@ const TableList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: intl.formatMessage({
-        id: 'pages.table.actions',
-        defaultMessage: 'Actions',
-      }),
+      title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',
+      hideInDescriptions: true,
+      hideInForm: true,
       render: (_, record) => [
-        <Button
-          key="auth"
-          type="link"
-          onClick={() => {
-            setCurrentRow(record);
-            setAuthModalOpen(true);
-          }}
-        >
-          {fieldIntl(intl, 'auth')}
-        </Button>,
+        <Access key="/role/edit">
+          <Link to={`/role/${record.id}`}>
+            <Button key="edit">
+              <FormattedMessage id="pages.title.edit" defaultMessage="Edit" />
+            </Button>
+          </Link>
+        </Access>,
+        <Access key="/role/auth">
+          <Button
+            key="auth"
+            disabled={record.root}
+            onClick={() => {
+              setAuthModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            <FormattedMessage id="pages.role.auth.title" defaultMessage="Auth" />
+          </Button>
+        </Access>,
         <Access key="/role/delete">
           <Popconfirm
             key="delete"
@@ -136,7 +127,7 @@ const TableList: React.FC = () => {
             })}
             disabled={record.root}
             onConfirm={async () => {
-              await removeRole({ id: record.id! });
+              await deleteRolesId({ id: record.id! });
               message
                 .success(
                   intl.formatMessage({
