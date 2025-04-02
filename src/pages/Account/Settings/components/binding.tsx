@@ -105,13 +105,13 @@ const BindingView: React.FC = () => {
             key="Bind"
             onClick={() => {
               deleteUserUnbinding({ type: 'lark' }).then(() => {
-                message.success('解绑成功');
+                message.success(intl.formatMessage({ id: 'pages.settings.unbinding.success' }));
                 setBindingLark(false);
               });
             }}
             rel="noopener noreferrer"
           >
-            解绑
+            <FormattedMessage id="pages.settings.unbinding" />
           </a>
         ) : (
           <a
@@ -125,7 +125,7 @@ const BindingView: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            绑定
+            <FormattedMessage id="pages.settings.binding" />
           </a>
         ),
       ],
