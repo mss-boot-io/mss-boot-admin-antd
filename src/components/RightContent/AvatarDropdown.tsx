@@ -1,6 +1,6 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { history, useModel } from '@umijs/max';
+import { history, useModel, useIntl } from '@umijs/max';
 import { Spin } from 'antd';
 import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
@@ -20,6 +20,8 @@ export const AvatarName = () => {
 };
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, children }) => {
+  const intl = useIntl();
+
   /**
    * 退出登录，并且将当前的 url 保存
    */
@@ -106,12 +108,12 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
           {
             key: 'center',
             icon: <UserOutlined />,
-            label: '个人中心',
+            label: intl.formatMessage({ id: 'menu.account.center' }),
           },
           {
             key: 'settings',
             icon: <SettingOutlined />,
-            label: '个人设置',
+            label: intl.formatMessage({ id: 'menu.account.settings' }),
           },
           {
             type: 'divider' as const,
@@ -121,7 +123,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: '退出登录',
+      label: intl.formatMessage({ id: 'menu.account.logout' }),
     },
   ];
 
