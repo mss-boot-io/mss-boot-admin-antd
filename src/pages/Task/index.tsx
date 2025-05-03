@@ -499,10 +499,10 @@ const TaskList: React.FC = () => {
                   return res;
                 },
                 onValuesChange,
+                initialValues: { provider: 'default', status: 'enabled', namespace: 'default' },
               }
             : {
                 onValuesChange,
-                initialValues: { provider: 'default', status: 'enabled', namespace: 'default' },
               }
         }
         request={getTasks}
