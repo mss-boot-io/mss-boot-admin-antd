@@ -26,8 +26,6 @@ declare namespace API {
     id?: string;
     /** Name 名称 */
     name: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
     /** Value 值 */
@@ -133,11 +131,6 @@ declare namespace API {
     id: string;
   };
 
-  type deleteTenantsIdParams = {
-    /** id */
-    id: string;
-  };
-
   type deleteUsersIdParams = {
     /** id */
     id: string;
@@ -164,8 +157,6 @@ declare namespace API {
     sort?: number;
     /** Status 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -494,26 +485,6 @@ declare namespace API {
     accessToken?: string;
   };
 
-  type getTenantsIdParams = {
-    /** id */
-    id: string;
-    /** preloads */
-    preloads?: string[];
-  };
-
-  type getTenantsParams = {
-    /** current */
-    current?: number;
-    /** pageSize */
-    pageSize?: number;
-    /** id */
-    id?: string;
-    /** name */
-    name?: string;
-    /** status */
-    status?: string;
-  };
-
   type getUserAuthTokenGenerateParams = {
     /** 有效期 */
     validityPeriod: string;
@@ -562,8 +533,6 @@ declare namespace API {
     remark?: string;
     /** Statue 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -640,8 +609,6 @@ declare namespace API {
     status?: Status;
     /** Target 新页面打开 */
     target?: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** Type 菜单类型 */
     type?: AccessType;
     /** UpdatedAt update time */
@@ -731,8 +698,6 @@ declare namespace API {
     key?: string;
     read?: boolean;
     status?: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     title?: string;
     type?: NoticeType;
     /** UpdatedAt update time */
@@ -777,8 +742,6 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     /** Status 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -822,8 +785,6 @@ The Type method returns either this or "Bearer", the default. */
     sort?: number;
     /** Status 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -908,11 +869,6 @@ The Type method returns either this or "Bearer", the default. */
     id: string;
   };
 
-  type putTenantsIdParams = {
-    /** id */
-    id: string;
-  };
-
   type putUserAuthTokenIdRefreshParams = {
     /** id */
     id: string;
@@ -965,8 +921,6 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     root?: boolean;
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -1050,14 +1004,17 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     spec?: string;
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     timeout?: number;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
 
-  type TaskProvider = 'default' | 'k8s';
+  type TaskFuncItem = {
+    description?: string;
+    name?: string;
+  };
+
+  type TaskProvider = 'default' | 'k8s' | 'func';
 
   type TemplateGenerateReq = {
     accessToken?: string;
@@ -1092,36 +1049,6 @@ The Type method returns either this or "Bearer", the default. */
     branch?: string;
     path?: string;
     source: string;
-  };
-
-  type Tenant = {
-    /** CreatedAt create time */
-    createdAt?: string;
-    default?: boolean;
-    domains?: TenantDomain[];
-    email?: string;
-    expire?: string;
-    /** ID primary key */
-    id?: string;
-    name?: string;
-    password?: string;
-    remark?: string;
-    status?: Status;
-    /** UpdatedAt update time */
-    updatedAt?: string;
-    username?: string;
-  };
-
-  type TenantDomain = {
-    /** CreatedAt create time */
-    createdAt?: string;
-    domain?: string;
-    /** ID primary key */
-    id?: string;
-    name?: string;
-    tenantId?: string;
-    /** UpdatedAt update time */
-    updatedAt?: string;
   };
 
   type UpdateAuthorizeRequest = {
@@ -1184,8 +1111,6 @@ The Type method returns either this or "Bearer", the default. */
     signature?: string;
     status?: Status;
     tags?: string[];
-    /** TenantID tenant id */
-    tenantID?: string;
     title?: string;
     type?: LoginProvider;
     /** UpdatedAt update time */
@@ -1200,8 +1125,6 @@ The Type method returns either this or "Bearer", the default. */
     /** ID primary key */
     id?: string;
     revoked?: boolean;
-    /** TenantID tenant id */
-    tenantID?: string;
     token?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
@@ -1250,8 +1173,6 @@ The Type method returns either this or "Bearer", the default. */
     preferred_username?: string;
     profile?: string;
     sub?: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     type?: LoginProvider;
     unionID?: string;
     /** UpdatedAt update time */

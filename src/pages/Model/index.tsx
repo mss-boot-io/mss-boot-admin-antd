@@ -86,11 +86,6 @@ const Model: React.FC = () => {
       valueType: 'switch',
     },
     {
-      title: fieldIntl(intl, 'multiTenant'),
-      dataIndex: 'multiTenant',
-      valueType: 'switch',
-    },
-    {
       title: <FormattedMessage id="pages.title.option" />,
       dataIndex: 'option',
       valueType: 'option',

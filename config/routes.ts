@@ -93,22 +93,6 @@ export default [
   },
   {
     icon: 'table',
-    path: '/tenant',
-    routes: [
-      {
-        path: '/tenant',
-        hideInMenu: true,
-        component: './Tenant',
-      },
-      {
-        path: '/tenant/:id',
-        hideInMenu: true,
-        component: './Tenant',
-      },
-    ],
-  },
-  {
-    icon: 'table',
     path: '/role',
     routes: [
       {

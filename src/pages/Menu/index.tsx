@@ -113,7 +113,9 @@ const TableList: React.FC = () => {
         rules: [{ required: true }],
       },
       render: (dom) => {
-        return intl.formatMessage({ id: `menu.${dom}` });
+        const menuName = String(dom ?? '');
+        const menuId = menuName.startsWith('menu.') ? menuName : `menu.${menuName}`;
+        return intl.formatMessage({ id: menuId });
       },
     },
 
@@ -268,8 +270,9 @@ const TableList: React.FC = () => {
   const transferTree = (data: API.Menu[]): DataNode[] => {
     // @ts-ignore
     return data.map((item) => {
+      const menuId = item.name?.startsWith('menu.') ? item.name : `menu.${item.name}`;
       return {
-        title: intl.formatMessage({ id: `menu.${item.name}` }),
+        title: intl.formatMessage({ id: menuId }),
         value: item.id,
         // @ts-ignore
         children: item.children ? transferTree(item.children) : null,

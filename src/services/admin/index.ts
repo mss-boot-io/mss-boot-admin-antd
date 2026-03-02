@@ -19,7 +19,6 @@ import * as role from './role';
 import * as statistics from './statistics';
 import * as systemConfig from './systemConfig';
 import * as task from './task';
-import * as tenant from './tenant';
 import * as userAuthToken from './userAuthToken';
 import * as userConfig from './userConfig';
 import * as user from './user';
@@ -41,7 +40,6 @@ export default {
   statistics,
   systemConfig,
   task,
-  tenant,
   userAuthToken,
   userConfig,
   user,
