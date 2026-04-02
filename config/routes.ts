@@ -279,16 +279,28 @@ export default [
       },
     ],
   },
-  // {
-  //   path: '/monitor',
-  //   routes: [
-  //     {
-  //       path: '/monitor',
-  //       hideInMenu: true,
-  //       component: './Monitor',
-  //     },
-  //   ],
-  // },
+  {
+    path: '/monitor',
+    icon: 'dashboard',
+    routes: [
+      {
+        path: '/monitor',
+        hideInMenu: true,
+        component: './Monitor',
+      },
+    ],
+  },
+  {
+    path: '/log',
+    icon: 'fileText',
+    routes: [
+      {
+        path: '/log',
+        hideInMenu: true,
+        component: './Log',
+      },
+    ],
+  },
   {
     path: '/',
     redirect: '/workplace',

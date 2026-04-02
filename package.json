@@ -57,6 +57,7 @@
     "not ie <= 10"
   ],
   "dependencies": {
+    "@ant-design/charts": "^2.6.7",
     "@ant-design/icons": "^4.8.0",
     "@ant-design/pro-components": "^2.3.57",
     "@ant-design/use-emotion-css": "1.0.4",
