@@ -280,18 +280,8 @@ export default [
     ],
   },
   {
-    path: '/monitor',
-    icon: 'dashboard',
-    routes: [
-      {
-        path: '/monitor',
-        hideInMenu: true,
-        component: './Monitor',
-      },
-    ],
-  },
-  {
     path: '/log',
+    name: 'menu.system.log',
     icon: 'fileText',
     routes: [
       {

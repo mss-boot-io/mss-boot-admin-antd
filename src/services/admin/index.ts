@@ -9,6 +9,9 @@ import * as virtual from './virtual';
 import * as field from './field';
 import * as generator from './generator';
 import * as language from './language';
+import * as log from './log';
+import * as loginLog from './loginLog';
+import * as auditLog from './auditLog';
 import * as menu from './menu';
 import * as model from './model';
 import * as monitor from './monitor';
@@ -30,6 +33,9 @@ export default {
   field,
   generator,
   language,
+  log,
+  loginLog,
+  auditLog,
   menu,
   model,
   monitor,

@@ -200,13 +200,9 @@ const Login: React.FC = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('token.expire', data.expire?.toString() || '');
       localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
-      await fetchUserInfo();
       const urlParams = new URL(window.location.href).searchParams;
-      if (urlParams.get('redirect') === '/user/login') {
-        history.push('/');
-        return;
-      }
-      history.push(urlParams.get('redirect') || '/');
+      const redirect = urlParams.get('redirect') || '/';
+      window.location.href = redirect;
       return;
     }
   };

@@ -1193,4 +1193,79 @@ The Type method returns either this or "Bearer", the default. */
     columns?: ColumnType[];
     name?: string;
   };
+
+  type LogEntry = {
+    timestamp?: string;
+    level?: string;
+    message?: string;
+    raw?: string;
+  };
+
+  type LogListResponse = {
+    total?: number;
+    list?: LogEntry[];
+  };
+
+  type LogSearchParams = {
+    current?: number;
+    pageSize?: number;
+    level?: string;
+    keyword?: string;
+    startTime?: string;
+    endTime?: string;
+  };
+
+  type LogFile = {
+    name?: string;
+    path?: string;
+    size?: string;
+    modified?: string;
+  };
+
+  type LoginLog = {
+    id?: string;
+    userID?: string;
+    username?: string;
+    ip?: string;
+    location?: string;
+    userAgent?: string;
+    status?: string;
+    message?: string;
+    loginAt?: string;
+    logoutAt?: string;
+  };
+
+  type LoginLogSearchParams = {
+    current?: number;
+    pageSize?: number;
+    username?: string;
+    userID?: string;
+  };
+
+  type AuditLog = {
+    id?: string;
+    userID?: string;
+    username?: string;
+    type?: string;
+    action?: string;
+    resource?: string;
+    method?: string;
+    path?: string;
+    ip?: string;
+    userAgent?: string;
+    status?: string;
+    message?: string;
+    request?: string;
+    response?: string;
+    duration?: number;
+    createdAt?: string;
+  };
+
+  type AuditLogSearchParams = {
+    current?: number;
+    pageSize?: number;
+    username?: string;
+    userID?: string;
+    type?: string;
+  };
 }

@@ -41,9 +41,12 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.User | undefined>;
 }> {
   // load language
-  const { data } = await getLanguages({ pageSize: 999 });
-  if (data) {
-    data.forEach((item) => {
+  let languageData;
+  try {
+    languageData = await getLanguages({ pageSize: 999, skipErrorHandler: true });
+  } catch (e) {}
+  if (languageData?.data) {
+    languageData.data.forEach((item) => {
       const obj = {};
       item.defines?.forEach((define) => {
         // @ts-ignore
@@ -72,10 +75,14 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
 
-  // 如果不是登录页面，执行
   const { location } = history;
-  const appConfig = await getAppConfigsProfile();
-  const userConfig = await getUserConfigsProfile();
+  let appConfig, userConfig;
+  try {
+    appConfig = await getAppConfigsProfile({ skipErrorHandler: true });
+  } catch (e) {}
+  try {
+    userConfig = await getUserConfigsProfile({ skipErrorHandler: true });
+  } catch (e) {}
   //set title
   defaultSettings.title = appConfig?.base?.websiteName || 'mss-boot-admin';
   defaultSettings.logo = appConfig?.base?.websiteLogo || 'https://docs.mss-boot-io.top/favicon.ico';
@@ -101,16 +108,35 @@ export async function getInitialState(): Promise<{
     defaultSettings.colorPrimary;
   // defaultSettings.splitMenus = userConfig?.theme?.splitMenus || appConfig?.theme?.splitMenus || defaultSettings.splitMenus;
 
-  if (location.pathname !== loginPath && !excludePath.includes(location.pathname)) {
-    const currentUser = await fetchUserInfo();
-    return {
-      appConfig,
-      userConfig,
-      fetchUserInfo,
-      currentUser,
-      settings: defaultSettings as Partial<LayoutSettings>,
-    };
+  const token = localStorage.getItem('token');
+  const isLoginPage = location.pathname === loginPath || excludePath.includes(location.pathname);
+  
+  if (token && !isLoginPage) {
+    try {
+      const currentUser = await fetchUserInfo();
+      return {
+        appConfig,
+        userConfig,
+        fetchUserInfo,
+        currentUser,
+        settings: defaultSettings as Partial<LayoutSettings>,
+      };
+    } catch (error) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('token.expire');
+      localStorage.removeItem('autoLogin');
+      if (location.pathname !== loginPath) {
+        history.push(loginPath);
+      }
+      return {
+        appConfig,
+        userConfig,
+        fetchUserInfo,
+        settings: defaultSettings as Partial<LayoutSettings>,
+      };
+    }
   }
+  
   return {
     appConfig,
     userConfig,
@@ -136,7 +162,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       <SelectLang key="SelectLang" />,
     ],
     avatarProps: {
-      src: initialState?.currentUser?.avatar,
+      src: initialState?.currentUser?.avatar || undefined,
       title: <AvatarName />,
       render: (_, avatarChildren) => {
         return <AvatarDropdown menu={true}>{avatarChildren}</AvatarDropdown>;

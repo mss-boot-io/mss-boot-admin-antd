@@ -125,4 +125,7 @@ export default {
   'menu.super-permission.system-config.edit': '编辑配置',
   'menu.super-permission.system-config.create': '创建配置',
   'menu.system.notice.read': '阅读通知',
+  'menu.system.log': '日志',
+  'menu.system.log.control': '管理日志',
+  'menu.log': '日志',
 };

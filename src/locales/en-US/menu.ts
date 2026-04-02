@@ -125,4 +125,7 @@ export default {
   'menu.super-permission.system-config.edit': 'Edit Configuration',
   'menu.super-permission.system-config.create': 'Create Configuration',
   'menu.system.notice.read': 'Read Notice',
+  'menu.system.log': 'Log',
+  'menu.system.log.control': 'Manage Log',
+  'menu.log': 'Log',
 };
