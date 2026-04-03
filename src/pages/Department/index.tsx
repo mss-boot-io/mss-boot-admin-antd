@@ -241,7 +241,7 @@ const TableList: React.FC = () => {
           defaultMessage: 'Create successfully!',
         }),
       );
-      history.push('/department');
+      history.push('/departments');
       return;
     }
     await putDepartmentsId({ id }, params);
@@ -251,7 +251,7 @@ const TableList: React.FC = () => {
         defaultMessage: 'Update successfully!',
       }),
     );
-    history.push('/department');
+    history.push('/departments');
   };
 
   useEffect(() => {

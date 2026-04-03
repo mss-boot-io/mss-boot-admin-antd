@@ -26,8 +26,6 @@ declare namespace API {
     id?: string;
     /** Name 名称 */
     name: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
     /** Value 值 */
@@ -133,11 +131,6 @@ declare namespace API {
     id: string;
   };
 
-  type deleteTenantsIdParams = {
-    /** id */
-    id: string;
-  };
-
   type deleteUsersIdParams = {
     /** id */
     id: string;
@@ -164,8 +157,6 @@ declare namespace API {
     sort?: number;
     /** Status 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -494,26 +485,6 @@ declare namespace API {
     accessToken?: string;
   };
 
-  type getTenantsIdParams = {
-    /** id */
-    id: string;
-    /** preloads */
-    preloads?: string[];
-  };
-
-  type getTenantsParams = {
-    /** current */
-    current?: number;
-    /** pageSize */
-    pageSize?: number;
-    /** id */
-    id?: string;
-    /** name */
-    name?: string;
-    /** status */
-    status?: string;
-  };
-
   type getUserAuthTokenGenerateParams = {
     /** 有效期 */
     validityPeriod: string;
@@ -562,8 +533,6 @@ declare namespace API {
     remark?: string;
     /** Statue 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -640,8 +609,6 @@ declare namespace API {
     status?: Status;
     /** Target 新页面打开 */
     target?: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** Type 菜单类型 */
     type?: AccessType;
     /** UpdatedAt update time */
@@ -701,11 +668,17 @@ declare namespace API {
     cpuLogicalCore?: number;
     /** CPUPhysicalCore CPU物理核心数 */
     cpuPhysicalCore?: number;
-    /** DiskTotal 磁盘总量 */
+    /** CPUUsage CPU使用率百分比(保留2位小数) */
+    cpuUsage?: number;
+    /** DiskTotal 磁盘总量(bytes) */
+    diskTotalBytes?: number;
+    /** DiskTotal 磁盘总量(GB, 保留2位小数) */
     diskTotal?: number;
-    /** DiskUsage 磁盘使用量 */
+    /** DiskUsage 磁盘使用量(bytes) */
+    diskUsageBytes?: number;
+    /** DiskUsage 磁盘使用量(GB, 保留2位小数) */
     diskUsage?: number;
-    /** DiskUsagePercent 磁盘使用率 */
+    /** DiskUsagePercent 磁盘使用率(保留2位小数) */
     diskUsagePercent?: number;
     /** MemoryAvailable 内存可用量 */
     memoryAvailable?: number;
@@ -715,7 +688,7 @@ declare namespace API {
     memoryTotal?: number;
     /** MemoryUsage 内存使用量 */
     memoryUsage?: number;
-    /** MemoryUsagePercent 内存使用率 */
+    /** MemoryUsagePercent 内存使用率(保留2位小数) */
     memoryUsagePercent?: number;
   };
 
@@ -731,8 +704,6 @@ declare namespace API {
     key?: string;
     read?: boolean;
     status?: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     title?: string;
     type?: NoticeType;
     /** UpdatedAt update time */
@@ -777,8 +748,6 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     /** Status 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -822,8 +791,6 @@ The Type method returns either this or "Bearer", the default. */
     sort?: number;
     /** Status 状态 */
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -908,11 +875,6 @@ The Type method returns either this or "Bearer", the default. */
     id: string;
   };
 
-  type putTenantsIdParams = {
-    /** id */
-    id: string;
-  };
-
   type putUserAuthTokenIdRefreshParams = {
     /** id */
     id: string;
@@ -965,8 +927,6 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     root?: boolean;
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
@@ -1050,14 +1010,17 @@ The Type method returns either this or "Bearer", the default. */
     remark?: string;
     spec?: string;
     status?: Status;
-    /** TenantID tenant id */
-    tenantID?: string;
     timeout?: number;
     /** UpdatedAt update time */
     updatedAt?: string;
   };
 
-  type TaskProvider = 'default' | 'k8s';
+  type TaskFuncItem = {
+    description?: string;
+    name?: string;
+  };
+
+  type TaskProvider = 'default' | 'k8s' | 'func';
 
   type TemplateGenerateReq = {
     accessToken?: string;
@@ -1092,36 +1055,6 @@ The Type method returns either this or "Bearer", the default. */
     branch?: string;
     path?: string;
     source: string;
-  };
-
-  type Tenant = {
-    /** CreatedAt create time */
-    createdAt?: string;
-    default?: boolean;
-    domains?: TenantDomain[];
-    email?: string;
-    expire?: string;
-    /** ID primary key */
-    id?: string;
-    name?: string;
-    password?: string;
-    remark?: string;
-    status?: Status;
-    /** UpdatedAt update time */
-    updatedAt?: string;
-    username?: string;
-  };
-
-  type TenantDomain = {
-    /** CreatedAt create time */
-    createdAt?: string;
-    domain?: string;
-    /** ID primary key */
-    id?: string;
-    name?: string;
-    tenantId?: string;
-    /** UpdatedAt update time */
-    updatedAt?: string;
   };
 
   type UpdateAuthorizeRequest = {
@@ -1184,8 +1117,6 @@ The Type method returns either this or "Bearer", the default. */
     signature?: string;
     status?: Status;
     tags?: string[];
-    /** TenantID tenant id */
-    tenantID?: string;
     title?: string;
     type?: LoginProvider;
     /** UpdatedAt update time */
@@ -1200,8 +1131,6 @@ The Type method returns either this or "Bearer", the default. */
     /** ID primary key */
     id?: string;
     revoked?: boolean;
-    /** TenantID tenant id */
-    tenantID?: string;
     token?: string;
     /** UpdatedAt update time */
     updatedAt?: string;
@@ -1250,8 +1179,6 @@ The Type method returns either this or "Bearer", the default. */
     preferred_username?: string;
     profile?: string;
     sub?: string;
-    /** TenantID tenant id */
-    tenantID?: string;
     type?: LoginProvider;
     unionID?: string;
     /** UpdatedAt update time */
@@ -1271,5 +1198,80 @@ The Type method returns either this or "Bearer", the default. */
   type VirtualModelObject = {
     columns?: ColumnType[];
     name?: string;
+  };
+
+  type LogEntry = {
+    timestamp?: string;
+    level?: string;
+    message?: string;
+    raw?: string;
+  };
+
+  type LogListResponse = {
+    total?: number;
+    list?: LogEntry[];
+  };
+
+  type LogSearchParams = {
+    current?: number;
+    pageSize?: number;
+    level?: string;
+    keyword?: string;
+    startTime?: string;
+    endTime?: string;
+  };
+
+  type LogFile = {
+    name?: string;
+    path?: string;
+    size?: string;
+    modified?: string;
+  };
+
+  type LoginLog = {
+    id?: string;
+    userID?: string;
+    username?: string;
+    ip?: string;
+    location?: string;
+    userAgent?: string;
+    status?: string;
+    message?: string;
+    loginAt?: string;
+    logoutAt?: string;
+  };
+
+  type LoginLogSearchParams = {
+    current?: number;
+    pageSize?: number;
+    username?: string;
+    userID?: string;
+  };
+
+  type AuditLog = {
+    id?: string;
+    userID?: string;
+    username?: string;
+    type?: string;
+    action?: string;
+    resource?: string;
+    method?: string;
+    path?: string;
+    ip?: string;
+    userAgent?: string;
+    status?: string;
+    message?: string;
+    request?: string;
+    response?: string;
+    duration?: number;
+    createdAt?: string;
+  };
+
+  type AuditLogSearchParams = {
+    current?: number;
+    pageSize?: number;
+    username?: string;
+    userID?: string;
+    type?: string;
   };
 }

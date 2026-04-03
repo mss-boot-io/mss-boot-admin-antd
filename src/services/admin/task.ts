@@ -16,6 +16,14 @@ export async function getTaskOperateId(
   });
 }
 
+/** 任务函数列表 任务函数列表 GET /admin/api/task/func-list */
+export async function getTaskFuncList(options?: { [key: string]: any }) {
+  return request<API.TaskFuncItem[]>('/admin/api/task/func-list', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 任务列表 任务列表 GET /admin/api/tasks */
 export async function getTasks(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

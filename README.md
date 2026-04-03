@@ -6,7 +6,16 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introduction
 
-> Based on Gin + React + Atn Design v5 + Umi v4 + mss-boot's front and back end separation permission management system, the system initialization only needs an environment variable to start the system, The system supports multiple configuration sources, and the migration command can make the initialization database information simpler. The service command can easily start the service.
+> `mss-boot-admin-antd` is the frontend of the mss-boot admin platform. The product is being repositioned around governance, operations, access control, configuration, and AI-annotation-assisted engineering collaboration, rather than dynamic-model or generator-led workflows.
+
+## Recent Updates
+
+The frontend has undergone comprehensive polish rounds focusing on:
+
+- **Stability**: Fixed navigation redirect paths, password reset logic, polling cleanup
+- **Code Quality**: Eliminated all TypeScript errors (0 errors), fixed import paths, removed duplicate locale keys
+- **Abstraction**: Created AuthShell component for auth pages, useMonitorData hook for monitoring, unified page structures
+- **Documentation**: Added CHANGELOG documenting all frontend changes
 
 ## Tutorial
 
@@ -33,22 +42,25 @@ English | [简体中文](./README.zh-CN.md)
 - Support oauth2.0 third-party login
 - Support swagger document generation
 - Support multiple configuration sources (local files, embed, object storage s3, etc., databases supported by gorm, mongodb)
-- Support virtual model (dynamic configuration supports front-end and back-end functions)
 - Support database migration
-- Support microservice code generation
+- Support governance-oriented admin modules such as users, roles, menus, departments, posts, APIs, and configuration
+- Support operational modules such as notices, tasks, monitoring, and statistics
 
 ## 📦 Built-in functions
 
 - User management: Users are system operators, and this function mainly completes the configuration of system users.
+- Department management: Maintain organization hierarchy and ownership boundaries.
+- Post management: Maintain post data for organization and permission collaboration.
 - Role management: Role menu permission allocation, set role data range permission division by organization.
 - Menu management: Configure system menus, operation permissions, button permission identifiers, etc.
+- API management: Maintain API registry information for governance and permission mapping.
 - Option management: dynamically configure enumerations.
-- Model management: Manage virtual models.
 - System configuration: Manage the configuration of various environments.
 - Notice announcement: user notification message.
 - Task management: Manage scheduled tasks, including execution logs.
 - Internationalization management: Manage internationalization resources.
-- Microservice code generation: Generate microservice code based on templates.
+- Account and token management: Support OAuth2 binding and personal access tokens.
+- Monitoring and statistics: Provide runtime visibility and statistics querying capabilities.
 
 ## 📦 Preparation
 

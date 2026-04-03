@@ -2,13 +2,20 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
+/** 获取语言配置 获取语言配置 GET /admin/api/language/profile */
+export async function getLanguageProfile(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/admin/api/language/profile', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** Language列表数据 Language列表数据 GET /admin/api/languages */
 export async function getLanguages(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getLanguagesParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.Page & { data?: API.Language[] }>('/admin/api/languages', {
+  return request<API.Page & { data?: API.Language[] }>('/admin/api/languages/public', {
     method: 'GET',
     params: {
       ...params,

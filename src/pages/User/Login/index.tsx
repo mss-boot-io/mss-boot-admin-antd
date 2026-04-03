@@ -16,8 +16,7 @@ import {
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, history, Link, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, message, Tabs } from 'antd';
-
+import { message, Tabs } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
@@ -140,29 +139,11 @@ const Lang = () => {
   );
 };
 
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
-
 const Login: React.FC = () => {
   const intl = useIntl();
-
-  // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
   const formRef = useRef<ProFormInstance>();
-
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -200,13 +181,9 @@ const Login: React.FC = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('token.expire', data.expire?.toString() || '');
       localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
-      await fetchUserInfo();
       const urlParams = new URL(window.location.href).searchParams;
-      if (urlParams.get('redirect') === '/user/login') {
-        history.push('/');
-        return;
-      }
-      history.push(urlParams.get('redirect') || '/');
+      const redirect = urlParams.get('redirect') || '/';
+      window.location.href = redirect;
       return;
     }
   };
@@ -378,14 +355,6 @@ const Login: React.FC = () => {
         >
           <Tabs activeKey={type} onChange={setType} items={loginItem()} />
 
-          {status === 'error' && type === 'account' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
-              })}
-            />
-          )}
           {type === 'account' && (
             <>
               <ProFormText
@@ -433,14 +402,6 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && type === 'mobile' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.phoneLogin.errorMessage',
-                defaultMessage: '验证码错误',
-              })}
-            />
-          )}
           {type === 'mobile' && (
             <>
               <ProFormText
@@ -521,14 +482,6 @@ const Login: React.FC = () => {
                 }}
               />
             </>
-          )}
-          {status === 'error' && type === 'email' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.emailLogin.errorMessage',
-                defaultMessage: '验证码错误',
-              })}
-            />
           )}
           {type === 'email' && (
             <>

@@ -93,22 +93,6 @@ export default [
   },
   {
     icon: 'table',
-    path: '/tenant',
-    routes: [
-      {
-        path: '/tenant',
-        hideInMenu: true,
-        component: './Tenant',
-      },
-      {
-        path: '/tenant/:id',
-        hideInMenu: true,
-        component: './Tenant',
-      },
-    ],
-  },
-  {
-    icon: 'table',
     path: '/role',
     routes: [
       {
@@ -295,16 +279,18 @@ export default [
       },
     ],
   },
-  // {
-  //   path: '/monitor',
-  //   routes: [
-  //     {
-  //       path: '/monitor',
-  //       hideInMenu: true,
-  //       component: './Monitor',
-  //     },
-  //   ],
-  // },
+  {
+    path: '/log',
+    name: 'menu.system.log',
+    icon: 'fileText',
+    routes: [
+      {
+        path: '/log',
+        hideInMenu: true,
+        component: './Log',
+      },
+    ],
+  },
   {
     path: '/',
     redirect: '/workplace',

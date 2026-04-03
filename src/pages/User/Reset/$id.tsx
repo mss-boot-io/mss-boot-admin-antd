@@ -14,7 +14,7 @@ const PasswordRest: React.FC = () => {
       { userID: id! },
       formRef.current?.getFieldsValue(),
     );
-    if (!res) {
+    if (res) {
       message.success('密码重置成功').then(() => {
         history.push('/users');
       });

@@ -7,54 +7,17 @@ import {
   StepsForm,
 } from '@ant-design/pro-components';
 import { message } from 'antd';
-import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { useIntl, FormattedMessage, Helmet, history, SelectLang, useModel } from '@umijs/max';
-import Settings from '../../../../config/defaultSettings';
+import { useIntl, FormattedMessage, history, useModel } from '@umijs/max';
 import Footer from '@/components/Footer';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { postUserFakeCaptcha, postUserLogin } from '@/services/admin/user';
 import { fieldIntl } from '@/util/fieldIntl';
 import { flushSync } from 'react-dom';
-
-const Lang = () => {
-  const langClassName = useEmotionCss(({ token }) => {
-    return {
-      width: 42,
-      height: 42,
-      lineHeight: '42px',
-      position: 'fixed',
-      right: 16,
-      borderRadius: token.borderRadius,
-      ':hover': {
-        backgroundColor: token.colorBgTextHover,
-      },
-      'path.fill': '#555',
-    };
-  });
-
-  return (
-    <div className={langClassName} data-lang>
-      {SelectLang && <SelectLang />}
-    </div>
-  );
-};
+import AuthShell from '@/components/AuthShell';
 
 const Register: React.FC = () => {
   const intl = useIntl();
   const { initialState, setInitialState } = useModel('@@initialState');
-
-  const containerClassName = useEmotionCss(() => {
-    return {
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-      overflow: 'auto',
-      backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
-      backgroundSize: '100% 100%',
-    };
-  });
-
   const formRef = useRef<ProFormInstance>();
 
   const fetchUserInfo = async () => {
@@ -94,24 +57,8 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className={containerClassName}>
-      <Helmet>
-        <title>
-          {intl.formatMessage({
-            id: 'menu.register',
-            defaultMessage: '注册',
-          })}
-          - {Settings.title}
-        </title>
-      </Helmet>
-      <Lang />
-      <div
-        style={{
-          flex: '1',
-          padding: '32px 0',
-        }}
-      >
-        <ProCard>
+    <AuthShell titleDefaultMessage="注册">
+      <ProCard>
           <StepsForm<API.UserLogin>
             formRef={formRef}
             onFinish={async (values) => {
@@ -300,9 +247,8 @@ const Register: React.FC = () => {
             </StepsForm.StepForm>
           </StepsForm>
         </ProCard>
-      </div>
-      <Footer />
-    </div>
+        <Footer />
+    </AuthShell>
   );
 };
 

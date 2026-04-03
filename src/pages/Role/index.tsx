@@ -152,8 +152,9 @@ const TableList: React.FC = () => {
   const transfer = (data: API.Menu[]): DataNode[] => {
     // @ts-ignore
     return data.map((item) => {
+      const menuId = item.name?.startsWith('menu.') ? item.name : `menu.${item.name}`;
       return {
-        title: intl.formatMessage({ id: `menu.${item.name}` }),
+        title: intl.formatMessage({ id: menuId }),
         key: item.path === '/' ? item.name : item.path,
         // @ts-ignore
         children: item.children ? transfer(item.children) : null,
