@@ -47,8 +47,12 @@ const Generate: React.FC = () => {
           clearInterval(intervalId);
         }
       }, 1000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
     }
-  }, [setAccessToken]);
+  }, [accessToken, setAccessToken]);
 
   return (
     <div>

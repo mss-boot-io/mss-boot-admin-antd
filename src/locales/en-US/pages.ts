@@ -497,9 +497,6 @@ export default {
   'pages.log.content': 'Content',
   'pages.log.download': 'Download',
 
-  'pages.log.list': 'Log List',
-  'pages.log.files': 'Log Files',
-  'pages.log.export': 'Export',
   'pages.log.refresh': 'Refresh',
   'pages.log.keyword.placeholder': 'Search keyword',
   'pages.log.export.success': 'Export successful',

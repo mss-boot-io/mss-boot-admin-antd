@@ -43,7 +43,7 @@ export async function getInitialState(): Promise<{
   // load language
   let languageData;
   try {
-    languageData = await getLanguages({ pageSize: 999, skipErrorHandler: true });
+    languageData = await getLanguages({ pageSize: 999 });
   } catch (e) {}
   if (languageData?.data) {
     languageData.data.forEach((item) => {

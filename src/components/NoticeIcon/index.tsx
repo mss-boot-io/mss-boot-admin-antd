@@ -91,13 +91,17 @@ const NoticeIconView: React.FC = () => {
       setNotices(data || []);
       setNoticeData(getNoticeData(data || []));
     });
-    setInterval(async () => {
+    const intervalId = setInterval(async () => {
       const data = await getNoticeUnread();
       if (data) {
         setNotices(data || []);
         setNoticeData(getNoticeData(data || []));
       }
     }, 50000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
   return (
     <NoticeIcon

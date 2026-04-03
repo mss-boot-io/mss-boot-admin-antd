@@ -23,16 +23,7 @@ const Settings: React.FC = () => {
         defaultMessage: 'Basic Settings',
       }),
       key: 'base',
-      children: (
-        <PageContainer
-          title={intl.formatMessage({
-            id: 'pages.base.settings.title',
-            defaultMessage: 'Basic Settings',
-          })}
-        >
-          <Base />
-        </PageContainer>
-      ),
+      children: <Base />,
     },
     {
       label: intl.formatMessage({
@@ -40,16 +31,7 @@ const Settings: React.FC = () => {
         defaultMessage: 'Security Settings',
       }),
       key: 'security',
-      children: (
-        <PageContainer
-          title={intl.formatMessage({
-            id: 'pages.security.settings.title',
-            defaultMessage: 'Security Settings',
-          })}
-        >
-          <Security />
-        </PageContainer>
-      ),
+      children: <Security />,
     },
     {
       label: intl.formatMessage({
@@ -57,16 +39,7 @@ const Settings: React.FC = () => {
         defaultMessage: 'Storage Settings',
       }),
       key: 'storage',
-      children: (
-        <PageContainer
-          title={intl.formatMessage({
-            id: 'pages.storage.settings.title',
-            defaultMessage: 'Storage Settings',
-          })}
-        >
-          <Storage />
-        </PageContainer>
-      ),
+      children: <Storage />,
     },
     {
       label: intl.formatMessage({
@@ -74,16 +47,7 @@ const Settings: React.FC = () => {
         defaultMessage: 'Email Settings',
       }),
       key: 'email',
-      children: (
-        <PageContainer
-          title={intl.formatMessage({
-            id: 'pages.email.settings.title',
-            defaultMessage: 'Email Settings',
-          })}
-        >
-          <Email />
-        </PageContainer>
-      ),
+      children: <Email />,
     },
     {
       label: intl.formatMessage({
@@ -91,16 +55,7 @@ const Settings: React.FC = () => {
         defaultMessage: 'Theme Settings',
       }),
       key: 'theme',
-      children: (
-        <PageContainer
-          title={intl.formatMessage({
-            id: 'pages.theme.settings.title',
-            defaultMessage: 'Theme Settings',
-          })}
-        >
-          <Theme />
-        </PageContainer>
-      ),
+      children: <Theme />,
     },
   ];
 

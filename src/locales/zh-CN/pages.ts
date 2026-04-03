@@ -478,9 +478,6 @@ export default {
   'pages.log.content': '内容',
   'pages.log.download': '下载',
 
-  'pages.log.list': '日志列表',
-  'pages.log.files': '日志文件',
-  'pages.log.export': '导出',
   'pages.log.refresh': '刷新',
   'pages.log.keyword.placeholder': '搜索关键词',
   'pages.log.export.success': '导出成功',

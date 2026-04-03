@@ -198,7 +198,7 @@ const TableList: React.FC = () => {
           defaultMessage: 'Create successfully!',
         }),
       );
-      history.push('/post');
+      history.push('/posts');
       return;
     }
     await putPostsId({ id }, params);
@@ -208,7 +208,7 @@ const TableList: React.FC = () => {
         defaultMessage: 'Update successfully!',
       }),
     );
-    history.push('/post');
+    history.push('/posts');
   };
 
   useEffect(() => {

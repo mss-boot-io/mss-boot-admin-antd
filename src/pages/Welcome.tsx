@@ -1,9 +1,9 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { Area } from '@ant-design/charts';
 import { FormattedMessage, useModel, history } from '@umijs/max';
-import { Avatar, Card, Col, Row, Statistic, Typography, Space, theme } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { getMonitor } from '@/services/admin/monitor';
+import { Avatar, Card, Col, Row, Statistic, Typography, Space, theme, Alert } from 'antd';
+import React from 'react';
+import { useMonitorData } from '@/hooks/useMonitorData';
 import {
   UserOutlined,
   SettingOutlined,
@@ -14,20 +14,6 @@ import {
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
-
-interface MonitorData {
-  cpuPhysicalCore: number;
-  cpuLogicalCore: number;
-  cpuUsage: number;
-  memoryTotal: number;
-  memoryUsage: number;
-  memoryUsagePercent: number;
-  diskTotal: number;
-  diskUsage: number;
-  diskUsagePercent: number;
-  runtime?: { goroutines: number; heapAlloc: number; numGC: number };
-  uptime?: number;
-}
 
 const QuickEntry: React.FC<{ icon: React.ReactNode; title: React.ReactNode; href: string }> = ({
   icon,
@@ -69,9 +55,7 @@ const QuickEntry: React.FC<{ icon: React.ReactNode; title: React.ReactNode; href
 const Welcome: React.FC = () => {
   const { token } = theme.useToken();
   const { initialState } = useModel('@@initialState');
-  const [monitorData, setMonitorData] = useState<MonitorData | null>(null);
-  const [historyData, setHistoryData] = useState<{ time: string; cpu: number; memory: number }[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { monitorData, historyData, loading, error } = useMonitorData();
 
   const currentUser = initialState?.currentUser;
   const hour = new Date().getHours();
@@ -83,30 +67,6 @@ const Welcome: React.FC = () => {
         : hour < 18
           ? 'pages.welcome.greeting.afternoon'
           : 'pages.welcome.greeting.evening';
-
-  useEffect(() => {
-    fetchMonitorData();
-    const interval = setInterval(fetchMonitorData, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchMonitorData = async () => {
-    try {
-      const res = await getMonitor();
-      setMonitorData(res);
-      setHistoryData((prev) => {
-        const now = new Date().toLocaleTimeString();
-        return [
-          ...prev,
-          { time: now, cpu: res.cpuUsage || 0, memory: res.memoryUsagePercent || 0 },
-        ].slice(-20);
-      });
-    } catch (error) {
-      console.error('Failed to fetch monitor data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const cpuConfig = {
     data: historyData,
@@ -142,6 +102,16 @@ const Welcome: React.FC = () => {
 
   return (
     <PageContainer>
+      {error && (
+        <Alert
+          message={<FormattedMessage id="pages.monitor.error.title" defaultMessage="监控数据获取失败" />}
+          description={<FormattedMessage id="pages.monitor.error.description" defaultMessage="无法获取系统监控数据，请检查服务是否正常运行" />}
+          type="error"
+          closable
+          style={{ marginBottom: 16, borderRadius: 8 }}
+        />
+      )}
+      
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={16}>
           <Card style={{ borderRadius: 8 }}>

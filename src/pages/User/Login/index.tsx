@@ -16,7 +16,7 @@ import {
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, history, Link, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, message, Tabs } from 'antd';
+import { message, Tabs } from 'antd';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -137,21 +137,6 @@ const Lang = () => {
     <div className={langClassName} data-lang>
       {SelectLang && <SelectLang />}
     </div>
-  );
-};
-
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
   );
 };
 
@@ -374,14 +359,6 @@ const Login: React.FC = () => {
         >
           <Tabs activeKey={type} onChange={setType} items={loginItem()} />
 
-          {status === 'error' && type === 'account' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
-              })}
-            />
-          )}
           {type === 'account' && (
             <>
               <ProFormText
@@ -429,14 +406,6 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && type === 'mobile' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.phoneLogin.errorMessage',
-                defaultMessage: '验证码错误',
-              })}
-            />
-          )}
           {type === 'mobile' && (
             <>
               <ProFormText
@@ -517,14 +486,6 @@ const Login: React.FC = () => {
                 }}
               />
             </>
-          )}
-          {status === 'error' && type === 'email' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.emailLogin.errorMessage',
-                defaultMessage: '验证码错误',
-              })}
-            />
           )}
           {type === 'email' && (
             <>

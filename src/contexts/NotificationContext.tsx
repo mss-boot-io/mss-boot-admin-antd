@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { useWebSocket, WebSocketMessage } from './useWebSocket';
-import { getNoticeUnread, putNoticeRead } from '@/services/admin/notice';
+import { useWebSocket, WebSocketMessage } from '@/hooks/useWebSocket';
+import { getNoticeUnread, putNoticeReadId } from '@/services/admin/notice';
 import { message } from 'antd';
 
 interface Notification {
@@ -39,7 +39,6 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
       message.info({
         content: notification.title,
-        description: notification.description,
         duration: 5,
       });
     }
@@ -64,7 +63,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const markAsRead = useCallback(async (id: string) => {
     try {
-      await putNoticeRead({ id });
+      await putNoticeReadId({ id });
       setNotifications((prev) => prev.filter((n) => n.id !== id));
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
@@ -73,7 +72,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const markAllAsRead = useCallback(async () => {
     try {
-      await putNoticeRead({ id: 'all' });
+      await putNoticeReadId({ id: 'all' });
       setNotifications([]);
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);

@@ -47,7 +47,7 @@ const RuntimeLogTab: React.FC = () => {
         debug: { text: 'DEBUG' },
       },
       render: (_, record) => {
-        const color = levelColors[record.level] || 'default';
+        const color = levelColors[record.level ?? ''] || 'default';
         return <Tag color={color}>{record.level?.toUpperCase()}</Tag>;
       },
     },
@@ -77,7 +77,7 @@ const RuntimeLogTab: React.FC = () => {
         <Button key="refresh" icon={<ReloadOutlined />} onClick={() => actionRef.current?.reload()}>
           <FormattedMessage id="pages.log.refresh" defaultMessage="刷新" />
         </Button>,
-        <Access key="export" permission="/log/export">
+        <Access key="export" accessible={false}>
           <Button
             type="primary"
             icon={<DownloadOutlined />}
@@ -148,7 +148,7 @@ const LoginLogTab: React.FC = () => {
         disabled: { text: intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' }) },
       },
       render: (_, record) => {
-        const color = statusColors[record.status] || 'default';
+        const color = statusColors[record.status ?? ''] || 'default';
         return <Tag color={color}>{record.status === 'enabled' ? intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }) : intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' })}</Tag>;
       },
     },
@@ -247,7 +247,7 @@ const AuditLogTab: React.FC = () => {
         disabled: { text: intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' }) },
       },
       render: (_, record) => {
-        const color = statusColors[record.status] || 'default';
+        const color = statusColors[record.status ?? ''] || 'default';
         return <Tag color={color}>{record.status === 'enabled' ? intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }) : intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' })}</Tag>;
       },
     },
