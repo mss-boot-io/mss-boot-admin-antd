@@ -21,8 +21,10 @@ interface MonitorData {
   cpuUsage: number;
   memoryTotal: number;
   memoryUsage: number;
+  memoryUsagePercent: number;
   diskTotal: number;
   diskUsage: number;
+  diskUsagePercent: number;
   runtime?: { goroutines: number; heapAlloc: number; numGC: number };
   uptime?: number;
 }
@@ -96,7 +98,7 @@ const Welcome: React.FC = () => {
         const now = new Date().toLocaleTimeString();
         return [
           ...prev,
-          { time: now, cpu: res.cpuUsage || 0, memory: res.memoryTotal ? (res.memoryUsage / res.memoryTotal) * 100 : 0 },
+          { time: now, cpu: res.cpuUsage || 0, memory: res.memoryUsagePercent || 0 },
         ].slice(-20);
       });
     } catch (error) {
@@ -126,12 +128,8 @@ const Welcome: React.FC = () => {
     meta: { memory: { alias: 'Memory %', max: 100 } },
   };
 
-  const memoryPercent = monitorData?.memoryTotal
-    ? ((monitorData.memoryUsage / monitorData.memoryTotal) * 100).toFixed(1)
-    : 0;
-  const diskPercent = monitorData?.diskTotal
-    ? ((monitorData.diskUsage / monitorData.diskTotal) * 100).toFixed(1)
-    : 0;
+  const memoryPercent = monitorData?.memoryUsagePercent?.toFixed(1) || '0';
+  const diskPercent = monitorData?.diskUsagePercent?.toFixed(1) || '0';
 
   const quickEntries = [
     { icon: <UserOutlined />, title: <FormattedMessage id="menu.origination.user" defaultMessage="用户管理" />, href: '/users' },

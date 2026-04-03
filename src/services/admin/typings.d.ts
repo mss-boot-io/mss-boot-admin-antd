@@ -668,9 +668,11 @@ declare namespace API {
     cpuLogicalCore?: number;
     /** CPUPhysicalCore CPU物理核心数 */
     cpuPhysicalCore?: number;
+    /** CPUUsage CPU使用率百分比 */
+    cpuUsage?: number;
     /** DiskTotal 磁盘总量 */
     diskTotal?: number;
-    /** DiskUsage 磁盘使用量 */
+    /** DiskUsage 磁盘使用量(GB) */
     diskUsage?: number;
     /** DiskUsagePercent 磁盘使用率 */
     diskUsagePercent?: number;
