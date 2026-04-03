@@ -17,12 +17,12 @@ import {
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, history, Link, SelectLang, useIntl, useModel } from '@umijs/max';
 import { message, Tabs } from 'antd';
-
 import React, { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
 import { LarkOutlined } from '@/components/MssBoot/icon';
+import AuthShell from '@/components/AuthShell';
 
 function randToken(): string {
   let result = '';
@@ -142,12 +142,9 @@ const Lang = () => {
 
 const Login: React.FC = () => {
   const intl = useIntl();
-
-  // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
   const formRef = useRef<ProFormInstance>();
-
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',

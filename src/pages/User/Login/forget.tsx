@@ -7,73 +7,20 @@ import {
   StepsForm,
 } from '@ant-design/pro-components';
 import { message } from 'antd';
-import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { useIntl, FormattedMessage, Helmet, history, SelectLang } from '@umijs/max';
-import Settings from '../../../../config/defaultSettings';
+import { useIntl, FormattedMessage, history } from '@umijs/max';
 import Footer from '@/components/Footer';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { postUserFakeCaptcha, postUserResetPassword } from '@/services/admin/user';
 import { fieldIntl } from '@/util/fieldIntl';
-
-const Lang = () => {
-  const langClassName = useEmotionCss(({ token }) => {
-    return {
-      width: 42,
-      height: 42,
-      lineHeight: '42px',
-      position: 'fixed',
-      right: 16,
-      borderRadius: token.borderRadius,
-      ':hover': {
-        backgroundColor: token.colorBgTextHover,
-      },
-      'path.fill': '#555',
-    };
-  });
-
-  return (
-    <div className={langClassName} data-lang>
-      {SelectLang && <SelectLang />}
-    </div>
-  );
-};
+import AuthShell from '@/components/AuthShell';
 
 const Forget: React.FC = () => {
   const intl = useIntl();
-
-  const containerClassName = useEmotionCss(() => {
-    return {
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-      overflow: 'auto',
-      backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
-      backgroundSize: '100% 100%',
-    };
-  });
-
   const formRef = useRef<ProFormInstance>();
 
   return (
-    <div className={containerClassName}>
-      <Helmet>
-        <title>
-          {intl.formatMessage({
-            id: 'menu.forget',
-            defaultMessage: '忘记密码',
-          })}
-          - {Settings.title}
-        </title>
-      </Helmet>
-      <Lang />
-      <div
-        style={{
-          flex: '1',
-          padding: '32px 0',
-        }}
-      >
-        <ProCard>
+    <AuthShell titleId="menu.forget" titleDefaultMessage="忘记密码">
+      <ProCard>
           <StepsForm<API.ResetPasswordRequest>
             formRef={formRef}
             onFinish={async (values) => {
@@ -260,9 +207,8 @@ const Forget: React.FC = () => {
             </StepsForm.StepForm>
           </StepsForm>
         </ProCard>
-      </div>
-      <Footer />
-    </div>
+        <Footer />
+    </AuthShell>
   );
 };
 
