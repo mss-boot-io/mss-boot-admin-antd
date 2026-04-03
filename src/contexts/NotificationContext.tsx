@@ -44,7 +44,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   }, []);
 
-  const { isConnected, send } = useWebSocket({
+  const { isConnected } = useWebSocket({
     url: wsUrl,
     onMessage: handleWebSocketMessage,
     reconnect: true,

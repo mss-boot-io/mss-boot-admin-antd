@@ -19,7 +19,7 @@ const Forget: React.FC = () => {
   const formRef = useRef<ProFormInstance>();
 
   return (
-    <AuthShell titleId="menu.forget" titleDefaultMessage="忘记密码">
+    <AuthShell titleDefaultMessage="忘记密码">
       <ProCard>
           <StepsForm<API.ResetPasswordRequest>
             formRef={formRef}

@@ -57,7 +57,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <AuthShell titleId="menu.register" titleDefaultMessage="注册">
+    <AuthShell titleDefaultMessage="注册">
       <ProCard>
           <StepsForm<API.UserLogin>
             formRef={formRef}

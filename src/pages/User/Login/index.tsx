@@ -22,7 +22,6 @@ import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
 import { LarkOutlined } from '@/components/MssBoot/icon';
-import AuthShell from '@/components/AuthShell';
 
 function randToken(): string {
   let result = '';

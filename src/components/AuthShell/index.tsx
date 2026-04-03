@@ -4,14 +4,12 @@ import React, { PropsWithChildren } from 'react';
 import Settings from '../../../config/defaultSettings';
 
 interface AuthShellProps {
-  titleId: string;
   titleDefaultMessage: string;
   showLang?: boolean;
 }
 
 const AuthShell: React.FC<PropsWithChildren<AuthShellProps>> = ({
   children,
-  titleId,
   titleDefaultMessage,
   showLang = true,
 }) => {
