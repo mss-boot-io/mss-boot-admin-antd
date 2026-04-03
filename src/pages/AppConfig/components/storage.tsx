@@ -5,16 +5,10 @@ import { message } from 'antd';
 import React, { useRef } from 'react';
 
 const Storage: React.FC = () => {
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
   const intl = useIntl();
 
   const fromRef = useRef<ProFormInstance>();
-  // const [local, setLocal] = React.useState(false);
   const [s3, setS3] = React.useState(false);
-  // const [minio, setMinio] = React.useState(false);
 
   const columns: ProColumns<any>[] = [
     {
@@ -36,6 +30,26 @@ const Storage: React.FC = () => {
     {
       title: 'endpoint',
       dataIndex: 'endpoint',
+      tooltip: '本地存储访问路径前缀',
+    },
+    {
+      title: 'maxSize',
+      dataIndex: 'maxSize',
+      tooltip: '最大文件大小(字节)，默认10MB',
+      valueType: 'digit',
+      fieldProps: {
+        placeholder: '10485760 (10MB)',
+      },
+    },
+    {
+      title: 'allowedTypes',
+      dataIndex: 'allowedTypes',
+      tooltip: '允许的文件类型，逗号分隔',
+      valueType: 'textarea',
+      fieldProps: {
+        placeholder: 'image/jpeg,image/png,image/gif,application/pdf',
+        rows: 3,
+      },
     },
     {
       title: 's3Provider',
