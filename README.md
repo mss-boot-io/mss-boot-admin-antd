@@ -8,6 +8,15 @@ English | [简体中文](./README.zh-CN.md)
 
 > `mss-boot-admin-antd` is the frontend of the mss-boot admin platform. The product is being repositioned around governance, operations, access control, configuration, and AI-annotation-assisted engineering collaboration, rather than dynamic-model or generator-led workflows.
 
+## Recent Updates
+
+The frontend has undergone comprehensive polish rounds focusing on:
+
+- **Stability**: Fixed navigation redirect paths, password reset logic, polling cleanup
+- **Code Quality**: Eliminated all TypeScript errors (0 errors), fixed import paths, removed duplicate locale keys
+- **Abstraction**: Created AuthShell component for auth pages, useMonitorData hook for monitoring, unified page structures
+- **Documentation**: Added CHANGELOG documenting all frontend changes
+
 ## Tutorial
 
 [Online documentation](https://docs.mss-boot-io.top) [Video tutorial](https://space.bilibili.com/597294782/channel/seriesdetail?sid=3881026)
