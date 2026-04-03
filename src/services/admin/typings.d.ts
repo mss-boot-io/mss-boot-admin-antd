@@ -668,13 +668,17 @@ declare namespace API {
     cpuLogicalCore?: number;
     /** CPUPhysicalCore CPU物理核心数 */
     cpuPhysicalCore?: number;
-    /** CPUUsage CPU使用率百分比 */
+    /** CPUUsage CPU使用率百分比(保留2位小数) */
     cpuUsage?: number;
-    /** DiskTotal 磁盘总量 */
+    /** DiskTotal 磁盘总量(bytes) */
+    diskTotalBytes?: number;
+    /** DiskTotal 磁盘总量(GB, 保留2位小数) */
     diskTotal?: number;
-    /** DiskUsage 磁盘使用量(GB) */
+    /** DiskUsage 磁盘使用量(bytes) */
+    diskUsageBytes?: number;
+    /** DiskUsage 磁盘使用量(GB, 保留2位小数) */
     diskUsage?: number;
-    /** DiskUsagePercent 磁盘使用率 */
+    /** DiskUsagePercent 磁盘使用率(保留2位小数) */
     diskUsagePercent?: number;
     /** MemoryAvailable 内存可用量 */
     memoryAvailable?: number;
@@ -684,7 +688,7 @@ declare namespace API {
     memoryTotal?: number;
     /** MemoryUsage 内存使用量 */
     memoryUsage?: number;
-    /** MemoryUsagePercent 内存使用率 */
+    /** MemoryUsagePercent 内存使用率(保留2位小数) */
     memoryUsagePercent?: number;
   };
 

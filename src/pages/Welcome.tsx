@@ -128,8 +128,8 @@ const Welcome: React.FC = () => {
     meta: { memory: { alias: 'Memory %', max: 100 } },
   };
 
-  const memoryPercent = monitorData?.memoryUsagePercent?.toFixed(1) || '0';
-  const diskPercent = monitorData?.diskUsagePercent?.toFixed(1) || '0';
+  const memoryPercent = monitorData?.memoryUsagePercent?.toFixed(2) || '0.00';
+  const diskPercent = monitorData?.diskUsagePercent?.toFixed(2) || '0.00';
 
   const quickEntries = [
     { icon: <UserOutlined />, title: <FormattedMessage id="menu.origination.user" defaultMessage="用户管理" />, href: '/users' },
@@ -190,7 +190,7 @@ const Welcome: React.FC = () => {
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={12} md={6}>
             <Card>
-              <Statistic title={<FormattedMessage id="pages.monitor.cpu" defaultMessage="CPU 使用率" />} value={monitorData?.cpuUsage || 0} suffix="%" valueStyle={{ color: (monitorData?.cpuUsage || 0) > 80 ? '#cf1322' : '#3f8600' }} />
+              <Statistic title={<FormattedMessage id="pages.monitor.cpu" defaultMessage="CPU 使用率" />} value={monitorData?.cpuUsage?.toFixed(2) || '0.00'} suffix="%" valueStyle={{ color: (monitorData?.cpuUsage || 0) > 80 ? '#cf1322' : '#3f8600' }} />
               <div style={{ marginTop: 8, color: '#999' }}>
                 {monitorData?.cpuPhysicalCore} <FormattedMessage id="pages.monitor.cpu.physicalCore" defaultMessage="物理核心" /> / {monitorData?.cpuLogicalCore} <FormattedMessage id="pages.monitor.cpu.logicalCore" defaultMessage="逻辑核心" />
               </div>
@@ -200,7 +200,7 @@ const Welcome: React.FC = () => {
             <Card>
               <Statistic title={<FormattedMessage id="pages.monitor.memory" defaultMessage="内存使用" />} value={memoryPercent} suffix="%" valueStyle={{ color: parseFloat(memoryPercent as string) > 80 ? '#cf1322' : '#3f8600' }} />
               <div style={{ marginTop: 8, color: '#999' }}>
-                {((monitorData?.memoryUsage || 0) / 1024 / 1024).toFixed(0)} MB / {((monitorData?.memoryTotal || 0) / 1024 / 1024).toFixed(0)} MB
+                {((monitorData?.memoryUsage || 0) / 1024 / 1024 / 1024).toFixed(2)} GB / {((monitorData?.memoryTotal || 0) / 1024 / 1024 / 1024).toFixed(2)} GB
               </div>
             </Card>
           </Col>
@@ -208,7 +208,7 @@ const Welcome: React.FC = () => {
             <Card>
               <Statistic title={<FormattedMessage id="pages.monitor.disk" defaultMessage="磁盘使用" />} value={diskPercent} suffix="%" valueStyle={{ color: parseFloat(diskPercent as string) > 80 ? '#cf1322' : '#3f8600' }} />
               <div style={{ marginTop: 8, color: '#999' }}>
-                {monitorData?.diskUsage} GB / {monitorData?.diskTotal} GB
+                {monitorData?.diskUsage?.toFixed(2) || '0.00'} GB / {monitorData?.diskTotal?.toFixed(2) || '0.00'} GB
               </div>
             </Card>
           </Col>
