@@ -8,15 +8,19 @@ import NotificationView from './components/notification';
 import SecurityView from './components/security';
 import Theme from '../../../components/MssBoot/theme';
 import AccessTokenView from '@/pages/Account/Settings/components/AccessToken';
+import { useResponsive } from '@/hooks/useResponsive';
+import MobileSettings from './Mobile';
 
 const Settings: React.FC = () => {
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
   const intl = useIntl();
+  const { isMobile } = useResponsive();
   const [searchParams, setSearchParams] = useSearchParams();
   const key = searchParams.get('key') || 'base';
+
+  if (isMobile) {
+    return <MobileSettings />;
+  }
+
   const menuMap: any[] = [
     {
       label: intl.formatMessage({

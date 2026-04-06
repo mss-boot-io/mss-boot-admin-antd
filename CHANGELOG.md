@@ -35,8 +35,8 @@ All notable changes to the mss-boot-admin frontend will be documented in this fi
 
 ## Version History
 
-| Version | Date | Description |
-|---------|------|-------------|
+| Version    | Date       | Description                  |
+| ---------- | ---------- | ---------------------------- |
 | Unreleased | 2026-04-03 | Product polish and bug fixes |
 
 ---

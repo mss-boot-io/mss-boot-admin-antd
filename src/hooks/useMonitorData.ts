@@ -38,7 +38,7 @@ export const useMonitorData = (options: UseMonitorDataOptions = {}) => {
       const res = await getMonitor();
       setMonitorData(res);
       setError(null);
-      
+
       setHistoryData((prev) => {
         const now = new Date().toLocaleTimeString();
         const newItem = {
@@ -59,9 +59,9 @@ export const useMonitorData = (options: UseMonitorDataOptions = {}) => {
 
   useEffect(() => {
     fetchData();
-    
+
     intervalIdRef.current = setInterval(fetchData, pollInterval);
-    
+
     return () => {
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current);

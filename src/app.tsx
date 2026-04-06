@@ -1,13 +1,13 @@
 import Footer from '@/components/Footer';
 import { Question, SelectLang } from '@/components/RightContent';
-import { LinkOutlined } from '@ant-design/icons';
+import { LinkOutlined, MenuOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import { RunTimeLayoutConfig } from '@umijs/max';
 import { addLocale, FormattedMessage, history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { getUserUserInfo } from './services/admin/user';
 import { getMenuAuthorize } from './services/admin/menu';
@@ -110,7 +110,7 @@ export async function getInitialState(): Promise<{
 
   const token = localStorage.getItem('token');
   const isLoginPage = location.pathname === loginPath || excludePath.includes(location.pathname);
-  
+
   if (token && !isLoginPage) {
     try {
       const currentUser = await fetchUserInfo();
@@ -136,7 +136,7 @@ export async function getInitialState(): Promise<{
       };
     }
   }
-  
+
   return {
     appConfig,
     userConfig,
@@ -150,6 +150,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   return {
     title: initialState?.appConfig?.base?.websiteName || 'mss-boot-admin',
     menu: {
+      locale: true,
       request: async () => {
         const menuData = await getMenuAuthorize();
         return menuData;
@@ -209,13 +210,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
           </Link>,
         ]
       : [],
-    // menuHeaderRender: undefined,
     menuDataRender: (menuData: MenuDataItem[]) => fixMenuItemIcon(menuData),
-    // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
-    // 增加一个 loading 的状态
     childrenRender: (children) => {
-      // if (initialState?.loading) return <PageLoading />;
       return (
         <>
           {children}

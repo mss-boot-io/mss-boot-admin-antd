@@ -12,6 +12,7 @@ import {
 } from '@/services/admin/menu';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
@@ -20,6 +21,7 @@ import { Button, Drawer, message, Popconfirm, TreeSelect } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useEffect, useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
+import MobileMenuList from './Mobile/MenuList';
 
 const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -28,6 +30,7 @@ const TableList: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.Role>();
 
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
+  const { isMobile } = useResponsive();
   const [treeData, setTreeData] = useState<DataNode[]>([]);
 
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
@@ -316,7 +319,18 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Menu, API.getMenusParams>
+      {isMobile && !id ? (
+        <MobileMenuList
+          request={getMenus}
+          onEdit={(record) => history.push(`/menu/${record.id}`)}
+          onCreate={() => history.push('/menu/create')}
+          onDelete={async (record) => {
+            await deleteMenusId({ id: record.id! });
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+        />
+      ) : (
+        <ProTable<API.Menu, API.getMenusParams>
         headerTitle={intl.formatMessage({
           id: 'pages.menu.list.title',
           defaultMessage: 'Menu List',
@@ -351,7 +365,8 @@ const TableList: React.FC = () => {
         }
         request={getMenus}
         columns={columns}
-      />
+        />
+      )}
 
       <Drawer
         width={600}

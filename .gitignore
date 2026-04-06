@@ -39,3 +39,9 @@ screenshot
 .eslintcache
 
 build
+
+# Test results
+test-results/
+
+# Rollback scripts
+rollback_*.sh

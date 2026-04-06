@@ -1,6 +1,7 @@
 # mss-boot-admin-antd Copilot 协作约束
 
 ## 项目简称
+
 - `mss-boot` 简称 `mss`
 - `mss-boot-admin` 简称 `admin`
 - `mss-boot-admin-antd` 简称 `antd`

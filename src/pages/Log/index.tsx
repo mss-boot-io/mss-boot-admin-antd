@@ -62,7 +62,10 @@ const RuntimeLogTab: React.FC = () => {
       dataIndex: 'keyword',
       hideInTable: true,
       fieldProps: {
-        placeholder: intl.formatMessage({ id: 'pages.log.keyword.placeholder', defaultMessage: '搜索关键词' }),
+        placeholder: intl.formatMessage({
+          id: 'pages.log.keyword.placeholder',
+          defaultMessage: '搜索关键词',
+        }),
       },
     },
   ];
@@ -85,9 +88,16 @@ const RuntimeLogTab: React.FC = () => {
               try {
                 const res = await exportRuntimeLogs();
                 window.open(res);
-                message.success(intl.formatMessage({ id: 'pages.log.export.success', defaultMessage: '导出成功' }));
+                message.success(
+                  intl.formatMessage({
+                    id: 'pages.log.export.success',
+                    defaultMessage: '导出成功',
+                  }),
+                );
               } catch (e) {
-                message.error(intl.formatMessage({ id: 'pages.log.export.failed', defaultMessage: '导出失败' }));
+                message.error(
+                  intl.formatMessage({ id: 'pages.log.export.failed', defaultMessage: '导出失败' }),
+                );
               }
             }}
           >
@@ -144,12 +154,22 @@ const LoginLogTab: React.FC = () => {
       width: 100,
       valueType: 'select',
       valueEnum: {
-        enabled: { text: intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }) },
-        disabled: { text: intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' }) },
+        enabled: {
+          text: intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }),
+        },
+        disabled: {
+          text: intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' }),
+        },
       },
       render: (_, record) => {
         const color = statusColors[record.status ?? ''] || 'default';
-        return <Tag color={color}>{record.status === 'enabled' ? intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }) : intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' })}</Tag>;
+        return (
+          <Tag color={color}>
+            {record.status === 'enabled'
+              ? intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' })
+              : intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' })}
+          </Tag>
+        );
       },
     },
     {
@@ -208,14 +228,30 @@ const AuditLogTab: React.FC = () => {
       valueType: 'select',
       valueEnum: {
         login: { text: intl.formatMessage({ id: 'pages.log.type.login', defaultMessage: '登录' }) },
-        logout: { text: intl.formatMessage({ id: 'pages.log.type.logout', defaultMessage: '登出' }) },
-        create: { text: intl.formatMessage({ id: 'pages.log.type.create', defaultMessage: '创建' }) },
-        update: { text: intl.formatMessage({ id: 'pages.log.type.update', defaultMessage: '更新' }) },
-        delete: { text: intl.formatMessage({ id: 'pages.log.type.delete', defaultMessage: '删除' }) },
-        export: { text: intl.formatMessage({ id: 'pages.log.type.export', defaultMessage: '导出' }) },
-        import: { text: intl.formatMessage({ id: 'pages.log.type.import', defaultMessage: '导入' }) },
-        config: { text: intl.formatMessage({ id: 'pages.log.type.config', defaultMessage: '配置' }) },
-        security: { text: intl.formatMessage({ id: 'pages.log.type.security', defaultMessage: '安全' }) },
+        logout: {
+          text: intl.formatMessage({ id: 'pages.log.type.logout', defaultMessage: '登出' }),
+        },
+        create: {
+          text: intl.formatMessage({ id: 'pages.log.type.create', defaultMessage: '创建' }),
+        },
+        update: {
+          text: intl.formatMessage({ id: 'pages.log.type.update', defaultMessage: '更新' }),
+        },
+        delete: {
+          text: intl.formatMessage({ id: 'pages.log.type.delete', defaultMessage: '删除' }),
+        },
+        export: {
+          text: intl.formatMessage({ id: 'pages.log.type.export', defaultMessage: '导出' }),
+        },
+        import: {
+          text: intl.formatMessage({ id: 'pages.log.type.import', defaultMessage: '导入' }),
+        },
+        config: {
+          text: intl.formatMessage({ id: 'pages.log.type.config', defaultMessage: '配置' }),
+        },
+        security: {
+          text: intl.formatMessage({ id: 'pages.log.type.security', defaultMessage: '安全' }),
+        },
       },
     },
     {
@@ -243,12 +279,22 @@ const AuditLogTab: React.FC = () => {
       width: 80,
       valueType: 'select',
       valueEnum: {
-        enabled: { text: intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }) },
-        disabled: { text: intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' }) },
+        enabled: {
+          text: intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }),
+        },
+        disabled: {
+          text: intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' }),
+        },
       },
       render: (_, record) => {
         const color = statusColors[record.status ?? ''] || 'default';
-        return <Tag color={color}>{record.status === 'enabled' ? intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' }) : intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' })}</Tag>;
+        return (
+          <Tag color={color}>
+            {record.status === 'enabled'
+              ? intl.formatMessage({ id: 'pages.status.success', defaultMessage: '成功' })
+              : intl.formatMessage({ id: 'pages.status.failed', defaultMessage: '失败' })}
+          </Tag>
+        );
       },
     },
     {

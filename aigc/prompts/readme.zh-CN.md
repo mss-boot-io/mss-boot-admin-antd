@@ -10,9 +10,11 @@
 ## 当前文档
 
 1. `frontend-multi-tenant-cache-evaluation.zh-CN.md`
+
    - 前端多租户实现与缓存/状态维度评估。
 
 2. `frontend-tenant-removal-impact-plan.zh-CN.md`
+
    - 去多租户影响分析、分阶段任务与验收标准。
 
 3. `frontend-tenant-removal-handoff-summary.zh-CN.md`

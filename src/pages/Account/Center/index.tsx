@@ -8,11 +8,14 @@ import { useIntl } from '@umijs/max';
 import { PageContainer, ProCard, ProDescriptions } from '@ant-design/pro-components';
 import { province } from '../Settings/geographic/province';
 import { city } from '../Settings/geographic/city';
+import { useResponsive } from '@/hooks/useResponsive';
+import MobileCenter from './Mobile';
 
 const { Title, Paragraph } = Typography;
 
 const Center: React.FC = () => {
   const intl = useIntl();
+  const { isMobile } = useResponsive();
   const [userInfo, setUserInfo] = useState<API.User>();
   const [departmentInfo, setDepartmentInfo] = useState<API.Department>();
   const [postInfo, setPostInfo] = useState<API.Post>();
@@ -48,6 +51,21 @@ const Center: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (isMobile) {
+    return (
+      <PageContainer title={intl.formatMessage({ id: 'pages.account.center.title' })}>
+        {contextHolder}
+        <Spin spinning={loading}>
+          <MobileCenter 
+            userInfo={userInfo} 
+            departmentInfo={departmentInfo} 
+            postInfo={postInfo} 
+          />
+        </Spin>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer title={intl.formatMessage({ id: 'pages.account.center.title' })}>

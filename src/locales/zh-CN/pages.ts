@@ -445,7 +445,8 @@ export default {
   'pages.role.root.false': '否',
 
   'pages.welcome.title': '欢迎使用 mss-boot-io',
-  'pages.welcome.description': 'mss-boot-io 是一个整合了 umi，Ant Design 和 ProComponents 的脚手架方案。',
+  'pages.welcome.description':
+    'mss-boot-io 是一个整合了 umi，Ant Design 和 ProComponents 的脚手架方案。',
   'pages.welcome.more': '了解更多',
   'pages.welcome.umi.title': '了解 umi',
   'pages.welcome.umi.desc': 'umi 是一个可扩展的企业级前端应用框架',
