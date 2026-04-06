@@ -1,6 +1,8 @@
 import { Access } from '@/components/MssBoot/Access';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { useOption } from '@/hooks/useOption';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
@@ -9,9 +11,8 @@ import { Button, Drawer, message, Popconfirm, TreeSelect } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useEffect, useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
-import { statusOptions } from '@/util/statusOptions';
 import { deletePostsId, getPosts, getPostsId, postPosts, putPostsId } from '@/services/admin/post';
-import { dataScopeOptions } from '@/util/dataScopeOptions';
+import MobilePostList from './Mobile/PostList';
 
 const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -21,10 +22,10 @@ const TableList: React.FC = () => {
   const [list, setList] = useState<[]>([]);
   const { id } = useParams();
 
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
+  const { valueEnum: statusValueEnum } = useOption('system', 'status');
+  const { valueEnum: dataScopeValueEnum } = useOption('permission', 'dataScope');
+  const { isMobile } = useResponsive();
+
   const intl = useIntl();
 
   const columns: ProColumns<API.Post>[] = [
@@ -93,7 +94,7 @@ const TableList: React.FC = () => {
       title: fieldIntl(intl, 'dataScope'),
       dataIndex: 'dataScope',
       search: false,
-      valueEnum: dataScopeOptions(intl),
+      valueEnum: dataScopeValueEnum,
       formItemProps: {
         rules: [
           {
@@ -115,7 +116,7 @@ const TableList: React.FC = () => {
     {
       title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
-      valueEnum: statusOptions(intl),
+      valueEnum: statusValueEnum,
     },
     {
       title: fieldIntl(intl, 'updatedAt'),
@@ -222,7 +223,19 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Post, API.getPostsParams>
+      {isMobile && !id ? (
+        <MobilePostList
+          request={getPosts}
+          onEdit={(record) => history.push(`/posts/${record.id}`)}
+          onCreate={() => history.push('/posts/create')}
+          onDelete={async (record) => {
+            await deletePostsId({ id: record.id! });
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+          dataScopeValueEnum={dataScopeValueEnum}
+        />
+      ) : (
+        <ProTable<API.Post, API.getPostsParams>
         headerTitle={intl.formatMessage({
           id: 'pages.post.list.title',
           defaultMessage: 'Post List',
@@ -260,7 +273,8 @@ const TableList: React.FC = () => {
         request={getPosts}
         params={{ parentID: '' }}
         columns={columns}
-      />
+        />
+      )}
 
       <Drawer
         width={600}

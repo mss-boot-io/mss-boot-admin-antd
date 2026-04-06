@@ -2,6 +2,7 @@ import { Access } from '@/components/MssBoot/Access';
 import { getNotices, getNoticesId, putNoticeReadId } from '@/services/admin/notice';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   ActionType,
@@ -11,10 +12,11 @@ import {
   ProDescriptionsItemProps,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, Link, useIntl, useParams, useSearchParams } from '@umijs/max';
-import { Button, Drawer, message } from 'antd';
+import { FormattedMessage, Link, useIntl, useParams, useSearchParams, history } from '@umijs/max';
+import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
+import MobileNoticeList from './Mobile/NoticeList';
 
 const Index: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -23,11 +25,8 @@ const Index: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.Notice>();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const { isMobile } = useResponsive();
 
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
   const intl = useIntl();
 
   const columns: ProColumns<API.Notice>[] = [
@@ -145,7 +144,17 @@ const Index: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Notice, API.getNoticesParams>
+      {isMobile && !id ? (
+        <MobileNoticeList
+          request={getNotices}
+          onEdit={(record) => history.push(`/notice/${record.id}`)}
+          onCreate={() => history.push('/notice/create')}
+          onDelete={async () => {
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+        />
+      ) : (
+        <ProTable<API.Notice, API.getNoticesParams>
         headerTitle={intl.formatMessage({
           id: 'pages.notice.list.title',
           defaultMessage: 'Notice List',
@@ -169,6 +178,7 @@ const Index: React.FC = () => {
         request={getNotices}
         columns={columns}
       />
+      )}
 
       <Drawer
         width={600}

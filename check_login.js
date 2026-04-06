@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   await page.goto('http://localhost:8000/user/login');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(2000);
-  
+
   const html = await page.evaluate(() => {
     const inputs = document.querySelectorAll('.ant-input');
     const results = [];
@@ -21,13 +21,13 @@ const { chromium } = require('playwright');
         inputType: input.getAttribute('type'),
         parentClass: parent?.className,
         grandparentClass: grandparent?.className,
-        outerHTML: input.outerHTML.slice(0, 300)
+        outerHTML: input.outerHTML.slice(0, 300),
       });
     });
     return results;
   });
-  
+
   console.log(JSON.stringify(html, null, 2));
-  
+
   await browser.close();
 })();

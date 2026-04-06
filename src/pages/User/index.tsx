@@ -1,10 +1,13 @@
 import { Access } from '@/components/MssBoot/Access';
 import { getRoles } from '@/services/admin/role';
 import { deleteUsersId, getUsers, getUsersId, postUsers, putUsersId } from '@/services/admin/user';
-import { idRender, statusOptions } from '@/util/columnOptions';
+import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
 import { toOptions } from '@/util/toOptions';
+import { useOption } from '@/hooks/useOption';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
+import MobileUserList from './Mobile/UserList';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, history, Link, useIntl, useParams, useRequest } from '@umijs/max';
@@ -22,6 +25,10 @@ const UserList: React.FC = () => {
   const { id } = useParams();
   const [deptOptions, setDeptOptions] = useState<[]>([]);
   const [postOptions, setPostOptions] = useState<[]>([]);
+  const { valueEnum: statusValueEnum } = useOption('system', 'status');
+  const { isMobile } = useResponsive();
+
+  const intl = useIntl();
 
   const transferTree = (data: API.Post[] | API.Department, self: string): DataNode[] => {
     // @ts-ignore
@@ -48,9 +55,11 @@ const UserList: React.FC = () => {
     });
     return label;
   };
+
   const { data: roleOptions, loading } = useRequest(() => {
     return getRoles({ pageSize: 1000 });
   });
+
   useEffect(() => {
     getPosts({ pageSize: 1000, parentID: '' }).then((res) => {
       // @ts-ignore
@@ -62,11 +71,13 @@ const UserList: React.FC = () => {
     });
   }, []);
 
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
-  const intl = useIntl();
+  if (isMobile) {
+    return (
+      <PageContainer>
+        <MobileUserList />
+      </PageContainer>
+    );
+  }
 
   const columns: ProColumns<API.User>[] = [
     {
@@ -217,7 +228,7 @@ const UserList: React.FC = () => {
     {
       title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
-      valueEnum: statusOptions,
+      valueEnum: statusValueEnum,
     },
     // {
     //   title: '用户来源',

@@ -464,7 +464,8 @@ export default {
   'pages.department.email.invalid': 'Invalid email format',
 
   'pages.welcome.title': 'Welcome to mss-boot-io',
-  'pages.welcome.description': 'mss-boot-io is a scaffold solution integrating umi, Ant Design and ProComponents.',
+  'pages.welcome.description':
+    'mss-boot-io is a scaffold solution integrating umi, Ant Design and ProComponents.',
   'pages.welcome.more': 'Learn more',
   'pages.welcome.umi.title': 'Learn umi',
   'pages.welcome.umi.desc': 'umi is an extensible enterprise-level front-end application framework',

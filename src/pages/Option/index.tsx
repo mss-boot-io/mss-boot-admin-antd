@@ -8,6 +8,7 @@ import {
 } from '@/services/admin/option';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
 import type {
   ActionType,
@@ -24,9 +25,9 @@ import {
 import { FormattedMessage, useIntl, history, Link, useParams } from '@umijs/max';
 import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
-// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import { fieldIntl } from '@/util/fieldIntl';
+import MobileOptionList from './Mobile/OptionList';
 
 const Option: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -35,10 +36,7 @@ const Option: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.Option>();
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
+  const { isMobile } = useResponsive();
   const intl = useIntl();
 
   const columnsTable: ProColumns<API.OptionItem>[] = [
@@ -319,7 +317,18 @@ const Option: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Option, API.getOptionsParams>
+      {isMobile && !id ? (
+        <MobileOptionList
+          request={getOptions}
+          onEdit={(record) => history.push(`/option/${record.id}`)}
+          onCreate={() => history.push('/option/create')}
+          onDelete={async (record) => {
+            await deleteOptionsId({ id: record.id! });
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+        />
+      ) : (
+        <ProTable<API.Option, API.getOptionsParams>
         headerTitle={intl.formatMessage({
           id: 'pages.options.list.title',
           defaultMessage: 'Options List',
@@ -351,7 +360,8 @@ const Option: React.FC = () => {
         }
         request={getOptions}
         columns={columns}
-      />
+        />
+      )}
 
       <Drawer
         width={600}

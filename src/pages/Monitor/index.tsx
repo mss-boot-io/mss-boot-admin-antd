@@ -35,12 +35,14 @@ const Monitor: React.FC = () => {
     return <Card loading />;
   }
 
-  const memoryPercent = monitorData?.memoryTotal && monitorData?.memoryUsage
-    ? ((monitorData.memoryUsage / monitorData.memoryTotal) * 100).toFixed(1)
-    : 0;
-  const diskPercent = monitorData?.diskTotal && monitorData?.diskUsage
-    ? ((monitorData.diskUsage / monitorData.diskTotal) * 100).toFixed(1)
-    : 0;
+  const memoryPercent =
+    monitorData?.memoryTotal && monitorData?.memoryUsage
+      ? ((monitorData.memoryUsage / monitorData.memoryTotal) * 100).toFixed(1)
+      : 0;
+  const diskPercent =
+    monitorData?.diskTotal && monitorData?.diskUsage
+      ? ((monitorData.diskUsage / monitorData.diskTotal) * 100).toFixed(1)
+      : 0;
 
   return (
     <div>
@@ -50,8 +52,15 @@ const Monitor: React.FC = () => {
 
       {error && (
         <Alert
-          message={<FormattedMessage id="pages.monitor.error.title" defaultMessage="监控数据获取失败" />}
-          description={<FormattedMessage id="pages.monitor.error.description" defaultMessage="无法获取系统监控数据，请检查服务是否正常运行" />}
+          message={
+            <FormattedMessage id="pages.monitor.error.title" defaultMessage="监控数据获取失败" />
+          }
+          description={
+            <FormattedMessage
+              id="pages.monitor.error.description"
+              defaultMessage="无法获取系统监控数据，请检查服务是否正常运行"
+            />
+          }
           type="error"
           closable
           style={{ marginBottom: 16, borderRadius: 8 }}
@@ -68,7 +77,10 @@ const Monitor: React.FC = () => {
               valueStyle={{ color: (monitorData?.cpuUsage || 0) > 80 ? '#cf1322' : '#3f8600' }}
             />
             <div style={{ marginTop: 8, color: '#999' }}>
-              {monitorData?.cpuPhysicalCore} <FormattedMessage id="pages.monitor.cpu.physicalCore" defaultMessage="物理核心" /> / {monitorData?.cpuLogicalCore} <FormattedMessage id="pages.monitor.cpu.logicalCore" defaultMessage="逻辑核心" />
+              {monitorData?.cpuPhysicalCore}{' '}
+              <FormattedMessage id="pages.monitor.cpu.physicalCore" defaultMessage="物理核心" /> /{' '}
+              {monitorData?.cpuLogicalCore}{' '}
+              <FormattedMessage id="pages.monitor.cpu.logicalCore" defaultMessage="逻辑核心" />
             </div>
           </Card>
         </Col>
@@ -78,10 +90,13 @@ const Monitor: React.FC = () => {
               title={<FormattedMessage id="pages.monitor.memory" defaultMessage="内存使用" />}
               value={memoryPercent}
               suffix="%"
-              valueStyle={{ color: parseFloat(memoryPercent as string) > 80 ? '#cf1322' : '#3f8600' }}
+              valueStyle={{
+                color: parseFloat(memoryPercent as string) > 80 ? '#cf1322' : '#3f8600',
+              }}
             />
             <div style={{ marginTop: 8, color: '#999' }}>
-              {((monitorData?.memoryUsage || 0) / 1024 / 1024).toFixed(0)} MB / {((monitorData?.memoryTotal || 0) / 1024 / 1024).toFixed(0)} MB
+              {((monitorData?.memoryUsage || 0) / 1024 / 1024).toFixed(0)} MB /{' '}
+              {((monitorData?.memoryTotal || 0) / 1024 / 1024).toFixed(0)} MB
             </div>
           </Card>
         </Col>
@@ -102,7 +117,8 @@ const Monitor: React.FC = () => {
           <Card>
             <Statistic title="Goroutines" value={monitorData?.runtime?.goroutines || 0} />
             <div style={{ marginTop: 8, color: '#999' }}>
-              <FormattedMessage id="pages.monitor.gc.count" defaultMessage="GC 次数" />: {monitorData?.runtime?.numGC || 0}
+              <FormattedMessage id="pages.monitor.gc.count" defaultMessage="GC 次数" />:{' '}
+              {monitorData?.runtime?.numGC || 0}
             </div>
           </Card>
         </Col>
@@ -110,12 +126,20 @@ const Monitor: React.FC = () => {
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <Col xs={24} lg={12}>
-          <Card title={<FormattedMessage id="pages.monitor.cpu.trend" defaultMessage="CPU 使用率趋势" />}>
+          <Card
+            title={
+              <FormattedMessage id="pages.monitor.cpu.trend" defaultMessage="CPU 使用率趋势" />
+            }
+          >
             <Area {...cpuConfig} height={200} />
           </Card>
         </Col>
         <Col xs={24} lg={12}>
-          <Card title={<FormattedMessage id="pages.monitor.memory.trend" defaultMessage="内存使用率趋势" />}>
+          <Card
+            title={
+              <FormattedMessage id="pages.monitor.memory.trend" defaultMessage="内存使用率趋势" />
+            }
+          >
             <Area {...memoryConfig} height={200} />
           </Card>
         </Col>
@@ -126,16 +150,27 @@ const Monitor: React.FC = () => {
           <Card title={<FormattedMessage id="pages.monitor.runtime" defaultMessage="运行时信息" />}>
             <Row gutter={16}>
               <Col span={6}>
-                <Statistic title={<FormattedMessage id="pages.monitor.heap" defaultMessage="堆内存" />} value={((monitorData?.runtime?.heapAlloc || 0) / 1024 / 1024).toFixed(2)} suffix="MB" />
+                <Statistic
+                  title={<FormattedMessage id="pages.monitor.heap" defaultMessage="堆内存" />}
+                  value={((monitorData?.runtime?.heapAlloc || 0) / 1024 / 1024).toFixed(2)}
+                  suffix="MB"
+                />
               </Col>
               <Col span={6}>
-                <Statistic title={<FormattedMessage id="pages.monitor.gc.count" defaultMessage="GC 次数" />} value={monitorData?.runtime?.numGC || 0} />
+                <Statistic
+                  title={<FormattedMessage id="pages.monitor.gc.count" defaultMessage="GC 次数" />}
+                  value={monitorData?.runtime?.numGC || 0}
+                />
               </Col>
               <Col span={6}>
                 <Statistic title="Goroutines" value={monitorData?.runtime?.goroutines || 0} />
               </Col>
               <Col span={6}>
-                <Statistic title={<FormattedMessage id="pages.monitor.uptime" defaultMessage="运行时间" />} value={Math.floor((monitorData?.uptime || 0) / 3600)} suffix={<FormattedMessage id="pages.monitor.uptime.hour" defaultMessage="小时" />} />
+                <Statistic
+                  title={<FormattedMessage id="pages.monitor.uptime" defaultMessage="运行时间" />}
+                  value={Math.floor((monitorData?.uptime || 0) / 3600)}
+                  suffix={<FormattedMessage id="pages.monitor.uptime.hour" defaultMessage="小时" />}
+                />
               </Col>
             </Row>
           </Card>

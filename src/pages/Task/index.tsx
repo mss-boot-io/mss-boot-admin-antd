@@ -9,6 +9,7 @@ import {
 } from '@/services/admin/task';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { useResponsive } from '@/hooks/useResponsive';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -21,6 +22,7 @@ import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max'
 import { Button, Drawer, Form, Input, message, Popconfirm, Row, Col, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
+import MobileTaskList from './Mobile/TaskList';
 
 const TaskList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -31,6 +33,7 @@ const TaskList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.Role>();
   const { id } = useParams();
+  const { isMobile } = useResponsive();
   const intl = useIntl();
 
   const columns: ProColumns<API.Task>[] = [
@@ -462,7 +465,18 @@ const TaskList: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Task, API.Page>
+      {isMobile && !id ? (
+        <MobileTaskList
+          request={getTasks}
+          onEdit={(record) => history.push(`/task/${record.id}`)}
+          onCreate={() => history.push('/task/create')}
+          onDelete={async (record) => {
+            await deleteTasksId({ id: record.id! });
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+        />
+      ) : (
+        <ProTable<API.Task, API.Page>
         headerTitle={intl.formatMessage({
           id: 'pages.task.list.title',
           defaultMessage: 'Options List',
@@ -507,7 +521,8 @@ const TaskList: React.FC = () => {
         }
         request={getTasks}
         columns={columns}
-      />
+        />
+      )}
 
       <Drawer
         width={600}

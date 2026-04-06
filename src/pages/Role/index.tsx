@@ -10,9 +10,11 @@ import {
   postRoles,
   putRolesId,
 } from '@/services/admin/role';
-import { idRender, statusOptions } from '@/util/columnOptions';
+import { idRender } from '@/util/columnOptions';
 import { fieldIntl } from '@/util/fieldIntl';
 import { indexTitle } from '@/util/indexTitle';
+import { useOption } from '@/hooks/useOption';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { DrawerForm, PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
@@ -20,6 +22,7 @@ import { FormattedMessage, history, Link, useIntl, useParams } from '@umijs/max'
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import { DataNode } from 'antd/es/tree';
 import React, { useRef, useState } from 'react';
+import MobileRoleList from './Mobile/RoleList';
 
 const TableList: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState<boolean>(false);
@@ -34,10 +37,9 @@ const TableList: React.FC = () => {
 
   const { id } = useParams();
 
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
+  const { valueEnum: statusValueEnum } = useOption('system', 'status');
+  const { isMobile } = useResponsive();
+
   const intl = useIntl();
 
   const columns: ProColumns<API.Role>[] = [
@@ -78,7 +80,7 @@ const TableList: React.FC = () => {
     {
       title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
-      valueEnum: statusOptions,
+      valueEnum: statusValueEnum,
     },
     {
       title: fieldIntl(intl, 'updatedAt'),
@@ -210,44 +212,61 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Role, API.getRolesParams>
-        headerTitle={intl.formatMessage({
-          id: 'pages.role.list.title',
-          defaultMessage: 'Role List',
-        })}
-        actionRef={actionRef}
-        rowKey="id"
-        search={{
-          labelWidth: 120,
-        }}
-        type={id ? 'form' : 'table'}
-        onSubmit={id ? onSubmit : undefined}
-        toolBarRender={() => [
-          <Access key="/role/create">
-            <Button type="primary" key="create">
-              <Link type="primary" key="primary" to="/role/create">
-                <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
-              </Link>
-            </Button>
-          </Access>,
-        ]}
-        form={
-          id && id !== 'create'
-            ? {
-                request: async () => {
-                  const res = await getRolesId({ id });
-                  return res;
-                },
-              }
-            : {
-                initialValues: {
-                  status: 'enabled',
-                },
-              }
-        }
-        request={getRoles}
-        columns={columns}
-      />
+      {isMobile && !id ? (
+        <MobileRoleList
+          columns={columns}
+          request={getRoles}
+          onEdit={(record) => history.push(`/role/${record.id}`)}
+          onCreate={() => history.push('/role/create')}
+          onAuth={(record) => {
+            setCurrentRow(record);
+            setAuthModalOpen(true);
+          }}
+          onDelete={async (record) => {
+            await deleteRolesId({ id: record.id! });
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+        />
+      ) : (
+        <ProTable<API.Role, API.getRolesParams>
+          headerTitle={intl.formatMessage({
+            id: 'pages.role.list.title',
+            defaultMessage: 'Role List',
+          })}
+          actionRef={actionRef}
+          rowKey="id"
+          search={{
+            labelWidth: 120,
+          }}
+          type={id ? 'form' : 'table'}
+          onSubmit={id ? onSubmit : undefined}
+          toolBarRender={() => [
+            <Access key="/role/create">
+              <Button type="primary" key="create">
+                <Link type="primary" key="primary" to="/role/create">
+                  <PlusOutlined /> <FormattedMessage id="pages.table.new" defaultMessage="New" />
+                </Link>
+              </Button>
+            </Access>,
+          ]}
+          form={
+            id && id !== 'create'
+              ? {
+                  request: async () => {
+                    const res = await getRolesId({ id });
+                    return res;
+                  },
+                }
+              : {
+                  initialValues: {
+                    status: 'enabled',
+                  },
+                }
+          }
+          request={getRoles}
+          columns={columns}
+        />
+      )}
       <Drawer
         width={600}
         open={showDetail}

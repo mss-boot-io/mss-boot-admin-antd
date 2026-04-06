@@ -106,7 +106,18 @@ export const useWebSocket = (options: WebSocketOptions) => {
     ws.onerror = (error) => {
       onError?.(error);
     };
-  }, [url, onMessage, onOpen, onClose, onError, reconnect, reconnectInterval, maxReconnectAttempts, heartbeatInterval, send]);
+  }, [
+    url,
+    onMessage,
+    onOpen,
+    onClose,
+    onError,
+    reconnect,
+    reconnectInterval,
+    maxReconnectAttempts,
+    heartbeatInterval,
+    send,
+  ]);
 
   const disconnect = useCallback(() => {
     if (heartbeatTimerRef.current) {

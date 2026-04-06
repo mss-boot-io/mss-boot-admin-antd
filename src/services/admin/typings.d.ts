@@ -736,8 +736,16 @@ The Type method returns either this or "Bearer", the default. */
   };
 
   type Option = {
+    /** BuiltIn whether this option is built-in (system-managed) */
+    builtIn?: boolean;
+    /** Category option category for grouping */
+    category?: string;
     /** CreatedAt create time */
     createdAt?: string;
+    /** Description option description */
+    description?: string;
+    /** DisplayName display name for UI */
+    displayName?: string;
     /** ID primary key */
     id?: string;
     /** Items 选项内容 */
@@ -750,15 +758,51 @@ The Type method returns either this or "Bearer", the default. */
     status?: Status;
     /** UpdatedAt update time */
     updatedAt?: string;
+    /** Version option version for tracking changes */
+    version?: number;
   };
 
   type OptionItem = {
     color?: string;
+    /** Extra extra metadata (JSON object for custom fields) */
+    extra?: Record<string, any>;
     id?: string;
+    /** Icon icon identifier or URL */
+    icon?: string;
     key?: string;
     label?: string;
     sort?: number;
     value?: string;
+  };
+
+  type OptionVersion = {
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** ID primary key */
+    id?: string;
+    /** Items items snapshot at this version */
+    items?: OptionItem[];
+    /** OptionID parent option ID */
+    optionID?: string;
+    /** Remark version change remark */
+    remark?: string;
+    /** Version version number */
+    version?: number;
+  };
+
+  type OptionUsage = {
+    /** Count usage count */
+    count?: number;
+    /** FirstUsedAt first usage timestamp */
+    firstUsedAt?: string;
+    /** ItemValue the option item value being tracked */
+    itemValue?: string;
+    /** LastUsedAt last usage timestamp */
+    lastUsedAt?: string;
+    /** OptionID parent option ID */
+    optionID?: string;
+    /** Referrer referrer context (page/component name) */
+    referrer?: string;
   };
 
   type Page = {

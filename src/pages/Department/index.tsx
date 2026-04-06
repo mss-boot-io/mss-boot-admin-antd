@@ -1,6 +1,8 @@
 import { Access } from '@/components/MssBoot/Access';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { useOption } from '@/hooks/useOption';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
@@ -16,8 +18,8 @@ import {
   postDepartments,
   putDepartmentsId,
 } from '@/services/admin/department';
-import { statusOptions } from '@/util/statusOptions';
 import { getUsers } from '@/services/admin/user';
+import MobileDepartmentList from './Mobile/DepartmentList';
 
 const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -28,10 +30,9 @@ const TableList: React.FC = () => {
   const [list, setList] = useState<[]>([]);
   const { id } = useParams();
 
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
+  const { valueEnum: statusValueEnum } = useOption('system', 'status');
+  const { isMobile } = useResponsive();
+
   const intl = useIntl();
 
   const columns: ProColumns<API.Department>[] = [
@@ -158,7 +159,7 @@ const TableList: React.FC = () => {
     {
       title: fieldIntl(intl, 'status'),
       dataIndex: 'status',
-      valueEnum: statusOptions(intl),
+      valueEnum: statusValueEnum,
     },
     {
       title: fieldIntl(intl, 'updatedAt'),
@@ -279,7 +280,19 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Department, API.getDepartmentsParams>
+      {isMobile && !id ? (
+        <MobileDepartmentList
+          request={getDepartments}
+          onEdit={(record) => history.push(`/departments/${record.id}`)}
+          onCreate={() => history.push('/departments/create')}
+          onDelete={async (record) => {
+            await deleteDepartmentsId({ id: record.id! });
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+          parentList={list}
+        />
+      ) : (
+        <ProTable<API.Department, API.getDepartmentsParams>
         headerTitle={intl.formatMessage({
           id: 'pages.department.list.title',
           defaultMessage: 'Department List',
@@ -314,6 +327,7 @@ const TableList: React.FC = () => {
         params={{ parentID: '' }}
         columns={columns}
       />
+      )}
 
       <Drawer
         width={600}

@@ -8,6 +8,7 @@ import {
 } from '@/services/admin/language';
 import { idRender } from '@/util/columnOptions';
 import { indexTitle } from '@/util/indexTitle';
+import { useResponsive } from '@/hooks/useResponsive';
 import { PlusOutlined } from '@ant-design/icons';
 import type {
   ActionType,
@@ -24,18 +25,19 @@ import {
 import { FormattedMessage, history, useIntl, Link, useParams } from '@umijs/max';
 import { Button, Drawer, List, message, Popconfirm, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
-// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import { fieldIntl } from '@/util/fieldIntl';
+import MobileLanguageList from './Mobile/LanguageList';
 
 const Language: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const { id } = useParams();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.Language>();
+  const { isMobile } = useResponsive();
+  const intl = useIntl();
   const formRef = useRef<ProFormInstance>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>(() => []);
-  const intl = useIntl();
 
   const columnsTable: ProColumns<API.LanguageDefine>[] = [
     {
@@ -275,7 +277,18 @@ const Language: React.FC = () => {
 
   return (
     <PageContainer title={indexTitle(id)}>
-      <ProTable<API.Language, API.Page>
+      {isMobile && !id ? (
+        <MobileLanguageList
+          request={getLanguages}
+          onEdit={(record) => history.push(`/language/${record.id}`)}
+          onCreate={() => history.push('/language/create')}
+          onDelete={async (record) => {
+            await deleteLanguagesId({ id: record.id! });
+            message.success(intl.formatMessage({ id: 'pages.message.delete.success' }));
+          }}
+        />
+      ) : (
+        <ProTable<API.Language, API.Page>
         headerTitle={intl.formatMessage({
           id: 'pages.language.list.title',
           defaultMessage: 'Language List',
@@ -307,7 +320,8 @@ const Language: React.FC = () => {
         }
         request={getLanguages}
         columns={columns}
-      />
+        />
+      )}
 
       <Drawer
         width={600}
