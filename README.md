@@ -153,6 +153,74 @@ The `mss-boot-io` project has always been developed in the GoLand integrated dev
 7. [jwt-go](https://github.com/dgrijalva/jwt-go)
 8. [oauth2](https://pkg.go.dev/golang.org/x/oauth2)
 
+## Testing
+
+The project follows strict testing requirements with comprehensive test coverage for both desktop and mobile platforms.
+
+### Test Types
+
+#### 1. Unit Tests
+- **Location**: `__tests__/*.test.ts` or `*.test.tsx` 
+- **Minimum coverage**: **80%**
+- **Run command**: 
+  ```bash
+  pnpm test --coverage
+  ```
+
+#### 2. Integration Tests  
+- **Focus**: Component interactions with API mocks
+- **Tools**: React Testing Library + Mock Service Worker (MSW)
+- **Run command**:
+  ```bash
+  pnpm test:integration
+  ```
+
+#### 3. End-to-End (E2 E) Tests
+- **Full Stack Testing**: Uses Playwright for browser automation
+- **Critical user flows**: login, CRUD operations, permissions
+- **Mobile testing**: Comprehensive iPhone 12 Pro viewport tests
+- **Run command**: 
+  ```bash
+  pnpm e2e
+  ```
+
+### Coverage Requirements
+
+| Component | Unit Tests | Integration Tests | E2E Tests | Min Coverage |
+|-----------|-----------|-------------------|-----------|--------------|
+| Hooks | ✅ Required | Optional | N/A | 80% |
+| Components | ✅ Required | Optional | Optional | 75% |
+| Utils | ✅ Required | Optional | N/A | 90% |
+
+Detailed testing instructions are available in [TESTING.md](./TESTING.md).
+
+## Mobile H5 Adaptation
+
+The application features comprehensive mobile H5 adaptation with responsive design and mobile-specific components.
+
+### Key Features
+
+- **Responsive Detection**: Automatic detection using Ant Design breakpoints via `useResponsive` hook
+- **Mobile Components**: Dedicated mobile components in `/src/pages/*/Mobile/` directories
+- **Mobile Navigation**: Bottom tab bar navigation optimized for touch interfaces
+- **Viewport Handling**: Optimized layouts for iPhone 12 Pro (390x844) viewport
+- **Touch Optimization**: Touch-friendly UI elements and gestures
+
+### Mobile Architecture
+
+- **Desktop vs Mobile**: Components automatically switch between desktop and mobile layouts based on screen size
+- **Component Structure**: Each major page has both desktop (`/src/pages/User/List.tsx`) and mobile (`/src/pages/User/Mobile/List.tsx`) versions
+- **Styling**: Mobile-specific CSS in `src/styles/mobile.less`
+- **Performance**: Optimized asset loading and rendering for mobile devices
+
+### Development Guidelines
+
+- **Testing Mobile**: Use `pnpm e2e --project='iPhone 12 Pro'` to run mobile-specific tests
+- **Responsive Breakpoints**: Mobile layout activates below 768px width
+- **Touch Targets**: Ensure all interactive elements are at least 44px for touch accessibility
+
+For detailed mobile development documentation, see the full documentation site.
+
 ## 🔑 License
 
 [MIT](https://github.com/mss-boot-io/mss-boot-admin/blob/main/LICENSE)

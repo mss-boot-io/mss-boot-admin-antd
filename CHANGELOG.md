@@ -2,7 +2,7 @@
 
 All notable changes to the mss-boot-admin frontend will be documented in this file.
 
-## [Unreleased]
+## [v1.0.0] - 2026-04-06
 
 ### Fixed
 
@@ -28,6 +28,17 @@ All notable changes to the mss-boot-admin frontend will be documented in this fi
 - Loading/error states for monitor data
 - Visible error feedback on monitor fetch failures
 - Better error handling with retry capability
+- **Comprehensive Testing Infrastructure**:
+  - Unit tests with Jest (≥80% coverage requirement)
+  - Integration tests with React Testing Library + MSW
+  - E2E tests with Playwright including mobile viewport testing
+  - Detailed TESTING.md documentation
+- **Mobile H5 Adaptation**:
+  - Responsive detection using Ant Design breakpoints
+  - Dedicated mobile components in `/src/pages/*/Mobile/` directories
+  - Mobile-specific navigation with bottom tab bar
+  - Comprehensive mobile E2E tests for iPhone 12 Pro viewport
+  - Mobile-optimized styling and touch targets
 
 ### Removed
 
@@ -37,7 +48,7 @@ All notable changes to the mss-boot-admin frontend will be documented in this fi
 
 | Version    | Date       | Description                  |
 | ---------- | ---------- | ---------------------------- |
-| Unreleased | 2026-04-03 | Product polish and bug fixes |
+| v1.0.0 | 2026-04-06 | Product polish, testing infrastructure, and mobile H5 adaptation |
 
 ---
 
