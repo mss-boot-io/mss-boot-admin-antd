@@ -22,6 +22,7 @@ import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
 import { LarkOutlined } from '@/components/MssBoot/icon';
+import { resolveSafeRedirect } from './redirect';
 
 function randToken(): string {
   let result = '';
@@ -51,7 +52,7 @@ export function persistLoginState(
   localStorage.setItem('token.expire', data.expire?.toString() || '');
   localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
 
-  return new URL(currentHref).searchParams.get('redirect') || '/';
+  return resolveSafeRedirect(currentHref);
 }
 
 const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
@@ -101,9 +102,9 @@ const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
                   return;
                 } finally {
                   //登录成功跳转
-                  const urlParams = new URL(window.location.href).searchParams;
+                  const redirect = resolveSafeRedirect();
                   setTimeout(() => {
-                    history.push(urlParams.get('redirect') || '/');
+                    history.push(redirect);
                   }, 1000);
                 }
               }
@@ -195,7 +196,7 @@ const Login: React.FC = () => {
       }
       const redirect = persistLoginState(data, autoLogin);
       if (redirect) {
-        window.location.href = redirect;
+        history.push(redirect);
       }
       return;
     }
@@ -276,9 +277,9 @@ const Login: React.FC = () => {
             return;
           } finally {
             //登录成功跳转
-            const urlParams = new URL(window.location.href).searchParams;
+            const redirect = resolveSafeRedirect();
             setTimeout(() => {
-              history.push(urlParams.get('redirect') || '/');
+              history.push(redirect);
             }, 1000);
           }
         }

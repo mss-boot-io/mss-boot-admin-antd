@@ -14,6 +14,7 @@ import { postUserFakeCaptcha, postUserLogin } from '@/services/admin/user';
 import { fieldIntl } from '@/util/fieldIntl';
 import { flushSync } from 'react-dom';
 import AuthShell from '@/components/AuthShell';
+import { resolveSafeRedirect } from './redirect';
 
 const Register: React.FC = () => {
   const intl = useIntl();
@@ -46,12 +47,12 @@ const Register: React.FC = () => {
       localStorage.setItem('token.expire', data.expire?.toString() || '');
       localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
       await fetchUserInfo();
-      const urlParams = new URL(window.location.href).searchParams;
-      if (urlParams.get('redirect') === '/user/login') {
+      const redirect = resolveSafeRedirect();
+      if (redirect === '/user/login') {
         history.push('/');
         return;
       }
-      history.push(urlParams.get('redirect') || '/');
+      history.push(redirect);
       return;
     }
   };
