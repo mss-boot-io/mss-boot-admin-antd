@@ -4,12 +4,14 @@ on:
       env:
         description: 'Environment'
         required: true
-        default: 'alpha'
         type: string
     secrets:
       CF_API_TOKEN:
         description: 'Cloudflare API Token'
         required: true
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -22,7 +24,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 9
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -30,14 +32,14 @@ jobs:
           cache: pnpm
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build:${{ inputs.env }}
 
       - name: Install Dependencies for Workers Site
         working-directory: ./workers-site
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: fix route
         run: |
@@ -50,4 +52,3 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: ${{ inputs.env }}
-

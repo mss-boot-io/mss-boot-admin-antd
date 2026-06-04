@@ -13,7 +13,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, Link, useIntl, useParams, useSearchParams, history } from '@umijs/max';
-import { Button, Drawer, message, Popconfirm } from 'antd';
+import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import { fieldIntl } from '@/util/fieldIntl';
 import MobileNoticeList from './Mobile/NoticeList';

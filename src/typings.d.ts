@@ -11,6 +11,7 @@ declare module '*.gif';
 declare module '*.bmp';
 declare module '*.tiff';
 declare module 'omit.js';
+declare module 'uuid';
 // declare module 'numeral';
 declare module '@antv/data-set';
 declare module 'mockjs';

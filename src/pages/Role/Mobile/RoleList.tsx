@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Empty, List, Space, Tag, Popconfirm, message } from 'antd';
+import { Button, Card, Empty, List, Space, Tag, Popconfirm } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SafetyOutlined } from '@ant-design/icons';
-import { useIntl, history } from '@umijs/max';
 import { Access } from '@/components/MssBoot/Access';
 import type { ProColumns } from '@ant-design/pro-components';
 import styles from '@/styles/mobile.less';
@@ -16,14 +15,12 @@ interface MobileRoleListProps {
 }
 
 const MobileRoleList: React.FC<MobileRoleListProps> = ({
-  columns,
   request,
   onEdit,
   onCreate,
   onAuth,
   onDelete,
 }) => {
-  const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<API.Role[]>([]);
 
