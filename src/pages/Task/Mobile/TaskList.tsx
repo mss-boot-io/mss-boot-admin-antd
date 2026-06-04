@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Empty, List, Space, Tag, Popconfirm, message } from 'antd';
+import { Button, Card, Empty, List, Space, Tag, Popconfirm } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { useIntl, history } from '@umijs/max';
 import { Access } from '@/components/MssBoot/Access';
 import styles from '@/styles/mobile.less';
 
@@ -18,7 +17,6 @@ const MobileTaskList: React.FC<MobileTaskListProps> = ({
   onCreate,
   onDelete,
 }) => {
-  const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<any[]>([]);
 

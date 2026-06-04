@@ -214,7 +214,6 @@ const TableList: React.FC = () => {
     <PageContainer title={indexTitle(id)}>
       {isMobile && !id ? (
         <MobileRoleList
-          columns={columns}
           request={getRoles}
           onEdit={(record) => history.push(`/role/${record.id}`)}
           onCreate={() => history.push('/role/create')}

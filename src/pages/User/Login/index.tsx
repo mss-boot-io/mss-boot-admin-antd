@@ -22,6 +22,7 @@ import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
 import { LarkOutlined } from '@/components/MssBoot/icon';
+import { resolveSafeRedirect } from './redirect';
 
 function randToken(): string {
   let result = '';
@@ -37,6 +38,22 @@ function randToken(): string {
 export type ActionIconsFormProps = {
   fetchUserInfo: () => void;
 };
+
+export function persistLoginState(
+  data: API.LoginResponse,
+  autoLogin?: boolean,
+  currentHref = window.location.href,
+) {
+  if (data.code !== 200 || !data.token) {
+    return undefined;
+  }
+
+  localStorage.setItem('token', data.token);
+  localStorage.setItem('token.expire', data.expire?.toString() || '');
+  localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
+
+  return resolveSafeRedirect(currentHref);
+}
 
 const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
   const { initialState } = useModel('@@initialState');
@@ -85,9 +102,9 @@ const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
                   return;
                 } finally {
                   //登录成功跳转
-                  const urlParams = new URL(window.location.href).searchParams;
+                  const redirect = resolveSafeRedirect();
                   setTimeout(() => {
-                    history.push(urlParams.get('redirect') || '/');
+                    history.push(redirect);
                   }, 1000);
                 }
               }
@@ -177,13 +194,10 @@ const Login: React.FC = () => {
         });
         message.success(defaultLoginSuccessMessage);
       }
-      //set token to localstorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('token.expire', data.expire?.toString() || '');
-      localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
-      const urlParams = new URL(window.location.href).searchParams;
-      const redirect = urlParams.get('redirect') || '/';
-      window.location.href = redirect;
+      const redirect = persistLoginState(data, autoLogin);
+      if (redirect) {
+        history.push(redirect);
+      }
       return;
     }
   };
@@ -263,9 +277,9 @@ const Login: React.FC = () => {
             return;
           } finally {
             //登录成功跳转
-            const urlParams = new URL(window.location.href).searchParams;
+            const redirect = resolveSafeRedirect();
             setTimeout(() => {
-              history.push(urlParams.get('redirect') || '/');
+              history.push(redirect);
             }, 1000);
           }
         }

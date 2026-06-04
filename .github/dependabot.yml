@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "area/frontend"
+      - "type/security"
+  - package-ecosystem: "npm"
+    directory: "/workers-site"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "area/devops"
+      - "type/security"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "area/devops"
+      - "type/security"

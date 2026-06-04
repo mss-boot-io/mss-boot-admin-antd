@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   cicd:
     uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@main

@@ -1,13 +1,13 @@
 import Footer from '@/components/Footer';
 import { Question, SelectLang } from '@/components/RightContent';
-import { LinkOutlined, MenuOutlined } from '@ant-design/icons';
+import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import { RunTimeLayoutConfig } from '@umijs/max';
 import { addLocale, FormattedMessage, history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { getUserUserInfo } from './services/admin/user';
 import { getMenuAuthorize } from './services/admin/menu';
