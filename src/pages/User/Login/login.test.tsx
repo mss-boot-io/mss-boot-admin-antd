@@ -1,6 +1,7 @@
 ﻿import { render, fireEvent, act } from '@testing-library/react';
 import React from 'react';
 import { TestBrowser } from '@@/testBrowser';
+import { persistLoginState } from './index';
 
 // @ts-ignore
 import { startMock } from '@@/requestRecordMock';
@@ -76,5 +77,22 @@ describe('Login Page', () => {
     expect((passwordInput as HTMLInputElement).value).toBe('ant.design');
 
     rootContainer.unmount();
+  });
+
+  it('should persist login state and resolve redirect', () => {
+    const redirect = persistLoginState(
+      {
+        code: 200,
+        token: 'test-token',
+        expire: '3600',
+      },
+      true,
+      'https://admin-beta.mss-boot-io.top/user/login?redirect=/workplace',
+    );
+
+    expect(localStorage.setItem).toHaveBeenCalledWith('token', 'test-token');
+    expect(localStorage.setItem).toHaveBeenCalledWith('token.expire', '3600');
+    expect(localStorage.setItem).toHaveBeenCalledWith('autoLogin', 'true');
+    expect(redirect).toBe('/workplace');
   });
 });

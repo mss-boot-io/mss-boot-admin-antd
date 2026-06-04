@@ -38,6 +38,22 @@ export type ActionIconsFormProps = {
   fetchUserInfo: () => void;
 };
 
+export function persistLoginState(
+  data: API.LoginResponse,
+  autoLogin?: boolean,
+  currentHref = window.location.href,
+) {
+  if (data.code !== 200 || !data.token) {
+    return undefined;
+  }
+
+  localStorage.setItem('token', data.token);
+  localStorage.setItem('token.expire', data.expire?.toString() || '');
+  localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
+
+  return new URL(currentHref).searchParams.get('redirect') || '/';
+}
+
 const ActionIcons: React.FC<ActionIconsFormProps> = (props) => {
   const { initialState } = useModel('@@initialState');
   const scopes = initialState?.appConfig?.security?.githubScope?.replace(/,/g, '+') || '';
@@ -177,13 +193,10 @@ const Login: React.FC = () => {
         });
         message.success(defaultLoginSuccessMessage);
       }
-      //set token to localstorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('token.expire', data.expire?.toString() || '');
-      localStorage.setItem('autoLogin', autoLogin?.toString() || 'false');
-      const urlParams = new URL(window.location.href).searchParams;
-      const redirect = urlParams.get('redirect') || '/';
-      window.location.href = redirect;
+      const redirect = persistLoginState(data, autoLogin);
+      if (redirect) {
+        window.location.href = redirect;
+      }
       return;
     }
   };

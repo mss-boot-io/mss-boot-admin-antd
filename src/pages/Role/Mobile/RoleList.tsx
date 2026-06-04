@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Empty, List, Space, Tag, Popconfirm } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SafetyOutlined } from '@ant-design/icons';
 import { Access } from '@/components/MssBoot/Access';
-import type { ProColumns } from '@ant-design/pro-components';
 import styles from '@/styles/mobile.less';
 
 interface MobileRoleListProps {
-  columns: ProColumns<API.Role>[];
   request: (params: any) => Promise<API.Page & { data?: API.Role[] }>;
   onEdit: (record: API.Role) => void;
   onCreate: () => void;
