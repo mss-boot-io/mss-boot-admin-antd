@@ -6,19 +6,12 @@ settings:
 
 dependencies:
   '@cloudflare/kv-asset-handler':
-    specifier: ^0.3.0
-    version: 0.3.0
+    specifier: ^0.5.0
+    version: 0.5.0
 
 packages:
 
-  /@cloudflare/kv-asset-handler@0.3.0:
-    resolution: {integrity: sha512-9CB/MKf/wdvbfkUdfrj+OkEwZ5b7rws0eogJ4293h+7b6KX5toPwym+VQKmILafNB9YiehqY0DlNrDcDhdWHSQ==}
-    dependencies:
-      mime: 3.0.0
-    dev: false
-
-  /mime@3.0.0:
-    resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
-    engines: {node: '>=10.0.0'}
-    hasBin: true
+  /@cloudflare/kv-asset-handler@0.5.0:
+    resolution: {integrity: sha512-jxQYkj8dSIzc0cD6cMMNdOc1UVjqSqu8BZdor5s8cGjW2I8BjODt/kWPVdY+u9zj3ms75Q5qaZgnxUad83+eAg==}
+    engines: {node: '>=22.0.0'}
     dev: false
