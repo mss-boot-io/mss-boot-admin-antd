@@ -1,6 +1,6 @@
 # mss-boot-admin-antd
 
-[![Build Status](https://github.com/mss-boot-io/mss-boot-admin/workflows/CI/badge.svg)](https://github.com/mss-boot-io/mss-boot-admin) [![Release](https://img.shields.io/github/v/release/mss-boot-io/mss-boot-admin.svg?style=flat-square)](https://github.com/mss-boot-io/mss-boot-admin/releases) [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/mss-boot-io/mss-boot-admin)
+[![CI](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/ci.yml/badge.svg)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/ci.yml) [![CodeQL](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/codeql.yml/badge.svg)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/codeql.yml) [![OpenSSF Scorecard](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/scorecard.yml/badge.svg)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/scorecard.yml) [![Release](https://img.shields.io/github/v/release/mss-boot-io/mss-boot-admin-antd.svg?style=flat-square)](https://github.com/mss-boot-io/mss-boot-admin-antd/releases) [![License](https://img.shields.io/github/license/mss-boot-io/mss-boot-admin-antd.svg?style=flat-square)](https://github.com/mss-boot-io/mss-boot-admin-antd/blob/main/LICENSE)
 
 [English](./README.md) | 简体中文
 
@@ -11,6 +11,10 @@
 ## 教程
 
 [在线文档](https://docs.mss-boot-io.top) [视频教程](https://space.bilibili.com/597294782/channel/seriesdetail?sid=3881026)
+
+## 社区
+
+[贡献指南](./CONTRIBUTING.md) [安全策略](./SECURITY.md) [支持渠道](./SUPPORT.md) [适合首次贡献的任务](https://github.com/mss-boot-io/mss-boot-admin-antd/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22) [AI 记忆](./aigc/prompts/readme.zh-CN.md)
 
 ## 项目地址
 
