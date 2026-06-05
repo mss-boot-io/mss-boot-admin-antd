@@ -1,16 +1,13 @@
 name: (alpha)Deploy To Cloudflare
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   cicd:
-    if: ${{ github.actor != 'dependabot[bot]' && !startsWith(github.head_ref, 'dependabot/') }}
     uses: mss-boot-io/mss-boot-admin-antd/.github/workflows/cf.yml@main
     with:
       env: alpha
