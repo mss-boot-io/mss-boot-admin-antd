@@ -17,6 +17,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
+    concurrency:
+      group: cloudflare-${{ inputs.env }}
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v6
