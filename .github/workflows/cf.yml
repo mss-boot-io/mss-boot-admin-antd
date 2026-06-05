@@ -50,7 +50,7 @@ jobs:
           cp -r workers-site dist/
 
       - name: deploy ${{ inputs.env }}
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         if: ${{ inputs.env == 'alpha' || inputs.env == 'beta' || inputs.env == 'prod' }}
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
