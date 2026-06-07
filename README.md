@@ -227,6 +227,6 @@ For detailed mobile development documentation, see the full documentation site.
 
 ## 🔑 License
 
-[MIT](https://github.com/mss-boot-io/mss-boot-admin/blob/main/LICENSE)
+[MIT](https://github.com/mss-boot-io/mss-boot-admin-antd/blob/main/LICENSE)
 
 Copyright (c) 2024 mss-boot-io
