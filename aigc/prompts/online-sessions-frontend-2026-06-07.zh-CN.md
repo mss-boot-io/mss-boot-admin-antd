@@ -1,6 +1,6 @@
 # 在线会话与强制下线 · 前端 UI（Online Sessions & Force Logout）
 
-> 范围：`mss-boot-admin-antd` Phase 1 前端 UI（对接后端 PR `12ain/mss-boot-admin#1`，issue `#373`）。
+> 范围：`mss-boot-admin-antd` Phase 1 前端 UI（对接后端 PR `mss-boot-io/mss-boot-admin#376`，issue `mss-boot-io/mss-boot-admin#373`）。
 >
 > 适用代码版本：本文件随 `feat/online-sessions-frontend` 分支提交（2026-06-07）。
 >
