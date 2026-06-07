@@ -6,6 +6,7 @@ import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
+import { postOnlineSessionLogout } from '@/services/admin/onlineSession';
 import HeaderDropdown from '../HeaderDropdown';
 
 export type GlobalHeaderRightProps = {
@@ -26,6 +27,12 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    * 退出登录，并且将当前的 url 保存
    */
   const loginOut = async () => {
+    try {
+      // 通知后端吊销 sid + 写审计；失败时静默，仍执行本地清理
+      await postOnlineSessionLogout();
+    } catch {
+      // ignore
+    }
     // delete localStorage.token;
     localStorage.removeItem('login.type');
     localStorage.removeItem('github.token');
