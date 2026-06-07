@@ -1318,4 +1318,57 @@ The Type method returns either this or "Bearer", the default. */
     userID?: string;
     type?: string;
   };
+
+  type UserSession = {
+    /** ID primary key */
+    id?: string;
+    userID?: string;
+    username?: string;
+    roleID?: string;
+    loginAt?: string;
+    lastSeenAt?: string;
+    expiredAt?: string;
+    ip?: string;
+    userAgent?: string;
+    revoked?: boolean;
+    revokedAt?: string;
+    revokedBy?: string;
+    revokeReason?: 'logout' | 'force-by-session' | 'force-by-user' | 'expired';
+    /** CreatedAt create time */
+    createdAt?: string;
+    /** UpdatedAt update time */
+    updatedAt?: string;
+  };
+
+  type getOnlineSessionsParams = {
+    status?: 'active' | 'revoked' | 'expired';
+    userID?: string;
+    username?: string;
+    ip?: string;
+    current?: number;
+    pageSize?: number;
+  };
+
+  type getOnlineSessionParams = {
+    id: string;
+  };
+
+  type deleteOnlineSessionParams = {
+    id: string;
+  };
+
+  type deleteOnlineSessionUserParams = {
+    userID: string;
+  };
+
+  type OnlineSessionRevokeResult = {
+    id?: string;
+    userID?: string;
+    revokedAt?: string;
+  };
+
+  type OnlineSessionRevokeUserResult = {
+    affected?: number;
+    userID?: string;
+  };
 }
