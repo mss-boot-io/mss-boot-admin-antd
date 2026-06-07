@@ -280,6 +280,23 @@ export default [
     ],
   },
   {
+    path: '/security',
+    name: 'menu.security',
+    icon: 'safety',
+    routes: [
+      {
+        path: '/security',
+        redirect: '/security/online-sessions',
+      },
+      {
+        path: '/security/online-sessions',
+        name: 'menu.security.online-sessions',
+        icon: 'desktop',
+        component: './OnlineSession',
+      },
+    ],
+  },
+  {
     path: '/log',
     name: 'menu.system.log',
     icon: 'fileText',
