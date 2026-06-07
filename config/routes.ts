@@ -280,7 +280,7 @@ export default [
   },
   {
     path: '/security',
-    name: 'menu.security',
+    name: 'security',
     icon: 'safety',
     routes: [
       {
@@ -289,7 +289,7 @@ export default [
       },
       {
         path: '/security/online-sessions',
-        name: 'menu.security.online-sessions',
+        name: 'online-sessions',
         icon: 'desktop',
         component: './OnlineSession',
       },
@@ -297,7 +297,7 @@ export default [
   },
   {
     path: '/log',
-    name: 'menu.system.log',
+    name: 'system.log',
     icon: 'fileText',
     routes: [
       {
