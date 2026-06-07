@@ -38,7 +38,7 @@ const OnlineSessionPage: React.FC = () => {
   const handleRevoke = async (id?: string) => {
     if (!id) return;
     await deleteOnlineSession({ id });
-    message.success(intl.formatMessage({ id: 'pages.onlineSession.confirm.revoke' }));
+    message.success(intl.formatMessage({ id: 'pages.onlineSession.result.revoke.success' }));
     actionRef.current?.reload();
   };
 
@@ -101,6 +101,7 @@ const OnlineSessionPage: React.FC = () => {
       valueType: 'select',
       initialValue: 'active',
       valueEnum: {
+        all: { text: intl.formatMessage({ id: 'pages.onlineSession.status.all' }) },
         active: { text: intl.formatMessage({ id: 'pages.onlineSession.status.active' }) },
         revoked: { text: intl.formatMessage({ id: 'pages.onlineSession.status.revoked' }) },
         expired: { text: intl.formatMessage({ id: 'pages.onlineSession.status.expired' }) },
@@ -153,10 +154,12 @@ const OnlineSessionPage: React.FC = () => {
         columns={columns}
         request={async (params) => {
           const { current, pageSize, status, userID, username, ip } = params as any;
+          // status === 'all' 或为空 → 不传，后端按全集返回
+          const apiStatus = status && status !== 'all' ? (status as SessionStatus) : undefined;
           const res = await getOnlineSessions({
             current,
             pageSize,
-            status: (status as SessionStatus) || 'active',
+            status: apiStatus,
             userID,
             username,
             ip,
