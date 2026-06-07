@@ -159,21 +159,21 @@ E2E tests are located in the `e2e/` directory and use Playwright for browser aut
 
 ```bash
 # Install Playwright browsers (first time only)
-pnpm exec playwright install
+pnpm run playwright:install
 
 # Run all E2E tests
-pnpm e2e
+pnpm run test:e2e
 
 # Run E2E tests in headed mode (visible browser)
-pnpm e2e --headed
+pnpm run test:e2e -- --headed
 
 # Run specific test file
-pnpm e2e e2e/login.spec.ts
+pnpm run test:e2e -- e2e/login.spec.ts
 
 # Run tests with specific browser
-pnpm e2e --project=chromium
-pnpm e2e --project=firefox  
-pnpm e2e --project=webkit
+pnpm run test:e2e -- --project=chromium
+pnpm run test:e2e -- --project=firefox
+pnpm run test:e2e -- --project=webkit
 ```
 
 ### Example: Login E2E Test
@@ -232,10 +232,10 @@ const config = {
 
 ```bash
 # Run mobile-specific tests
-pnpm e2e --project='iPhone 12 Pro'
+pnpm run test:e2e -- --project='iPhone 12 Pro'
 
 # Run all tests including mobile
-pnpm e2e
+pnpm run test:e2e
 ```
 
 ### Example: Mobile Navigation Test
@@ -315,7 +315,7 @@ Follow this workflow when developing new features:
 2. TESTING PHASE (MANDATORY)
    ├── Unit Tests: pnpm test
    ├── Integration Tests: pnpm test
-   └── E2E Tests: pnpm e2e (for major features)
+   └── E2E Tests: pnpm run test:e2e (for major features)
 
 3. VERIFICATION PHASE
    ├── Check test coverage (≥80%)
@@ -335,7 +335,7 @@ pnpm test --coverage
 # Coverage summary must show ≥80%
 
 # Run E2E tests for major changes
-pnpm e2e
+pnpm run test:e2e
 ```
 
 ## Writing Tests
@@ -386,10 +386,10 @@ jobs:
   test:
     steps:
       - name: Run unit tests
-        run: pnpm test --coverage
-      
+        run: pnpm test -- --runInBand
+
       - name: Run E2E tests
-        run: pnpm e2e
+        run: pnpm run test:e2e
 ```
 
 ### Pre-commit Hooks
@@ -398,16 +398,16 @@ The project uses Husky for pre-commit hooks:
 
 ```bash
 # .husky/pre-commit
-pnpm lint
-pnpm test:unit
+npx --no-install lint-staged
 ```
 
-### Pre-push Hooks
+### Local Verification
 
 ```bash
-# .husky/pre-push
+pnpm run lint
+pnpm tsc
 pnpm test
-pnpm test:integration
+pnpm run build:local
 ```
 
 ## Test Environment Setup
@@ -423,7 +423,7 @@ go run . server
 
 # Then run E2E tests
 cd ../mss-boot-admin-antd
-pnpm e2e
+pnpm run test:e2e
 ```
 
 ### Environment Variables
@@ -448,11 +448,8 @@ pnpm test --inspect-brk --runInBand src/hooks/useUser.test.ts
 ### E2E Test Debugging
 
 ```bash
-# Run in debug mode
-pnpm e2e --debug
-
-# Slow motion mode
-pnpm e2e --slowMo=500
+# Open the Playwright inspector for step-by-step debugging
+pnpm run test:e2e -- --debug
 ```
 
 ## Troubleshooting
