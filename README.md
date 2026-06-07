@@ -176,16 +176,16 @@ The project follows strict testing requirements with comprehensive test coverage
 - **Tools**: React Testing Library + Mock Service Worker (MSW)
 - **Run command**:
   ```bash
-  pnpm test:integration
+  pnpm test
   ```
 
-#### 3. End-to-End (E2 E) Tests
+#### 3. End-to-End (E2E) Tests
 - **Full Stack Testing**: Uses Playwright for browser automation
 - **Critical user flows**: login, CRUD operations, permissions
 - **Mobile testing**: Comprehensive iPhone 12 Pro viewport tests
 - **Run command**: 
   ```bash
-  pnpm e2e
+  pnpm run test:e2e
   ```
 
 ### Coverage Requirements
@@ -219,7 +219,7 @@ The application features comprehensive mobile H5 adaptation with responsive desi
 
 ### Development Guidelines
 
-- **Testing Mobile**: Use `pnpm e2e --project='iPhone 12 Pro'` to run mobile-specific tests
+- **Testing Mobile**: Use `pnpm run test:e2e -- --project='iPhone 12 Pro'` to run mobile-specific tests
 - **Responsive Breakpoints**: Mobile layout activates below 768px width
 - **Touch Targets**: Ensure all interactive elements are at least 44px for touch accessibility
 
