@@ -6,7 +6,7 @@ import {
   type ProColumns,
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
-import { Button, Popconfirm, Tag, Tooltip, Typography, message } from 'antd';
+import { Button, message, Popconfirm, Tag, Tooltip, Typography } from 'antd';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { useRef, useState } from 'react';
@@ -163,7 +163,7 @@ const OnlineSessionPage: React.FC = () => {
           });
           return {
             data: res.data ?? [],
-            total: typeof res.count === 'number' ? res.count : 0,
+            total: typeof res.total === 'number' ? res.total : 0,
             success: true,
           };
         }}
@@ -174,11 +174,7 @@ const OnlineSessionPage: React.FC = () => {
         ]}
         search={{ labelWidth: 80 }}
       />
-      <SessionDetailDrawer
-        id={detailId}
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      />
+      <SessionDetailDrawer id={detailId} open={drawerOpen} onClose={() => setDrawerOpen(false)} />
       <RevokeUserModal
         open={revokeUserOpen}
         presetUserID={presetUserID}

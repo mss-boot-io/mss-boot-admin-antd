@@ -1,5 +1,4 @@
-﻿import component from '@/locales/en-US/component';
-import routesCustom from './routes.custom';
+﻿import routesCustom from './routes.custom';
 
 /**
  * @name umi 的路由配置

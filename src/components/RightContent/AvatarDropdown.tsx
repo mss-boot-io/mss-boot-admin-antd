@@ -1,12 +1,12 @@
+import { postOnlineSessionLogout } from '@/services/admin/onlineSession';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { history, useModel, useIntl } from '@umijs/max';
+import { history, useIntl, useModel } from '@umijs/max';
 import { Spin } from 'antd';
 import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
-import { postOnlineSessionLogout } from '@/services/admin/onlineSession';
 import HeaderDropdown from '../HeaderDropdown';
 
 export type GlobalHeaderRightProps = {
