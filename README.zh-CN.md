@@ -150,6 +150,6 @@ npm run start
 
 ## 🔑 License
 
-[MIT](https://github.com/mss-boot-io/mss-boot-admin/blob/main/LICENSE)
+[MIT](https://github.com/mss-boot-io/mss-boot-admin-antd/blob/main/LICENSE)
 
 Copyright (c) 2024 mss-boot-io
