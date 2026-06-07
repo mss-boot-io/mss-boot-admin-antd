@@ -1333,7 +1333,7 @@ The Type method returns either this or "Bearer", the default. */
     revoked?: boolean;
     revokedAt?: string;
     revokedBy?: string;
-    revokeReason?: 'logout' | 'force-by-session' | 'force-by-user' | 'expired';
+    revokeReason?: 'logout' | 'force-by-session' | 'force-by-user';
     /** CreatedAt create time */
     createdAt?: string;
     /** UpdatedAt update time */
