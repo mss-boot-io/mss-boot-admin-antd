@@ -1,10 +1,13 @@
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 export type SessionStatus = 'active' | 'revoked' | 'expired';
 
-export function getSessionStatus(row: API.UserSession, now: dayjs.Dayjs = dayjs()): SessionStatus {
+export function getSessionStatus(
+  row: API.UserSession,
+  now: moment.Moment = moment(),
+): SessionStatus {
   if (row.revoked) return 'revoked';
-  if (row.expiredAt && dayjs(row.expiredAt).isBefore(now)) return 'expired';
+  if (row.expiredAt && moment(row.expiredAt).isBefore(now)) return 'expired';
   return 'active';
 }
 

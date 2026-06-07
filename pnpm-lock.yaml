@@ -35,9 +35,6 @@ importers:
       classnames:
         specifier: ^2.3.2
         version: 2.3.2
-      dayjs:
-        specifier: ^1.11.0
-        version: 1.11.21
       lodash:
         specifier: ^4.17.21
         version: 4.17.21

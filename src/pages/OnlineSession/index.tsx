@@ -7,14 +7,11 @@ import {
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 import { Button, message, Popconfirm, Tag, Tooltip, Typography } from 'antd';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import moment from 'moment';
 import React, { useRef, useState } from 'react';
 import RevokeUserModal from './components/RevokeUserModal';
 import SessionDetailDrawer from './components/SessionDetailDrawer';
 import { getSessionStatus, STATUS_COLOR, STATUS_INTL_ID, type SessionStatus } from './utils';
-
-dayjs.extend(relativeTime);
 
 const OnlineSessionPage: React.FC = () => {
   const intl = useIntl();
@@ -82,8 +79,8 @@ const OnlineSessionPage: React.FC = () => {
       hideInSearch: true,
       render: (_, row) =>
         row.lastSeenAt ? (
-          <Tooltip title={dayjs(row.lastSeenAt).format('YYYY-MM-DD HH:mm:ss')}>
-            {dayjs(row.lastSeenAt).fromNow()}
+          <Tooltip title={moment(row.lastSeenAt).format('YYYY-MM-DD HH:mm:ss')}>
+            {moment(row.lastSeenAt).fromNow()}
           </Tooltip>
         ) : (
           '—'

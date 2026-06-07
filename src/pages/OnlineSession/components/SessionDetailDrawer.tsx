@@ -1,7 +1,7 @@
 import { getOnlineSession } from '@/services/admin/onlineSession';
 import { useIntl, useRequest } from '@umijs/max';
 import { Descriptions, Drawer, Spin, Tag } from 'antd';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import React from 'react';
 import { getSessionStatus, STATUS_COLOR, STATUS_INTL_ID } from '../utils';
 
@@ -21,7 +21,7 @@ const SessionDetailDrawer: React.FC<Props> = ({ id, open, onClose }) => {
     { refreshDeps: [id] },
   );
 
-  const fmtTime = (t?: string) => (t ? dayjs(t).format('YYYY-MM-DD HH:mm:ss') : '—');
+  const fmtTime = (t?: string) => (t ? moment(t).format('YYYY-MM-DD HH:mm:ss') : '—');
   const status = data ? getSessionStatus(data) : undefined;
 
   return (
