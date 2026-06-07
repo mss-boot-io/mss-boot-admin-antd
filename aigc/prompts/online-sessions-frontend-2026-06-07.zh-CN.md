@@ -192,7 +192,7 @@ return 'active';
 
 ProTable 内建 search：
 
-- `status` Select：`active | revoked | expired`，`initialValue: 'active'`
+- `status` Select：`all | active | revoked | expired`，`initialValue: 'active'`；选 `all` 或清空时前端不传 status，后端按全集返回（避免用户清空筛选后被前端默认值卡回 active）
 - `userID` Input
 - `username` Input（后端 LIKE）
 - `ip` Input
