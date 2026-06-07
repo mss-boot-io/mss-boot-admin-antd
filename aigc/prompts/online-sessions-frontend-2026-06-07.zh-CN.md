@@ -53,7 +53,7 @@
 
 行操作或工具栏"踢出该用户全部会话" ──► RevokeUserModal
                                       └─► DELETE /admin/api/online-sessions/user/:userID
-                                      └─► message.success({affected}) + reload()
+                                      └─► message.success(通用文案) + reload()
 
 顶部 logout ──► try { POST /admin/api/online-sessions/logout } catch {}
               └─► localStorage 清理 + history.replace('/user/login')
@@ -104,7 +104,9 @@ pages.onlineSession.status.{active,revoked,expired}
 pages.onlineSession.columns.{username,userID,ip,userAgent,loginAt,lastSeenAt,expiredAt,status,option}
 pages.onlineSession.action.{detail,revoke,revokeUser,revokeUserToolbar}
 pages.onlineSession.confirm.revoke
-pages.onlineSession.confirm.revokeUser.{title,userIDLabel,userIDRequired,affected}
+pages.onlineSession.confirm.revokeUser.{title,userIDLabel,userIDRequired}
+pages.onlineSession.result.revoke.success
+pages.onlineSession.result.revokeUser.success
 pages.onlineSession.drawer.title
 pages.onlineSession.drawer.field.{revokedBy,revokedAt,revokeReason}
 ```
@@ -138,7 +140,9 @@ onRevoke(row) → Popconfirm → deleteOnlineSession({ id: row.id })
 工具栏按钮 → RevokeUserModal（输入 userID）
 行操作链接 → RevokeUserModal（userID 预填，输入框禁用）
 → deleteOnlineSessionUser({ userID })
-→ message.success(`已下线 ${affected} 个会话`) → reload()
+→ message.success(`已踢出该用户的全部会话`) → reload()
+
+注：后端 DELETE 走 HTTP 204 + body（规范上 204 不应有 body，客户端解析不可靠），前端 UI 不依赖响应中的 `affected` 字段。
 ```
 
 ### 5.4 详情 Drawer
@@ -192,7 +196,7 @@ return 'active';
 
 ProTable 内建 search：
 
-- `status` Select：`all | active | revoked | expired`，`initialValue: 'active'`；选 `all` 或清空时前端不传 status，后端按全集返回（避免用户清空筛选后被前端默认值卡回 active）
+- `status` Select：`all | active | revoked | expired`，`initialValue: 'active'`；选 `all` 时显式向后端发 `status=all`（后端 list switch 不命中任何 case → 不加 status 过滤）。不能用 undefined/空字符串表示全集——后端会把空 status 默认为 `active`。
 - `userID` Input
 - `username` Input（后端 LIKE）
 - `ip` Input
@@ -211,7 +215,7 @@ ProTable 内建 search：
 | `getOnlineSessions` | GET `/admin/api/online-sessions` | `{ data: UserSession[], total, current, pageSize }`（`response.PageOK`） |
 | `getOnlineSession` | GET `/admin/api/online-sessions/:id` | 裸 `UserSession` JSON（`api.OK`） |
 | `deleteOnlineSession` | DELETE `/admin/api/online-sessions/:id` | `{ id, userID, revokedAt }` |
-| `deleteOnlineSessionUser` | DELETE `/admin/api/online-sessions/user/:userID` | `{ affected, userID }` |
+| `deleteOnlineSessionUser` | DELETE `/admin/api/online-sessions/user/:userID` | `{ affected, userID }`（HTTP 204；规范上 204 不应有 body，前端不依赖响应字段，使用通用 success 文案） |
 | `postOnlineSessionLogout` | POST `/admin/api/online-sessions/logout` | `{ ok: true }`（POST 走 201） |
 
 ### 9.2 TS 类型（`src/services/admin/typings.d.ts`）
@@ -290,7 +294,7 @@ namespace API {
    2. 切换 status 到 revoked / expired，列表数据正确切换
    3. userID / username / ip 各筛选一次
    4. 单条强制下线 → success message + 列表 reload
-   5. 工具栏"踢用户全部" → message 显示 `affected` 数
+   5. 工具栏"踢用户全部" → 通用成功提示
    6. 行操作"踢用户全部" → 弹窗内 userID 已预填且禁用编辑
    7. 详情 Drawer 完整字段可见，UA 完整渲染
    8. 顶部"退出登录" → 后端 `mss_boot_audit_logs` 有 `action=logout` 记录

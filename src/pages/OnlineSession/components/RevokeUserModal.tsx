@@ -26,14 +26,8 @@ const RevokeUserModal: React.FC<Props> = ({ open, presetUserID, onClose, onSucce
     const { userID } = await form.validateFields();
     setSubmitting(true);
     try {
-      const res = await deleteOnlineSessionUser({ userID });
-      const affected = res?.affected ?? 0;
-      message.success(
-        intl.formatMessage(
-          { id: 'pages.onlineSession.confirm.revokeUser.affected' },
-          { count: affected },
-        ),
-      );
+      await deleteOnlineSessionUser({ userID });
+      message.success(intl.formatMessage({ id: 'pages.onlineSession.result.revokeUser.success' }));
       onSuccess?.();
       onClose();
     } finally {

@@ -1341,7 +1341,7 @@ The Type method returns either this or "Bearer", the default. */
   };
 
   type getOnlineSessionsParams = {
-    status?: 'active' | 'revoked' | 'expired';
+    status?: 'all' | 'active' | 'revoked' | 'expired';
     userID?: string;
     username?: string;
     ip?: string;

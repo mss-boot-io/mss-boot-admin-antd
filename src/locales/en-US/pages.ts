@@ -560,7 +560,7 @@ export default {
   'pages.onlineSession.confirm.revokeUser.title': 'Force logout all sessions of this user',
   'pages.onlineSession.confirm.revokeUser.userIDLabel': 'User ID',
   'pages.onlineSession.confirm.revokeUser.userIDRequired': 'User ID is required',
-  'pages.onlineSession.confirm.revokeUser.affected': '{count} sessions revoked',
+  'pages.onlineSession.result.revokeUser.success': 'All sessions of this user have been revoked',
   'pages.onlineSession.drawer.title': 'Session Detail',
   'pages.onlineSession.drawer.field.revokedBy': 'Revoked By',
   'pages.onlineSession.drawer.field.revokedAt': 'Revoked At',

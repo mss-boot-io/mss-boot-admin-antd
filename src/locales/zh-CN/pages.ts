@@ -541,7 +541,7 @@ export default {
   'pages.onlineSession.confirm.revokeUser.title': '确认踢出该用户全部会话',
   'pages.onlineSession.confirm.revokeUser.userIDLabel': '用户 ID',
   'pages.onlineSession.confirm.revokeUser.userIDRequired': '请输入用户 ID',
-  'pages.onlineSession.confirm.revokeUser.affected': '已下线 {count} 个会话',
+  'pages.onlineSession.result.revokeUser.success': '已踢出该用户的全部会话',
   'pages.onlineSession.drawer.title': '会话详情',
   'pages.onlineSession.drawer.field.revokedBy': '吊销操作者',
   'pages.onlineSession.drawer.field.revokedAt': '吊销时间',

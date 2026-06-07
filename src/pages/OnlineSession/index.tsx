@@ -154,8 +154,9 @@ const OnlineSessionPage: React.FC = () => {
         columns={columns}
         request={async (params) => {
           const { current, pageSize, status, userID, username, ip } = params as any;
-          // status === 'all' 或为空 → 不传，后端按全集返回
-          const apiStatus = status && status !== 'all' ? (status as SessionStatus) : undefined;
+          // status === 'all' 显式传给后端：后端 switch 未匹配 → 不加 status 过滤；
+          // 不能传 undefined/空，后端 `if Status == "" { Status = "active" }` 会回落到 active。
+          const apiStatus = (status as API.getOnlineSessionsParams['status']) || 'active';
           const res = await getOnlineSessions({
             current,
             pageSize,
