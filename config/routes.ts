@@ -1,5 +1,4 @@
-﻿import component from '@/locales/en-US/component';
-import routesCustom from './routes.custom';
+﻿import routesCustom from './routes.custom';
 
 /**
  * @name umi 的路由配置
@@ -280,8 +279,25 @@ export default [
     ],
   },
   {
+    path: '/security',
+    name: 'security',
+    icon: 'safety',
+    routes: [
+      {
+        path: '/security',
+        redirect: '/security/online-sessions',
+      },
+      {
+        path: '/security/online-sessions',
+        name: 'online-sessions',
+        icon: 'desktop',
+        component: './OnlineSession',
+      },
+    ],
+  },
+  {
     path: '/log',
-    name: 'menu.system.log',
+    name: 'system.log',
     icon: 'fileText',
     routes: [
       {
