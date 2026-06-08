@@ -56,19 +56,40 @@ jobs:
           name: dist-release
           path: dist
 
-      - name: Release
-        uses: softprops/action-gh-release@v3
-        with:
-          generate_release_notes: true
-          files: |
-            dist.tar.gz
-            dist-local.tar.gz
-          prerelease: false
-          body: |
-            ## Pull Image
-            ```shell
-            docker pull ghcr.io/${{ github.repository }}:${{ github.ref }}
-            ```
+      - name: Upsert release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          tag="${GITHUB_REF_NAME}"
+          title="mss-boot-admin-antd ${tag}"
+          body="$(mktemp)"
+          cat > "${body}" <<'EOF'
+          ## Pull Image
+          ```shell
+          docker pull ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          ```
+          EOF
+
+          if gh release view "${tag}" >/dev/null 2>&1; then
+            gh release edit "${tag}" \
+              --title "${title}" \
+              --notes-file "${body}" \
+              --draft=false \
+              --prerelease=false
+          else
+            gh release create "${tag}" \
+              --verify-tag \
+              --title "${title}" \
+              --notes-file "${body}"
+          fi
+
+          gh release upload "${tag}" \
+            dist.tar.gz \
+            dist-local.tar.gz \
+            --clobber
 
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
