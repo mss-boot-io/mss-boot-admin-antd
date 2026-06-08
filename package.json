@@ -75,7 +75,7 @@
     "react-dev-inspector": "^1.8.4",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^3.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^2.1.5",
