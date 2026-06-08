@@ -18,7 +18,16 @@
    - 去多租户影响分析、分阶段任务与验收标准。
 
 3. `frontend-tenant-removal-handoff-summary.zh-CN.md`
+
    - 面向实施团队的一页交接摘要与检查清单。
+
+4. `package-metadata-node22-2026-06-09.zh-CN.md`
+
+   - Node 22、pnpm 9、package metadata 与 Cloudflare 发布约束记忆。
+
+5. `security-dependency-convergence-2026-06-09.zh-CN.md`
+
+   - 前端安全依赖收敛、暂缓项与验证命令记录。
 
 ## 维护建议
 
