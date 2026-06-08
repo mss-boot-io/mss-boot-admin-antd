@@ -2,7 +2,8 @@
   "name": "mss-boot-admin",
   "version": "1.0.0",
   "private": false,
-  "description": "基于Gin + React + Atndv5 + Umiv4 + mss-boot 的前后端分离权限管理系统,支持功能:多租户 角色 用户 菜单 国际化 系统配置 权限 虚拟模型 通知 字典, beta环境: https://admin-beta.mss-boot-io.top swagger: https://mss-boot-io.github.io/mss-boot-admin/swagger.json",
+  "description": "React + Ant Design v5 governance console for mss-boot, focused on RBAC, organization/menu/API governance, config, i18n, observability, and public beta workflows.",
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
     "build": "max build",
@@ -108,6 +109,7 @@
     "umi-presets-pro": "^2.0.2"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
   }
 }
