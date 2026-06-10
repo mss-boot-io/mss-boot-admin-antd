@@ -17,6 +17,12 @@
 4. 启动后输出可验证状态（如端口可访问、终端无致命报错），便于继续联调。
 5. 若用户未显式要求停止服务，保持服务运行以支持后续调试。
 
+## 运行时基线
+
+- Node.js 使用 22+，本仓库提供 `.nvmrc`。
+- 包管理器使用 pnpm 9+；依赖安装与 CI 均以 `pnpm install --frozen-lockfile` 为准。
+- 不建议新增 npm/yarn lockfile，避免 Dependabot 与 GitHub Actions 产生重复依赖图。
+
 ## AIGC 提示词/文档落盘约束
 
 在本仓库中，生成任何提示词或文档时必须遵守：

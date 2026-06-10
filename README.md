@@ -68,9 +68,9 @@ The frontend has undergone comprehensive polish rounds focusing on:
 
 ## 📦 Preparation
 
-- Install golang1.21+
-- Install mysql8.0+
-- Install nodejs18.16.0+
+- Backend: Go 1.26+
+- Optional backend integration dependencies: MySQL 8.0+ and Redis 7+
+- Frontend: Node.js 22+ and pnpm 9+
 
 ## 📦 Quick start
 
@@ -88,11 +88,11 @@ git clone https://github.com/mss-boot-io/mss-boot-admin-antd.git
 ```shell
 # Enter the backend project
 cd mss-boot-admin
-# Configure database connection information (can be modified according to actual situation)
-export DB_DSN="root:123456@tcp(127.0.0.1:3306)/mss-boot-admin-local?charset=utf8mb4&parseTime=True&loc=Local"
-# Migrate the database
+# The default local backend config uses SQLite: mss-boot-admin-local.db
 go run main.go migrate
 ```
+
+To use MySQL locally, start `compose/mysql/docker-compose.yml` in the backend repository and update `config/application.yml` before running migrations.
 
 ### 3. Generate API interface information
 
@@ -114,9 +114,10 @@ go run main.go server
 # Enter the front-end project
 cd mss-boot-admin-antd
 # Install dependencies
-npm install
+corepack enable
+pnpm install
 # Start the front-end service
-npm run start
+pnpm start:dev
 ```
 
 ## 📨 Interaction
@@ -164,14 +165,16 @@ The project follows strict testing requirements with comprehensive test coverage
 ### Test Types
 
 #### 1. Unit Tests
-- **Location**: `__tests__/*.test.ts` or `*.test.tsx` 
+
+- **Location**: `__tests__/*.test.ts` or `*.test.tsx`
 - **Minimum coverage**: **80%**
-- **Run command**: 
+- **Run command**:
   ```bash
   pnpm test --coverage
   ```
 
-#### 2. Integration Tests  
+#### 2. Integration Tests
+
 - **Focus**: Component interactions with API mocks
 - **Tools**: React Testing Library + Mock Service Worker (MSW)
 - **Run command**:
@@ -180,21 +183,22 @@ The project follows strict testing requirements with comprehensive test coverage
   ```
 
 #### 3. End-to-End (E2 E) Tests
+
 - **Full Stack Testing**: Uses Playwright for browser automation
 - **Critical user flows**: login, CRUD operations, permissions
 - **Mobile testing**: Comprehensive iPhone 12 Pro viewport tests
-- **Run command**: 
+- **Run command**:
   ```bash
   pnpm e2e
   ```
 
 ### Coverage Requirements
 
-| Component | Unit Tests | Integration Tests | E2E Tests | Min Coverage |
-|-----------|-----------|-------------------|-----------|--------------|
-| Hooks | ✅ Required | Optional | N/A | 80% |
-| Components | ✅ Required | Optional | Optional | 75% |
-| Utils | ✅ Required | Optional | N/A | 90% |
+| Component  | Unit Tests  | Integration Tests | E2E Tests | Min Coverage |
+| ---------- | ----------- | ----------------- | --------- | ------------ |
+| Hooks      | ✅ Required | Optional          | N/A       | 80%          |
+| Components | ✅ Required | Optional          | Optional  | 75%          |
+| Utils      | ✅ Required | Optional          | N/A       | 90%          |
 
 Detailed testing instructions are available in [TESTING.md](./TESTING.md).
 

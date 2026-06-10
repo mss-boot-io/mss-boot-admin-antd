@@ -2,7 +2,7 @@
   "name": "mss-boot-admin",
   "version": "1.0.0",
   "private": false,
-  "description": "基于Gin + React + Atndv5 + Umiv4 + mss-boot 的前后端分离权限管理系统,支持功能:多租户 角色 用户 菜单 国际化 系统配置 权限 虚拟模型 通知 字典, beta环境: https://admin-beta.mss-boot-io.top swagger: https://mss-boot-io.github.io/mss-boot-admin/swagger.json",
+  "description": "基于 Gin + React + Ant Design v5 + Umi v4 + mss-boot 的前后端分离权限管理系统，聚焦权限治理、系统配置、国际化、通知与运营能力。beta 环境: https://admin-beta.mss-boot-io.top swagger: https://mss-boot-io.github.io/mss-boot-admin/swagger.json",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
     "build": "max build",
@@ -10,13 +10,13 @@
     "build:alpha": "cross-env REACT_APP_ENV=alpha UMI_ENV=alpha max build",
     "build:beta": "cross-env REACT_APP_ENV=beta UMI_ENV=beta max build",
     "build:prod": "cross-env REACT_APP_ENV=prod UMI_ENV=prod max build",
-    "deploy": "npm run build && npm run gh-pages",
-    "dev": "npm run start:dev",
+    "deploy": "pnpm build && pnpm gh-pages",
+    "dev": "pnpm start:dev",
     "gh-pages": "gh-pages -d dist",
     "i18n-remove": "pro i18n-remove --locale=zh-CN --write",
     "postinstall": "max setup",
     "jest": "jest",
-    "lint": "npm run lint:js && npm run lint:prettier && npm run tsc",
+    "lint": "pnpm lint:js && pnpm lint:prettier && pnpm tsc",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src ",
@@ -25,7 +25,7 @@
     "openapi": "max openapi",
     "prepare": "husky install",
     "prettier": "prettier -c --write \"**/**.{js,jsx,tsx,ts,less,md,json}\"",
-    "preview": "npm run build && max preview --port 8000",
+    "preview": "pnpm build && max preview --port 8000",
     "record": "cross-env NODE_ENV=development REACT_APP_ENV=test max record --scene=login",
     "serve": "umi-serve",
     "start": "cross-env UMI_ENV=dev max dev",
@@ -37,8 +37,8 @@
     "start:pre": "cross-env REACT_APP_ENV=pre UMI_ENV=dev max dev",
     "start:test": "cross-env REACT_APP_ENV=test MOCK=none UMI_ENV=dev max dev",
     "test": "jest",
-    "test:coverage": "npm run jest -- --coverage",
-    "test:update": "npm run jest -- -u",
+    "test:coverage": "pnpm jest -- --coverage",
+    "test:update": "pnpm jest -- -u",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
@@ -46,7 +46,7 @@
     "tsc": "tsc --noEmit"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
+    "**/*.{js,jsx,ts,tsx}": "pnpm lint-staged:js",
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write"
     ]
@@ -108,6 +108,7 @@
     "umi-presets-pro": "^2.0.2"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
   }
 }
