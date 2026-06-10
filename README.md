@@ -1,6 +1,6 @@
 # mss-boot-admin-antd
 
-[![CI](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/ci.yml/badge.svg)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/ci.yml) [![CodeQL](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/codeql.yml/badge.svg)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/codeql.yml) [![OpenSSF Scorecard](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/scorecard.yml/badge.svg)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/scorecard.yml) [![Release](https://img.shields.io/github/v/release/mss-boot-io/mss-boot-admin-antd.svg?style=flat-square)](https://github.com/mss-boot-io/mss-boot-admin-antd/releases) [![License](https://img.shields.io/github/license/mss-boot-io/mss-boot-admin-antd.svg?style=flat-square)](https://github.com/mss-boot-io/mss-boot-admin-antd/blob/main/LICENSE)
+[![CI](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/ci.yml) [![CodeQL](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/codeql.yml) [![OpenSSF Scorecard](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/scorecard.yml/badge.svg?branch=main)](https://github.com/mss-boot-io/mss-boot-admin-antd/actions/workflows/scorecard.yml) [![Release](https://img.shields.io/github/v/release/mss-boot-io/mss-boot-admin-antd.svg?style=flat-square)](https://github.com/mss-boot-io/mss-boot-admin-antd/releases) [![License](https://img.shields.io/github/license/mss-boot-io/mss-boot-admin-antd.svg?style=flat-square)](https://github.com/mss-boot-io/mss-boot-admin-antd/blob/main/LICENSE)
 
 English | [简体中文](./README.zh-CN.md)
 
@@ -70,7 +70,7 @@ The frontend has undergone comprehensive polish rounds focusing on:
 
 - Backend: Go 1.26+
 - Optional backend integration dependencies: MySQL 8.0+ and Redis 7+
-- Frontend: Node.js 22+ and pnpm 9+
+- Frontend: Node.js 22+ and pnpm 9.x
 
 ## 📦 Quick start
 
@@ -119,6 +119,20 @@ pnpm install
 # Start the front-end service
 pnpm start:dev
 ```
+
+## Frontend Environment Matrix
+
+The frontend uses `UMI_ENV` and `REACT_APP_ENV` to choose the environment-specific config. `API_URL` is defined in the matching `config/config.prod.*.ts` file or by the dev proxy.
+
+| Context | Command | API target | Usage |
+| --- | --- | --- | --- |
+| Local development | `pnpm start:dev` or `pnpm start:no-mock` | Dev proxy to `http://localhost:8080` for `/admin/` and `/public/` | Use with a local `mss-boot-admin` backend. |
+| Local build | `pnpm build:local` | `http://localhost:8080` | Validate a production-style bundle against a local backend. |
+| Alpha | `pnpm start:alpha` / `pnpm build:alpha` | `https://admin-api-alpha.mss-boot-io.top` | Development backend environment for integration checks. |
+| Beta | `pnpm start:beta` / `pnpm build:beta` | `https://admin-api-beta.mss-boot-io.top` | Public beta target after local and CI verification. |
+| Production | `pnpm start:prod` / `pnpm build:prod` | `https://admin-api.mss-boot-io.top` | Production release build target. |
+
+CI and Cloudflare workflows use Node.js 22 and pnpm 9. Cloudflare alpha, beta, and production workflows are manual `workflow_dispatch` deployments; PRs, Dependabot branches, and normal `codex/**` review branches should not publish frontend changes.
 
 ## 📨 Interaction
 
@@ -179,17 +193,17 @@ The project follows strict testing requirements with comprehensive test coverage
 - **Tools**: React Testing Library + Mock Service Worker (MSW)
 - **Run command**:
   ```bash
-  pnpm test:integration
+  pnpm test
   ```
 
-#### 3. End-to-End (E2 E) Tests
+#### 3. End-to-End (E2E) Tests
 
 - **Full Stack Testing**: Uses Playwright for browser automation
 - **Critical user flows**: login, CRUD operations, permissions
 - **Mobile testing**: Comprehensive iPhone 12 Pro viewport tests
 - **Run command**:
   ```bash
-  pnpm e2e
+  pnpm run test:e2e
   ```
 
 ### Coverage Requirements
@@ -223,7 +237,7 @@ The application features comprehensive mobile H5 adaptation with responsive desi
 
 ### Development Guidelines
 
-- **Testing Mobile**: Use `pnpm e2e --project='iPhone 12 Pro'` to run mobile-specific tests
+- **Testing Mobile**: Use `pnpm run test:e2e -- --project='iPhone 12 Pro'` to run mobile-specific tests
 - **Responsive Breakpoints**: Mobile layout activates below 768px width
 - **Touch Targets**: Ensure all interactive elements are at least 44px for touch accessibility
 

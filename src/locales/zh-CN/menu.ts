@@ -128,4 +128,6 @@ export default {
   'menu.system.log': '日志',
   'menu.system.log.control': '管理日志',
   'menu.log': '日志',
+  'menu.security': '安全',
+  'menu.security.online-sessions': '在线会话',
 };

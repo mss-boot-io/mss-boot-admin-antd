@@ -1,6 +1,7 @@
+import { postOnlineSessionLogout } from '@/services/admin/onlineSession';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { history, useModel, useIntl } from '@umijs/max';
+import { history, useIntl, useModel } from '@umijs/max';
 import { Spin } from 'antd';
 import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
@@ -26,6 +27,12 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    * 退出登录，并且将当前的 url 保存
    */
   const loginOut = async () => {
+    // 通知后端吊销 sid + 写审计。fire-and-forget：
+    // 1) 不 await 防止 UI 在断网/后端慢时卡住
+    // 2) skipErrorHandler 防止 401 触发全局 errorHandler 异步覆盖我们带 redirect 的跳转
+    postOnlineSessionLogout({ skipErrorHandler: true }).catch(() => {
+      // ignore
+    });
     // delete localStorage.token;
     localStorage.removeItem('login.type');
     localStorage.removeItem('github.token');

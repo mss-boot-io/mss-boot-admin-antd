@@ -128,4 +128,6 @@ export default {
   'menu.system.log': 'Log',
   'menu.system.log.control': 'Manage Log',
   'menu.log': 'Log',
+  'menu.security': 'Security',
+  'menu.security.online-sessions': 'Online Sessions',
 };
