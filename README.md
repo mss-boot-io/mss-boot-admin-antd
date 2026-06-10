@@ -68,10 +68,9 @@ The frontend has undergone comprehensive polish rounds focusing on:
 
 ## 📦 Preparation
 
-- Install golang1.21+
-- Install mysql8.0+
-- Install Node.js 22+
-- Install pnpm 9.x
+- Backend: Go 1.26+
+- Optional backend integration dependencies: MySQL 8.0+ and Redis 7+
+- Frontend: Node.js 22+ and pnpm 9.x
 
 ## 📦 Quick start
 
@@ -89,24 +88,24 @@ git clone https://github.com/mss-boot-io/mss-boot-admin-antd.git
 ```shell
 # Enter the backend project
 cd mss-boot-admin
-# Configure database connection information (can be modified according to actual situation)
-export DB_DSN="root:123456@tcp(127.0.0.1:3306)/mss-boot-admin-local?charset=utf8mb4&parseTime=True&loc=Local"
-# Migrate the database
-go run main.go migrate
+# The default local backend config uses SQLite: mss-boot-admin-local.db
+go run . migrate
 ```
+
+To use MySQL locally, start `compose/mysql/docker-compose.yml` in the backend repository and update `config/application.yml` before running migrations.
 
 ### 3. Generate API interface information
 
 ```shell
 # Generate API interface information
-go run main.go server -a
+go run . server -a
 ```
 
 ### 4. Start the backend service
 
 ```shell
 # Start the backend service
-go run main.go server
+go run . server
 ```
 
 ### 5. Start the front-end service
@@ -115,9 +114,10 @@ go run main.go server
 # Enter the front-end project
 cd mss-boot-admin-antd
 # Install dependencies
+corepack enable
 pnpm install
 # Start the front-end service
-pnpm start:dev
+pnpm dev
 ```
 
 ## Frontend Environment Matrix
@@ -126,7 +126,7 @@ The frontend uses `UMI_ENV` and `REACT_APP_ENV` to choose the environment-specif
 
 | Context | Command | API target | Usage |
 | --- | --- | --- | --- |
-| Local development | `pnpm start:dev` or `pnpm start:no-mock` | Dev proxy to `http://localhost:8080` for `/admin/` and `/public/` | Use with a local `mss-boot-admin` backend. |
+| Local development | `pnpm dev` or `pnpm start:no-mock` | Dev proxy to `http://localhost:8080` for `/admin/` and `/public/` | Use with a local `mss-boot-admin` backend. |
 | Local build | `pnpm build:local` | `http://localhost:8080` | Validate a production-style bundle against a local backend. |
 | Alpha | `pnpm start:alpha` / `pnpm build:alpha` | `https://admin-api-alpha.mss-boot-io.top` | Development backend environment for integration checks. |
 | Beta | `pnpm start:beta` / `pnpm build:beta` | `https://admin-api-beta.mss-boot-io.top` | Public beta target after local and CI verification. |

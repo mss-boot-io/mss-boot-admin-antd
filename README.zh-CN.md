@@ -59,10 +59,9 @@
 
 ## 📦 准备工作
 
-- 安装 golang1.21+
-- 安装 mysql8.0+
-- 安装 Node.js 22+
-- 安装 pnpm 9.x
+- 后端安装 Go 1.26+
+- 后端集成依赖可选安装 MySQL 8.0+、Redis 7+
+- 前端安装 Node.js 22+、pnpm 9.x
 
 ## 📦 快速开始
 
@@ -80,24 +79,24 @@ git clone https://github.com/mss-boot-io/mss-boot-admin-antd.git
 ```shell
 # 进入后端项目
 cd mss-boot-admin
-# 配置数据库连接信息(可根据实际情况修改)
-export DB_DSN="root:123456@tcp(127.0.0.1:3306)/mss-boot-admin-local?charset=utf8mb4&parseTime=True&loc=Local"
-# 迁移数据库
-go run main.go migrate
+# 默认本地后端配置使用 SQLite: mss-boot-admin-local.db
+go run . migrate
 ```
+
+如需本地使用 MySQL，请先在后端仓库启动 `compose/mysql/docker-compose.yml`，并修改 `config/application.yml` 后再执行迁移。
 
 ### 3. 生成 API 接口信息
 
 ```shell
 # 生成api接口信息
-go run main.go server -a
+go run . server -a
 ```
 
 ### 4. 启动后端服务
 
 ```shell
 # 启动后端服务
-go run main.go server
+go run . server
 ```
 
 ### 5. 启动前端服务
@@ -106,9 +105,10 @@ go run main.go server
 # 进入前端项目
 cd mss-boot-admin-antd
 # 安装依赖
+corepack enable
 pnpm install
 # 启动前端服务
-pnpm start:dev
+pnpm dev
 ```
 
 ## 前端环境矩阵
@@ -117,7 +117,7 @@ pnpm start:dev
 
 | 场景 | 命令 | API 目标 | 用途 |
 | --- | --- | --- | --- |
-| 本地开发 | `pnpm start:dev` 或 `pnpm start:no-mock` | `/admin/`、`/public/` 通过 dev proxy 转发到 `http://localhost:8080` | 对接本地 `mss-boot-admin` 后端。 |
+| 本地开发 | `pnpm dev` 或 `pnpm start:no-mock` | `/admin/`、`/public/` 通过 dev proxy 转发到 `http://localhost:8080` | 对接本地 `mss-boot-admin` 后端。 |
 | 本地构建 | `pnpm build:local` | `http://localhost:8080` | 以生产构建方式验证本地后端。 |
 | Alpha | `pnpm start:alpha` / `pnpm build:alpha` | `https://admin-api-alpha.mss-boot-io.top` | 开发后端环境，用于联调验证。 |
 | Beta | `pnpm start:beta` / `pnpm build:beta` | `https://admin-api-beta.mss-boot-io.top` | 对外 beta 目标，需先完成本地和 CI 验证。 |
