@@ -116,6 +116,7 @@
       "@babel/plugin-transform-modules-systemjs": "7.29.7",
       "@remix-run/router": "1.23.3",
       "@tootallnate/once": "2.0.1",
+      "@vitejs/plugin-react@4.0.0": "4.7.0",
       "axios": "0.32.0",
       "braft-editor>immutable": "3.8.3",
       "braft-utils>immutable": "3.8.3",
@@ -133,6 +134,11 @@
       "picomatch": "2.3.2",
       "postcss": "8.5.15",
       "qs": "6.15.2",
+      "react-router@6.3.0": "6.30.4",
+      "react-router@6.20.1": "6.30.4",
+      "react-router-dom@6.3.0": "6.30.4",
+      "react-router-dom@6.20.1": "6.30.4",
+      "vite@4.5.2": "6.4.3",
       "webpack": "5.107.2",
       "yaml": "1.10.3"
     }
