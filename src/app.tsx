@@ -37,6 +37,21 @@ const getAuthRedirect = (location: { pathname: string; search: string; hash: str
   return `${loginPath}?redirect=${encodeURIComponent(redirect)}`;
 };
 
+const clearAuthState = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('token.expire');
+  localStorage.removeItem('autoLogin');
+};
+
+const withTimeout = async <T,>(request: () => Promise<T>, timeoutMs = 4000) => {
+  return Promise.race<T | undefined>([
+    request().catch(() => undefined),
+    new Promise<undefined>((resolve) => {
+      setTimeout(() => resolve(undefined), timeoutMs);
+    }),
+  ]);
+};
+
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
@@ -49,21 +64,18 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.User | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    try {
-      return await getUserUserInfo({
+    return withTimeout(() =>
+      getUserUserInfo({
         skipErrorHandler: true,
-      });
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
+      }),
+    );
   };
 
   const { location } = history;
   const token = localStorage.getItem('token');
   const isLoginPage = location.pathname === loginPath || excludePath.includes(location.pathname);
 
-  if (!token) {
+  if (!token || isLoginPage) {
     if (!isLoginPage) {
       history.replace(getAuthRedirect(location));
     }
@@ -73,10 +85,20 @@ export async function getInitialState(): Promise<{
     };
   }
 
+  const currentUser = await fetchUserInfo();
+  if (!currentUser) {
+    clearAuthState();
+    history.replace(getAuthRedirect(location));
+    return {
+      fetchUserInfo,
+      settings: defaultSettings as Partial<LayoutSettings>,
+    };
+  }
+
   // load language after auth is known so public first paint is not blocked by API calls
   let languageData;
   try {
-    languageData = await getLanguages({ pageSize: 999 });
+    languageData = await withTimeout(() => getLanguages({ pageSize: 999 }), 2500);
   } catch (e) {}
   if (languageData?.data) {
     languageData.data.forEach((item) => {
@@ -100,10 +122,10 @@ export async function getInitialState(): Promise<{
 
   let appConfig, userConfig;
   try {
-    appConfig = await getAppConfigsProfile({ skipErrorHandler: true });
+    appConfig = await withTimeout(() => getAppConfigsProfile({ skipErrorHandler: true }), 2500);
   } catch (e) {}
   try {
-    userConfig = await getUserConfigsProfile({ skipErrorHandler: true });
+    userConfig = await withTimeout(() => getUserConfigsProfile({ skipErrorHandler: true }), 2500);
   } catch (e) {}
   //set title
   defaultSettings.title = appConfig?.base?.websiteName || 'mss-boot-admin';
@@ -132,7 +154,6 @@ export async function getInitialState(): Promise<{
 
   if (token && !isLoginPage) {
     try {
-      const currentUser = await fetchUserInfo();
       return {
         appConfig,
         userConfig,
@@ -141,11 +162,9 @@ export async function getInitialState(): Promise<{
         settings: defaultSettings as Partial<LayoutSettings>,
       };
     } catch (error) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('token.expire');
-      localStorage.removeItem('autoLogin');
+      clearAuthState();
       if (location.pathname !== loginPath) {
-        history.push(loginPath);
+        history.replace(getAuthRedirect(location));
       }
       return {
         appConfig,
