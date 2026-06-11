@@ -29,6 +29,14 @@ const excludePath = [
   '/user/callback/lark',
 ];
 
+const getAuthRedirect = (location: { pathname: string; search: string; hash: string }) => {
+  const redirect =
+    location.pathname === '/'
+      ? '/workplace'
+      : `${location.pathname}${location.search}${location.hash}`;
+  return `${loginPath}?redirect=${encodeURIComponent(redirect)}`;
+};
+
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
@@ -40,7 +48,32 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.User | undefined>;
 }> {
-  // load language
+  const fetchUserInfo = async () => {
+    try {
+      return await getUserUserInfo({
+        skipErrorHandler: true,
+      });
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return undefined;
+  };
+
+  const { location } = history;
+  const token = localStorage.getItem('token');
+  const isLoginPage = location.pathname === loginPath || excludePath.includes(location.pathname);
+
+  if (!token) {
+    if (!isLoginPage) {
+      history.replace(getAuthRedirect(location));
+    }
+    return {
+      fetchUserInfo,
+      settings: defaultSettings as Partial<LayoutSettings>,
+    };
+  }
+
+  // load language after auth is known so public first paint is not blocked by API calls
   let languageData;
   try {
     languageData = await getLanguages({ pageSize: 999 });
@@ -64,18 +97,7 @@ export async function getInitialState(): Promise<{
       });
     });
   }
-  const fetchUserInfo = async () => {
-    try {
-      return await getUserUserInfo({
-        skipErrorHandler: true,
-      });
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
-  };
 
-  const { location } = history;
   let appConfig, userConfig;
   try {
     appConfig = await getAppConfigsProfile({ skipErrorHandler: true });
@@ -107,9 +129,6 @@ export async function getInitialState(): Promise<{
     appConfig?.theme?.colorPrimary ||
     defaultSettings.colorPrimary;
   // defaultSettings.splitMenus = userConfig?.theme?.splitMenus || appConfig?.theme?.splitMenus || defaultSettings.splitMenus;
-
-  const token = localStorage.getItem('token');
-  const isLoginPage = location.pathname === loginPath || excludePath.includes(location.pathname);
 
   if (token && !isLoginPage) {
     try {
@@ -177,7 +196,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       const token = localStorage.getItem('token');
       if (!initialState?.currentUser && !token && location.pathname !== loginPath) {
-        history.push(loginPath);
+        history.replace(getAuthRedirect(location));
       }
     },
     layoutBgImgList: [
