@@ -224,7 +224,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const { loading } = useRequest(async () => {
+  useRequest(async () => {
     if (
       localStorage.getItem('autoLogin') &&
       localStorage.getItem('token') &&
@@ -317,9 +317,7 @@ const Login: React.FC = () => {
     };
   }, []);
 
-  return loading ? (
-    <></>
-  ) : (
+  return (
     <div className={containerClassName}>
       <Helmet>
         <title>
