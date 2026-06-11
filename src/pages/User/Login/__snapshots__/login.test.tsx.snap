@@ -357,8 +357,6 @@ exports[`Login Page should show login form 1`] = `
               </label>
               <a
                 href="/user/forget"
-              />
-              <a
                 style="float: right;"
               >
                 Forgot Password ?

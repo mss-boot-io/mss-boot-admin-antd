@@ -149,7 +149,4 @@ export default defineConfig({
   define: {
     API_URL: '',
   },
-  qiankun: {
-    master: {},
-  },
 });

@@ -23,6 +23,7 @@ import Settings from '../../../../config/defaultSettings';
 import { useRequest } from 'ahooks';
 import { LarkOutlined } from '@/components/MssBoot/icon';
 import { resolveSafeRedirect } from './redirect';
+import { getAppConfigsProfile } from '@/services/admin/appConfig';
 
 function randToken(): string {
   let result = '';
@@ -172,6 +173,27 @@ const Login: React.FC = () => {
       backgroundSize: '100% 100%',
     };
   });
+
+  useEffect(() => {
+    if (initialState?.appConfig) {
+      return;
+    }
+    let disposed = false;
+    getAppConfigsProfile({ skipErrorHandler: true })
+      .then((appConfig) => {
+        if (disposed || !appConfig) {
+          return;
+        }
+        setInitialState((state) => ({
+          ...state,
+          appConfig,
+        }));
+      })
+      .catch(() => {});
+    return () => {
+      disposed = true;
+    };
+  }, [initialState?.appConfig, setInitialState]);
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -353,11 +375,19 @@ const Login: React.FC = () => {
             initialState?.appConfig?.security?.registerEnabled ? (
               <p>
                 还没有账号? &nbsp;
-                <Link to="/user/register">
-                  <a>
-                    <FormattedMessage id="pages.login.signup" defaultMessage="注册账户" />
-                  </a>
-                </Link>
+                <span
+                  role="link"
+                  tabIndex={0}
+                  style={{ color: '#1677ff', cursor: 'pointer' }}
+                  onClick={() => history.push('/user/register')}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      history.push('/user/register');
+                    }
+                  }}
+                >
+                  <FormattedMessage id="pages.login.signup" defaultMessage="注册账户" />
+                </span>
               </p>
             ) : (
               ''
@@ -591,14 +621,13 @@ const Login: React.FC = () => {
               <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
             </ProFormCheckbox>
 
-            <Link to="/user/forget">
-              <a
-                style={{
-                  float: 'right',
-                }}
-              >
-                <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-              </a>
+            <Link
+              to="/user/forget"
+              style={{
+                float: 'right',
+              }}
+            >
+              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
             </Link>
           </div>
         </LoginForm>
