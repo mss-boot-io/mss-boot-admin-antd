@@ -130,4 +130,5 @@ export default {
   'menu.log': '日志',
   'menu.security': '安全',
   'menu.security.online-sessions': '在线会话',
+  'menu.security.onlineSessions': '在线会话',
 };
