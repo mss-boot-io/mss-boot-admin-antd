@@ -21,6 +21,7 @@ const SessionDetailDrawer: React.FC<Props> = ({ id, open, onClose }) => {
     if (!open || !id) {
       setData(undefined);
       setError(undefined);
+      setLoading(false);
       return;
     }
     let cancelled = false;
