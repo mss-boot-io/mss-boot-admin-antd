@@ -118,6 +118,7 @@
       "@tootallnate/once": "2.0.1",
       "@vitejs/plugin-react@4.0.0": "4.7.0",
       "axios": "0.32.0",
+      "esbuild": "0.28.1",
       "braft-editor>immutable": "3.8.3",
       "braft-utils>immutable": "3.8.3",
       "draft-convert>immutable": "3.8.3",
