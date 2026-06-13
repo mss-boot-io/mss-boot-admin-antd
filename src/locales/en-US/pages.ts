@@ -552,9 +552,9 @@ export default {
   'pages.onlineSession.columns.status': 'Status',
   'pages.onlineSession.columns.option': 'Operation',
   'pages.onlineSession.action.detail': 'Detail',
-  'pages.onlineSession.action.revoke': 'Force Logout',
-  'pages.onlineSession.action.revokeUser': 'Force Logout All for This User',
-  'pages.onlineSession.action.revokeUserToolbar': 'Force Logout User Sessions',
+  'pages.onlineSession.action.revoke': 'Logout',
+  'pages.onlineSession.action.revokeUser': 'Logout All',
+  'pages.onlineSession.action.revokeUserToolbar': 'Logout User',
   'pages.onlineSession.confirm.revoke': 'Force logout this session?',
   'pages.onlineSession.result.revoke.success': 'Session force-logged-out',
   'pages.onlineSession.confirm.revokeUser.title': 'Force logout all sessions of this user',
@@ -565,4 +565,5 @@ export default {
   'pages.onlineSession.drawer.field.revokedBy': 'Revoked By',
   'pages.onlineSession.drawer.field.revokedAt': 'Revoked At',
   'pages.onlineSession.drawer.field.revokeReason': 'Revoke Reason',
+  'pages.onlineSession.result.detail.error': 'Failed to load session detail',
 };

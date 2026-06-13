@@ -1,8 +1,8 @@
 import { getOnlineSession } from '@/services/admin/onlineSession';
-import { useIntl, useRequest } from '@umijs/max';
-import { Descriptions, Drawer, Spin, Tag } from 'antd';
+import { useIntl } from '@umijs/max';
+import { Descriptions, Drawer, Result, Spin, Tag } from 'antd';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getSessionStatus, STATUS_COLOR, STATUS_INTL_ID } from '../utils';
 
 type Props = {
@@ -13,13 +13,34 @@ type Props = {
 
 const SessionDetailDrawer: React.FC<Props> = ({ id, open, onClose }) => {
   const intl = useIntl();
-  const { data, loading } = useRequest(
-    async () => {
-      if (!id) return undefined;
-      return getOnlineSession({ id });
-    },
-    { refreshDeps: [id] },
-  );
+  const [data, setData] = useState<API.UserSession | undefined>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | undefined>();
+
+  useEffect(() => {
+    if (!open || !id) {
+      setData(undefined);
+      setError(undefined);
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setError(undefined);
+    getOnlineSession({ id }, { skipErrorHandler: true })
+      .then((res) => {
+        if (!cancelled) setData(res);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [id, open]);
 
   const fmtTime = (t?: string) => (t ? moment(t).format('YYYY-MM-DD HH:mm:ss') : '—');
   const status = data ? getSessionStatus(data) : undefined;
@@ -32,9 +53,18 @@ const SessionDetailDrawer: React.FC<Props> = ({ id, open, onClose }) => {
       width={520}
       destroyOnClose
     >
-      {loading || !data ? (
-        <Spin />
-      ) : (
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: 48 }}>
+          <Spin />
+        </div>
+      ) : error ? (
+        <Result
+          status="error"
+          title={
+            error.message || intl.formatMessage({ id: 'pages.onlineSession.result.detail.error' })
+          }
+        />
+      ) : data ? (
         <Descriptions column={1} bordered size="small">
           <Descriptions.Item
             label={intl.formatMessage({ id: 'pages.onlineSession.columns.username' })}
@@ -96,7 +126,7 @@ const SessionDetailDrawer: React.FC<Props> = ({ id, open, onClose }) => {
             {data.revokeReason || '—'}
           </Descriptions.Item>
         </Descriptions>
-      )}
+      ) : null}
     </Drawer>
   );
 };

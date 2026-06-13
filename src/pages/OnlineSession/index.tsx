@@ -59,9 +59,10 @@ const OnlineSessionPage: React.FC = () => {
       title: intl.formatMessage({ id: 'pages.onlineSession.columns.userAgent' }),
       dataIndex: 'userAgent',
       hideInSearch: true,
+      width: 200,
       render: (_, row) => (
         <Tooltip title={row.userAgent}>
-          <Typography.Text style={{ maxWidth: 240 }} ellipsis>
+          <Typography.Text ellipsis style={{ display: 'block' }}>
             {row.userAgent || '—'}
           </Typography.Text>
         </Tooltip>
@@ -112,6 +113,7 @@ const OnlineSessionPage: React.FC = () => {
       title: intl.formatMessage({ id: 'pages.onlineSession.columns.option' }),
       dataIndex: 'option',
       valueType: 'option',
+      width: 180,
       render: (_, row) => {
         const isActive = getSessionStatus(row) === 'active';
         return [

@@ -533,9 +533,9 @@ export default {
   'pages.onlineSession.columns.status': '状态',
   'pages.onlineSession.columns.option': '操作',
   'pages.onlineSession.action.detail': '详情',
-  'pages.onlineSession.action.revoke': '强制下线',
-  'pages.onlineSession.action.revokeUser': '踢出该用户全部会话',
-  'pages.onlineSession.action.revokeUserToolbar': '踢出指定用户全部会话',
+  'pages.onlineSession.action.revoke': '下线',
+  'pages.onlineSession.action.revokeUser': '踢出全部',
+  'pages.onlineSession.action.revokeUserToolbar': '踢出用户会话',
   'pages.onlineSession.confirm.revoke': '确认强制下线此会话？',
   'pages.onlineSession.result.revoke.success': '已强制下线该会话',
   'pages.onlineSession.confirm.revokeUser.title': '确认踢出该用户全部会话',
@@ -546,4 +546,5 @@ export default {
   'pages.onlineSession.drawer.field.revokedBy': '吊销操作者',
   'pages.onlineSession.drawer.field.revokedAt': '吊销时间',
   'pages.onlineSession.drawer.field.revokeReason': '吊销原因',
+  'pages.onlineSession.result.detail.error': '加载会话详情失败',
 };
