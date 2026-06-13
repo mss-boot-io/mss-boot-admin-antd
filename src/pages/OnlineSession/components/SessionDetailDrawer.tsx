@@ -26,9 +26,9 @@ const SessionDetailDrawer: React.FC<Props> = ({ id, open, onClose }) => {
     let cancelled = false;
     setLoading(true);
     setError(undefined);
-    getOnlineSession({ id })
+    getOnlineSession({ id }, { skipErrorHandler: true })
       .then((res) => {
-        if (!cancelled) setData(res as unknown as API.UserSession);
+        if (!cancelled) setData(res);
       })
       .catch((err) => {
         if (!cancelled) setError(err);
@@ -57,7 +57,12 @@ const SessionDetailDrawer: React.FC<Props> = ({ id, open, onClose }) => {
           <Spin />
         </div>
       ) : error ? (
-        <Result status="error" title={error.message} />
+        <Result
+          status="error"
+          title={
+            error.message || intl.formatMessage({ id: 'pages.onlineSession.result.detail.error' })
+          }
+        />
       ) : data ? (
         <Descriptions column={1} bordered size="small">
           <Descriptions.Item

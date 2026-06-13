@@ -60,10 +60,9 @@ const OnlineSessionPage: React.FC = () => {
       dataIndex: 'userAgent',
       hideInSearch: true,
       width: 200,
-      ellipsis: true,
       render: (_, row) => (
         <Tooltip title={row.userAgent}>
-          <Typography.Text ellipsis style={{ display: 'block', maxWidth: 180 }}>
+          <Typography.Text ellipsis style={{ display: 'block' }}>
             {row.userAgent || '—'}
           </Typography.Text>
         </Tooltip>

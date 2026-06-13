@@ -565,4 +565,5 @@ export default {
   'pages.onlineSession.drawer.field.revokedBy': 'Revoked By',
   'pages.onlineSession.drawer.field.revokedAt': 'Revoked At',
   'pages.onlineSession.drawer.field.revokeReason': 'Revoke Reason',
+  'pages.onlineSession.result.detail.error': 'Failed to load session detail',
 };

@@ -546,4 +546,5 @@ export default {
   'pages.onlineSession.drawer.field.revokedBy': '吊销操作者',
   'pages.onlineSession.drawer.field.revokedAt': '吊销时间',
   'pages.onlineSession.drawer.field.revokeReason': '吊销原因',
+  'pages.onlineSession.result.detail.error': '加载会话详情失败',
 };
