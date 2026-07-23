@@ -120,7 +120,7 @@
       "@remix-run/router": "1.23.3",
       "@tootallnate/once": "2.0.1",
       "@vitejs/plugin-react@4.0.0": "4.7.0",
-      "axios": "0.32.0",
+      "axios": "0.33.0",
       "braces": "3.0.3",
       "cross-spawn": "7.0.6",
       "esbuild": "0.28.1",

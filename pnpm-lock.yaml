@@ -13,7 +13,7 @@ overrides:
   '@remix-run/router': 1.23.3
   '@tootallnate/once': 2.0.1
   '@vitejs/plugin-react@4.0.0': 4.7.0
-  axios: 0.32.0
+  axios: 0.33.0
   braces: 3.0.3
   cross-spawn: 7.0.6
   esbuild: 0.28.1
@@ -3334,8 +3334,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@0.32.0:
-    resolution: {integrity: sha512-sGQArzERW2SI8IRkjuJ5y91Sm9QjiRq4Ay4kOLqpbBt5CeKDNq4g6nirJdyD+palK3yEDXnJiVXsesX66AjwyA==}
+  axios@0.33.0:
+    resolution: {integrity: sha512-juz19g7B3UWT9r3+tgRFQf2Bdy6IKDVroiyuVOUrkILVKHpqHL++K1l8ybvfdEP9B/VE72vk8vllbnedVCm/og==}
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -13627,7 +13627,7 @@ snapshots:
       '@umijs/bundler-utils': 4.0.81
       '@umijs/valtio': 1.0.3(react@18.2.0)
       antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.21)
-      axios: 0.32.0
+      axios: 0.33.0
       babel-plugin-import: 1.13.8
       dayjs: 1.11.21
       dva-core: 2.0.4(redux@4.2.1)
@@ -13672,7 +13672,7 @@ snapshots:
       '@umijs/bundler-utils': 4.0.89
       '@umijs/valtio': 1.0.4(@types/react@18.2.41)(react@18.2.0)
       antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.21)
-      axios: 0.32.0
+      axios: 0.33.0
       babel-plugin-import: 1.13.8
       babel-plugin-styled-components: 2.1.4(@babel/core@7.29.7)(styled-components@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       dayjs: 1.11.21
@@ -13718,7 +13718,7 @@ snapshots:
       '@umijs/bundler-utils': 4.6.61
       '@umijs/valtio': 1.0.4(@types/react@18.2.41)(react@18.2.0)
       antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.21)
-      axios: 0.32.0
+      axios: 0.33.0
       babel-plugin-import: 1.13.8
       babel-plugin-styled-components: 2.1.4(@babel/core@7.29.7)(styled-components@6.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       dayjs: 1.11.21
@@ -14498,7 +14498,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@0.32.0:
+  axios@0.33.0:
     dependencies:
       follow-redirects: 1.16.0
       form-data: 4.0.6
